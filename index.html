@@ -125,6 +125,160 @@ body:not(.logged-in-user) #main {
   display: block !important;
   pointer-events: auto !important;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   MODERN CUSTOM DROPDOWN COMPONENT (MATCHING USER SCREENSHOT)
+   ══════════════════════════════════════════════════════════════ */
+.modern-select-wrapper {
+  position: relative;
+  width: 100%;
+  user-select: none;
+  font-family: inherit;
+}
+
+.modern-select-trigger {
+  width: 100%;
+  min-height: 40px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  outline: none;
+}
+
+.modern-select-trigger:hover {
+  border-color: #cbd5e1;
+}
+
+.modern-select-wrapper.open .modern-select-trigger,
+.modern-select-trigger:focus-visible {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.16);
+}
+
+.modern-select-trigger-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  flex: 1;
+}
+
+.modern-select-trigger-text.placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.modern-select-trigger-arrow {
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+.modern-select-wrapper.open .modern-select-trigger-arrow {
+  transform: rotate(180deg);
+  color: #7c3aed;
+}
+
+.modern-select-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+  padding: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px) scale(0.98);
+  transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.18s;
+  box-sizing: border-box;
+}
+
+.modern-select-wrapper.open .modern-select-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* Custom scrollbar with sleek purple thumb matching user screenshot */
+.modern-select-menu::-webkit-scrollbar {
+  width: 5px;
+}
+.modern-select-menu::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 6px 0;
+}
+.modern-select-menu::-webkit-scrollbar-thumb {
+  background: #7c3aed;
+  border-radius: 6px;
+}
+
+.modern-select-option {
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+  margin-bottom: 2px;
+  text-align: left;
+}
+
+.modern-select-option:last-child {
+  margin-bottom: 0;
+}
+
+.modern-select-option:hover {
+  background: #f5f3ff;
+  color: #6d28d9;
+  font-weight: 600;
+}
+
+.modern-select-option.selected {
+  background: #f5f3ff;
+  color: #7c3aed;
+  font-weight: 700;
+}
+
+.modern-select-option.selected::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7c3aed;
+}
+
+/* Top-right batch action bar in filter bar */
+.top-batch-actions-bar {
+  display: none;
+  margin-left: auto;
+  align-items: center;
+  gap: 8px;
+}
+
 </style>
 
 
@@ -805,6 +959,26 @@ canvas{display:block;}
 
 .col-awb-cell {
   position: relative;
+}
+
+.col-client-cell {
+  position: relative;
+  white-space: nowrap;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+.col-client-cell * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+.col-client-header {
+  min-width: 160px;
+  white-space: nowrap;
 }
 
 .awb-text-selectable {
@@ -1867,7 +2041,7 @@ button:hover,
   transition:opacity .75s cubic-bezier(0.7, 0, 0.2, 1), background .75s ease, backdrop-filter .75s ease;
 }
 #loginOverlay.curtain-opening{
-  background:rgba(11, 19, 43, 0) !important;
+  background:rgba(255, 255, 255, 0) !important;
   backdrop-filter:blur(0px) !important;
   -webkit-backdrop-filter:blur(0px) !important;
   opacity:0 !important;
@@ -1897,8 +2071,8 @@ button:hover,
 }
 .curtain-card{
   flex:1;
-  transition:transform .85s cubic-bezier(0.7, 0, 0.2, 1), opacity .75s ease;
-  will-change:transform, opacity;
+  transition:transform .8s cubic-bezier(0.16, 1, 0.3, 1), opacity .65s ease, filter .65s ease;
+  will-change:transform, opacity, filter;
 }
 .curtain-left{
   background:linear-gradient(145deg, #10b981 0%, #059669 100%);
@@ -1920,15 +2094,20 @@ button:hover,
   justify-content:center;
   position:relative;
   box-shadow:0 10px 30px rgba(0,0,0,.08);
+  border:1px solid #e2e8f0;
+  border-left:none;
 }
-/* Curtain parting animation */
+/* Curtain parting animation - both cards animate fluidly */
 .curtain-opening .curtain-left{
-  transform:translateX(-140%) scale(0.95);
+  transform:translateX(-120%) scale(0.92) rotate(-2deg);
   opacity:0;
+  filter:blur(3px);
 }
 .curtain-opening .curtain-right{
-  transform:translateX(140%) scale(0.95);
+  transform:translateX(120%) scale(0.92) rotate(2deg);
   opacity:0;
+  filter:blur(3px);
+  box-shadow:0 20px 50px rgba(0,0,0,.15);
 }
 .login-input-group{
   position:relative;
@@ -2100,31 +2279,26 @@ button:hover,
         </div>
 
         <div id="loginErrorMsg" style="display:none;font-size:12px;color:#ef4444;margin-bottom:14px;background:#fef2f2;border:1px solid #fee2e2;padding:8px 12px;border-radius:10px;"></div>
-
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
-          <button type="submit" onclick="handleLoginSubmit(event)" class="btn-login" id="loginSubmitBtn" style="width:100%;padding:14px;font-size:16px;font-weight:800;background:linear-gradient(135deg, #10b981, #059669);box-shadow:0 4px 14px rgba(16,185,129,0.35);cursor:pointer;border-radius:12px;border:none;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;">
-    <span><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline-block;vertical-align:-2px;"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg> Masuk ke Sistem (1-Klik)</span>
-  </button>
-          <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:#64748b;cursor:pointer;">
-            <input type="checkbox" id="rememberMe" checked style="width:15px;height:15px;accent-color:#10b981;cursor:pointer;"/>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin:16px 0 16px 0;">
+          <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:#64748b;cursor:pointer;user-select:none;">
+            <input type="checkbox" id="rememberMe" checked style="width:16px;height:16px;accent-color:#10b981;cursor:pointer;"/>
             Remember password
           </label>
+          <a href="#" onclick="showForgotPassword(event)" style="font-size:12px;color:#10b981;text-decoration:none;font-weight:600;">Forgot password?</a>
         </div>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #f1f5f9;padding-top:16px;">
-          <a href="#" onclick="showForgotPassword(event)" style="font-size:12px;color:#10b981;text-decoration:none;font-weight:600;">Forget your password?</a>
-          <div onclick="autoFillSuperAdmin()" style="font-size:11px;background:#ecfdf5;color:#059669;padding:5px 12px;border-radius:20px;cursor:pointer;font-weight:700;border:1px solid #a7f3d0;display:inline-flex;align-items:center;gap:5px;" title="Klik untuk isi otomatis">
-            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="m21 2-9.6 9.6"></path><path d="m15.5 7.5 3 3"></path></svg>
-            <span>Super Admin Demo</span>
+        <div style="margin-bottom:16px;">
+          <button type="submit" onclick="handleLoginSubmit(event)" class="btn-login" id="loginSubmitBtn" style="width:100%;padding:10px 18px;font-size:14px;font-weight:700;background:linear-gradient(135deg, #10b981, #059669);box-shadow:0 3px 10px rgba(16,185,129,0.25);cursor:pointer;border-radius:10px;border:none;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s ease;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            <span>Sign In</span>
+          </button>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:center;border-top:1px solid #f1f5f9;padding-top:14px;margin-bottom:8px;">
+          <div onclick="autoFillSuperAdmin()" style="font-size:11.5px;background:#ecfdf5;color:#059669;padding:5px 14px;border-radius:20px;cursor:pointer;font-weight:700;border:1px solid #a7f3d0;display:inline-flex;align-items:center;gap:6px;" title="Klik untuk isi otomatis">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Autofill Admin
           </div>
         </div>
-      
-        <div style="margin-top:14px;text-align:center;">
-          <a href="javascript:void(0)" onclick="handleLoginSubmit(event)" style="color:#059669;font-size:12.5px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:#ecfdf5;padding:6px 14px;border-radius:20px;border:1px solid #a7f3d0;">
-            <span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline-block;vertical-align:-1px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Buka Dashboard Langsung</span> &rarr;
-          </a>
-        </div>
-
       </form>
     </div>
   </div>
@@ -2227,14 +2401,14 @@ button:hover,
     </button>
 
     <!-- 2. Tabel Data -->
-    <button class="nav-item" onclick="showPage('daftar',this)" title="Tabel Data">
+    <button class="nav-item" onclick="showPage('daftar',this)" title="Manajemen Resi">
       <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
         <rect x="3" y="4" width="18" height="3" rx="1.5"/>
         <rect x="3" y="9" width="18" height="3" rx="1.5"/>
         <rect x="3" y="14" width="18" height="3" rx="1.5"/>
         <rect x="3" y="19" width="18" height="3" rx="1.5"/>
       </svg>
-      <span class="nav-text">Tabel Data</span>
+      <span class="nav-text">Manajemen Resi</span>
     </button>
 
     <!-- 3. Outstanding -->
@@ -2413,19 +2587,20 @@ button:hover,
         <div class="panel">
           <div class="panel-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
             <div>
-              <div class="panel-title">Grafik Pengiriman (Delivered vs Return)</div>
-              <div class="panel-sub" id="chartFilterSub">Tren status Delivered (Hijau) vs Return (Merah) real-time</div>
+              <div class="panel-title">Grafik Pengiriman (Sukses vs Return)</div>
+              <div class="panel-sub" id="chartFilterSub">Tren status Sukses (Hijau) vs Return (Merah) real-time</div>
             </div>
             <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
               <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:5px 12px;border-radius:10px;border:1px solid #e2e8f0;">
                 <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#10b981;">
-                  <span style="width:9px;height:9px;border-radius:50%;background:#10b981;display:inline-block;"></span> Delivered
+                  <span style="width:9px;height:9px;border-radius:50%;background:#10b981;display:inline-block;"></span> Sukses
                 </span>
                 <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#ef4444;">
                   <span style="width:9px;height:9px;border-radius:50%;background:#ef4444;display:inline-block;"></span> Return
                 </span>
               </div>
               <div class="chart-filter-group">
+                <button type="button" class="chart-filter-pill" id="filterHari" onclick="setChartTimeframe('hari')">Hari</button>
                 <button type="button" class="chart-filter-pill" id="filterMinggu" onclick="setChartTimeframe('minggu')">Minggu</button>
                 <button type="button" class="chart-filter-pill active" id="filterBulan" onclick="setChartTimeframe('bulan')">Bulan</button>
                 <button type="button" class="chart-filter-pill" id="filterTahun" onclick="setChartTimeframe('tahun')">Tahun</button>
@@ -2484,7 +2659,7 @@ button:hover,
         <div>
           <div class="panel-title" style="font-size:18px;display:flex;align-items:center;gap:8px;">
             <svg width="20" height="20" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            <span>Tabel Data Resi Pengiriman</span>
+            <span>Manajemen Resi Pengiriman</span>
           </div>
           <div class="panel-sub" id="tableCount">0 resi ditemukan</div>
         </div>
@@ -2503,7 +2678,7 @@ button:hover,
             </div>
           </div>
 
-          <input type="file" id="csvFileInputDaftar" accept=".csv, .txt" style="display:none;" onchange="handleImportCSV(event)" />
+          <input type="file" id="csvFileInputDaftar" accept=".csv, .xlsx, .xls, .txt" style="display:none;" onchange="handleImportCSV(event)" />
           <button type="button" class="btn btn-ghost btn-sm" onclick="openBulkScanModal()" title="Scan / Input Masal Nomor AWB">
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg>
             <span>Scan Masal</span>
@@ -2566,6 +2741,18 @@ button:hover,
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           <span>Reset Filter</span>
         </button>
+
+        <!-- Batch Actions Pojok Kanan Atas (HANYA MUNCUL JIKA ADA AWB YANG DICENTANG) -->
+        <div id="topBatchActionsDaftar" class="top-batch-actions-bar" style="display:none;margin-left:auto;align-items:center;gap:8px;">
+          <button type="button" class="btn btn-primary btn-sm" id="btnBatchStatusDaftar" onclick="openBatchStatusModal()" style="display:inline-flex;align-items:center;gap:6px;background:#10b981;border-color:#10b981;color:#ffffff;border-radius:10px;padding:7px 16px;font-weight:700;font-size:12.5px;box-shadow:0 2px 8px rgba(16,185,129,.25);cursor:pointer;" title="Ubah status untuk semua resi yang dipilih">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            <span id="btnBatchStatusLabel">Ubah Status Masal</span>
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btnResetChecklistDaftar" onclick="resetChecklistDaftar()" style="display:inline-flex;align-items:center;gap:6px;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;border-radius:10px;padding:7px 12px;font-weight:600;font-size:12.5px;cursor:pointer;" title="Batalkan semua centang checklist">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            <span>Reset Checklist</span>
+          </button>
+        </div>
       </div>
 
       <div class="table-panel">
@@ -2575,19 +2762,16 @@ button:hover,
               <tr>
                 <th class="col-check no-select"><input type="checkbox" class="table-check" id="checkAllDaftarHeader" onchange="toggleSelectAllDaftar(this.checked)" title="Pilih Semua"/></th>
                 <th class="col-no no-select">NO</th>
-                <th class="col-awb-header no-select" style="min-width:380px;">
-                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-                    <div style="display:flex;align-items:center;gap:12px;">
-                      <span style="min-width:170px;">NO AWB</span>
-                      <span class="awb-client-divider no-select" aria-hidden="true"></span>
-                      <span>NAMA CLIENT</span>
-                    </div>
+                <th class="col-awb-header no-select" style="min-width:190px;white-space:nowrap;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                    <span>NO AWB</span>
                     <button type="button" class="btn-copy-col-header" onclick="copyAllVisibleAwbs('main')" title="Salin semua No AWB di halaman ini ke clipboard">
                       <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                       <span>Salin AWB</span>
                     </button>
                   </div>
                 </th>
+                <th class="col-client-header no-select">NAMA CLIENT</th>
                 <th class="no-select">SLA RTN</th>
                 <th class="no-select">SLA EV</th>
                 <th class="no-select">DRS KE</th>
@@ -2597,7 +2781,7 @@ button:hover,
               </tr>
             </thead>
             <tbody id="mainTableBody">
-              <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted-foreground);">Memuat data resi...</td></tr>
+              <tr><td colspan="10" style="text-align:center;padding:40px;color:var(--muted-foreground);">Memuat data resi...</td></tr>
             </tbody>
           </table>
         </div>
@@ -2608,10 +2792,6 @@ button:hover,
               <input type="checkbox" class="table-check" id="checkAllDaftarBottom" onchange="toggleSelectAllDaftar(this.checked)"/>
               <span>Pilih Semua</span>
             </label>
-            <button type="button" class="btn-batch-status" id="btnBatchStatusDaftar" onclick="openBatchStatusModal()" disabled title="Ubah status untuk semua resi yang dipilih">
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              <span>Ubah Status</span>
-            </button>
             <button type="button" class="btn-batch-del" id="btnBatchDeleteDaftar" onclick="batchDeleteDaftar()" disabled>
               <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
               <span>Hapus Terpilih</span>
@@ -2655,19 +2835,16 @@ button:hover,
               <tr>
                 <th class="col-check no-select"><input type="checkbox" class="table-check" id="checkAllOutstandingHeader" onchange="toggleSelectAllOutstanding(this.checked)" title="Pilih Semua"/></th>
                 <th class="col-no no-select">NO</th>
-                <th class="col-awb-header no-select" style="min-width:380px;">
-                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-                    <div style="display:flex;align-items:center;gap:12px;">
-                      <span style="min-width:170px;">NO AWB</span>
-                      <span class="awb-client-divider no-select" aria-hidden="true"></span>
-                      <span>NAMA CLIENT</span>
-                    </div>
+                <th class="col-awb-header no-select" style="min-width:190px;white-space:nowrap;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                    <span>NO AWB</span>
                     <button type="button" class="btn-copy-col-header" onclick="copyAllVisibleAwbs('outstanding')" title="Salin semua No AWB di halaman ini ke clipboard">
                       <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                       <span>Salin AWB</span>
                     </button>
                   </div>
                 </th>
+                <th class="col-client-header no-select">NAMA CLIENT</th>
                 <th class="no-select">SLA RTN</th>
                 <th class="no-select">SLA EV</th>
                 <th class="no-select">DRS KE</th>
@@ -2677,7 +2854,7 @@ button:hover,
               </tr>
             </thead>
             <tbody id="outstandingTableBody">
-              <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted-foreground);">Memuat data outstanding...</td></tr>
+              <tr><td colspan="10" style="text-align:center;padding:40px;color:var(--muted-foreground);">Memuat data outstanding...</td></tr>
             </tbody>
           </table>
         </div>
@@ -2808,8 +2985,8 @@ button:hover,
           </div>
 
           <!-- Dropzone / File Picker Box -->
-          <div style="border:2px dashed #10b981;border-radius:14px;background:#f0fdf4;padding:16px;text-align:center;cursor:pointer;transition:all .2s ease;" onclick="document.getElementById('blastExcelFileInput').click()" id="blastDropzone">
-            <input type="file" id="blastExcelFileInput" accept=".xlsx, .xls, .csv" style="display:none;" onchange="handleBlastExcelUpload(event)">
+          <div style="border:2px dashed #10b981;border-radius:14px;background:#f0fdf4;padding:16px;text-align:center;cursor:pointer;transition:all .2s ease;" onclick="document.getElementById('blastExcelFileInput').click()" ondragover="handleBlastDragOver(event)" ondragleave="handleBlastDragLeave(event)" ondrop="handleBlastDrop(event)" id="blastDropzone">
+            <input type="file" id="blastExcelFileInput" accept=".xlsx, .xls, .csv, .txt" style="display:none;" onchange="handleBlastExcelUpload(event)">
             <div style="width:40px;height:40px;border-radius:10px;background:#dcfce7;color:#15803d;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;">
               <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="12" y2="12"></line><line x1="15" y1="15" x2="12" y2="12"></line></svg>
             </div>
@@ -3238,66 +3415,78 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL FORM ══════════════ -->
+<!-- ══════════════ MODAL FORM (RINGKAS & SIMPEL) ══════════════ -->
 <div id="formModal" class="modal-overlay hidden">
-  <div class="modal-box">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--border);">
+  <div class="modal-box" style="max-width:540px;width:95%;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px 14px;border-bottom:1px solid var(--border);">
       <div>
-        <div class="panel-title" id="modalTitle">Tambah Resi Baru</div>
-        <div class="panel-sub">Isi data pengiriman dengan lengkap</div>
+        <div class="panel-title" id="modalTitle" style="font-size:16px;">Edit Data AWB</div>
+        <div class="panel-sub" style="font-size:12px;">Perbarui data pengiriman AWB</div>
       </div>
       <button class="btn btn-ghost" style="padding:6px 10px;" onclick="closeModal()">✕</button>
     </div>
     <form id="resiForm" onsubmit="saveResi(event)" style="padding:20px 24px;">
       <input type="hidden" id="editId"/>
+      <input type="hidden" id="fTanggal"/>
+      <input type="hidden" id="fLayanan"/>
+      <input type="hidden" id="fDrsKe"/>
+      <input type="hidden" id="fTelpPengirim"/>
+      <input type="hidden" id="fAlamatPengirim"/>
+      <input type="hidden" id="fNamaPenerima"/>
+      <input type="hidden" id="fTelpPenerima"/>
+      <input type="hidden" id="fAlamatPenerima"/>
+      <input type="hidden" id="fDeskripsi"/>
+      <input type="hidden" id="fBerat"/>
+      <input type="hidden" id="fSatuan"/>
+      <input type="hidden" id="fBiaya"/>
+      <input type="hidden" id="fKeterangan"/>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+        <!-- 1. Nomor AWB -->
         <div>
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:6px;">NOMOR RESI *</label>
-          <input type="text" id="fResi" placeholder="cth. JNE123456789" required/>
+          <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Nomor AWB *</label>
+          <input type="text" id="fResi" placeholder="cth. JNE123456789" required style="width:100%;height:38px;padding:0 12px;border-radius:9px;border:1px solid var(--border);font-size:13px;font-weight:600;"/>
         </div>
+        <!-- 2. Client -->
         <div>
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:6px;">TANGGAL KIRIM *</label>
-          <input type="date" id="fTanggal" required/>
+          <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Nama Client *</label>
+          <input type="text" id="fNamaPengirim" placeholder="Nama client / pengirim" required style="width:100%;height:38px;padding:0 12px;border-radius:9px;border:1px solid var(--border);font-size:13px;font-weight:600;"/>
         </div>
       </div>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+        <!-- 3. Status -->
         <div>
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:6px;">LAYANAN *</label>
-          <select id="fLayanan" required>
-            <option value="">Pilih Layanan</option>
-            <option>Reguler</option><option>Express</option><option>Same Day</option><option>Kargo</option><option>Ekonomi</option>
-          </select>
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:6px;">STATUS *</label>
-          <select id="fStatus" required onchange="autoFillSlaFields(this.value)">
+          <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Status *</label>
+          <select id="fStatus" required onchange="autoFillSlaFields(this.value)" style="width:100%;height:38px;padding:0 10px;border-radius:9px;border:1px solid var(--border);font-size:13px;font-weight:600;">
             <option value="">Pilih Status</option>
-            <option>Delivered</option>
-            <option>Delivery Return</option>
-            <option>Masa Hold (H-1)</option>
-            <option>Masa Hold (H-2)</option>
-            <option>Masa Hold (H-3)</option>
-            <option>Dalam Pengiriman</option>
-            <option>Dalam Perjalanan</option>
-            <option>Tiba di Hub</option>
-            <option>Dikirim</option>
+            <option value="Delivered">Delivered</option>
+            <option value="On Delivery">On Delivery</option>
+            <option value="Dalam Pengiriman">Dalam Pengiriman</option>
+            <option value="Masa Hold (H-1)">Masa Hold (H-1)</option>
+            <option value="Masa Hold (H-2)">Masa Hold (H-2)</option>
+            <option value="Masa Hold (H-3)">Masa Hold (H-3)</option>
+            <option value="Delivery Return">Delivery Return</option>
+            <option value="Ditolak">Ditolak</option>
+            <option value="Manifest">Manifest</option>
+            <option value="Dalam Perjalanan">Dalam Perjalanan</option>
+            <option value="Tiba di Hub">Tiba di Hub</option>
+            <option value="Dikirim">Dikirim</option>
           </select>
+        </div>
+        <!-- 4. Nama Kurir -->
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Nama Kurir</label>
+          <input type="text" id="fKurir" list="kurirDatalist" placeholder="Nama kurir / ekspedisi" style="width:100%;height:38px;padding:0 12px;border-radius:9px;border:1px solid var(--border);font-size:13px;"/>
+          <datalist id="kurirDatalist"></datalist>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+        <!-- 5. SLA RTN -->
         <div>
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:6px;">KURIR</label>
-          <select id="fKurir">
-            <option value="Budi Santoso">Budi Santoso</option>
-            <option value="Eko Prasetyo">Eko Prasetyo</option>
-            <option value="Andi Kurniawan">Andi Kurniawan</option>
-            <option value="Rini Wulandari">Rini Wulandari</option>
-            <option value="Dedi Saputra">Dedi Saputra</option>
-          </select>
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:6px;">SLA RTN</label>
-          <select id="fSlaRtn">
+          <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">SLA RTN</label>
+          <select id="fSlaRtn" style="width:100%;height:38px;padding:0 10px;border-radius:9px;border:1px solid var(--border);font-size:13px;">
             <option value="-">Tanpa Retur (-)</option>
             <option value="H-1">H-1 (Masa Hold 1)</option>
             <option value="H-2">H-2 (Masa Hold 2)</option>
@@ -3307,9 +3496,10 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
             <option value="48 Jam">48 Jam</option>
           </select>
         </div>
+        <!-- 6. SLA EV -->
         <div>
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:6px;">SLA EV</label>
-          <select id="fSlaEv">
+          <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">SLA EV</label>
+          <select id="fSlaEv" style="width:100%;height:38px;padding:0 10px;border-radius:9px;border:1px solid var(--border);font-size:13px;">
             <option value="Aman (1x24j)">Aman (1x24j)</option>
             <option value="Peringatan (2x24j)">Peringatan (2x24j)</option>
             <option value="Kritis (3x24j)">Kritis (3x24j)</option>
@@ -3319,97 +3509,13 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
             <option value="On-Track">On-Track</option>
           </select>
         </div>
-        <div>
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:6px;">DRS KE</label>
-          <select id="fDrsKe">
-            <option value="1">DRS 1</option>
-            <option value="2">DRS 2</option>
-            <option value="3">DRS 3</option>
-            <option value="4">DRS 4</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Pengirim -->
-      <div style="background:var(--background);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;color:var(--foreground);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-          <svg width="14" height="14" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-          <span>Data Pengirim</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-          <div>
-            <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:5px;">NAMA *</label>
-            <input type="text" id="fNamaPengirim" placeholder="Nama pengirim" required/>
-          </div>
-          <div>
-            <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:5px;">TELEPON</label>
-            <input type="tel" id="fTelpPengirim" placeholder="08xxxxxxxxxx"/>
-          </div>
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:5px;">ALAMAT</label>
-          <textarea id="fAlamatPengirim" rows="2" placeholder="Alamat lengkap pengirim"></textarea>
-        </div>
-      </div>
-
-      <!-- Penerima -->
-      <div style="background:var(--background);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;color:var(--foreground);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-          <svg width="14" height="14" fill="none" stroke="#3b82f6" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          <span>Data Penerima</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-          <div>
-            <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:5px;">NAMA *</label>
-            <input type="text" id="fNamaPenerima" placeholder="Nama penerima" required/>
-          </div>
-          <div>
-            <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:5px;">TELEPON</label>
-            <input type="tel" id="fTelpPenerima" placeholder="08xxxxxxxxxx"/>
-          </div>
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:5px;">ALAMAT</label>
-          <textarea id="fAlamatPenerima" rows="2" placeholder="Alamat lengkap penerima"></textarea>
-        </div>
-      </div>
-
-      <!-- Barang -->
-      <div style="background:var(--background);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;color:var(--foreground);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-          <svg width="14" height="14" fill="none" stroke="#f59e0b" stroke-width="2" viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.55" y2="4.24"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-          <span>Data Barang</span>
-        </div>
-        <div style="margin-bottom:10px;">
-          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:5px;">DESKRIPSI *</label>
-          <input type="text" id="fDeskripsi" placeholder="cth. Elektronik, Pakaian, Dokumen..." required/>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-          <div>
-            <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:5px;">BERAT *</label>
-            <input type="number" id="fBerat" step="0.1" min="0.1" placeholder="0.0" required/>
-          </div>
-          <div>
-            <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:5px;">SATUAN</label>
-            <select id="fSatuan"><option>kg</option><option>gram</option></select>
-          </div>
-          <div>
-            <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:5px;">BIAYA (Rp)</label>
-            <input type="number" id="fBiaya" min="0" step="500" placeholder="0"/>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:11px;font-weight:600;color:var(--muted-foreground);margin-bottom:6px;">KETERANGAN</label>
-        <textarea id="fKeterangan" rows="2" placeholder="Catatan khusus..."></textarea>
       </div>
 
       <div style="display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--border);padding-top:16px;">
         <button type="button" class="btn btn-ghost" onclick="closeModal()">Batal</button>
-        <button type="submit" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:6px;">
+        <button type="submit" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:6px;background:#10b981;border-radius:10px;padding:8px 22px;font-weight:700;">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-          <span>Simpan Resi</span>
+          <span>Simpan Data</span>
         </button>
       </div>
     </form>
@@ -3553,7 +3659,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
         <!-- Card 3: DRS KE -->
         <div style="background:#ffffff;border-radius:14px;padding:16px 10px;text-align:center;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.03);" id="qsDrsBox">
           <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">DRS KE-</div>
-          <div id="qsDrsValue" style="font-size:20px;font-weight:800;color:#0f172a;">DRS 1</div>
+          <div id="qsDrsValue" style="font-size:20px;font-weight:800;color:#0f172a;">1</div>
         </div>
       </div>
     </div>
@@ -3990,6 +4096,35 @@ let deleteTargetId = null;
 
 const DEFAULT_SAMPLE_DATA = [];
 
+function ensureShipmentFields(r) {
+  if (!r) return;
+  if (!r.kurir || String(r.kurir).trim() === '') r.kurir = r.courier || '-';
+  if (!r.namaClient || String(r.namaClient).trim() === '') {
+    r.namaClient = (r.pengirim && r.pengirim.nama) || '-';
+  }
+  if (!r.drsKe) {
+    if (r.status === 'Masa Hold (H-3)' || r.status === 'Delivery Return') r.drsKe = 3;
+    else if (r.status === 'Masa Hold (H-2)') r.drsKe = 2;
+    else r.drsKe = 1;
+  }
+  if (!r.slaRtn || String(r.slaRtn).trim() === '') {
+    if (r.status === 'Masa Hold (H-1)') r.slaRtn = 'H-1';
+    else if (r.status === 'Masa Hold (H-2)') r.slaRtn = 'H-2';
+    else if (r.status === 'Masa Hold (H-3)') r.slaRtn = 'H-3';
+    else if (r.status === 'Delivery Return' || (r.status && r.status.toLowerCase().includes('return'))) r.slaRtn = 'Return';
+    else if (r.status === 'Delivered' || r.status === 'Terkirim') r.slaRtn = '-';
+    else r.slaRtn = '-';
+  }
+  if (!r.slaEv || String(r.slaEv).trim() === '') {
+    if (r.status === 'Masa Hold (H-3)') r.slaEv = 'Kritis (3x24j)';
+    else if (r.status === 'Masa Hold (H-2)') r.slaEv = 'Peringatan (2x24j)';
+    else if (r.status === 'Masa Hold (H-1)') r.slaEv = 'Aman (1x24j)';
+    else if (r.status === 'Delivery Return') r.slaEv = 'Gagal Antar';
+    else if (r.status === 'Delivered' || r.status === 'Terkirim') r.slaEv = 'Tepat Waktu';
+    else r.slaEv = '-';
+  }
+}
+
 function loadData() {
   try {
     // One-time auto-wipe for cached dummy data
@@ -4022,23 +4157,54 @@ function loadData() {
       data = [];
     }
 
-    // Auto-migrate and guarantee shipment fields if items exist
-    data.forEach(r => {
+    // Auto-migrate and guarantee shipment fields with duplicate ID auto-repair
+    const seenIds = new Set();
+    let dataModified = false;
+    data.forEach((r, idx) => {
       if (!r) return;
       if (r.status === 'Terkirim') r.status = 'Delivered';
       if (r.status === 'Bermasalah') r.status = 'Delivery Return';
+
+      // Auto-fix duplicate or missing IDs
+      if (!r.id || seenIds.has(r.id)) {
+        r.id = `EXP-${Date.now().toString(36)}-${idx}-${Math.random().toString(36).substr(2, 6)}`;
+        dataModified = true;
+      }
+      seenIds.add(r.id);
+
+      // Auto-fix non-standard dates to YYYY-MM-DD
+      if (r.tanggalKirim) {
+        const stdDate = normalizeDateStr(r.tanggalKirim);
+        if (stdDate && stdDate !== r.tanggalKirim) {
+          r.tanggalKirim = stdDate;
+          dataModified = true;
+        }
+      }
+
       if (typeof r.pengirim === 'string') {
         r.pengirim = { nama: r.pengirim, telepon: '', alamat: '' };
       } else if (!r.pengirim) {
-        r.pengirim = { nama: '-', telepon: '', alamat: '' };
+        r.pengirim = { nama: r.namaClient || '-', telepon: '', alamat: '' };
       }
+      if (!r.namaClient && r.pengirim && r.pengirim.nama) {
+        r.namaClient = r.pengirim.nama;
+      }
+
       if (typeof r.penerima === 'string') {
         r.penerima = { nama: r.penerima, telepon: '', alamat: '' };
       } else if (!r.penerima) {
         r.penerima = { nama: '-', telepon: '', alamat: '' };
       }
+
+      if (!r.barang) {
+        r.barang = { deskripsi: 'Paket', berat: 1, satuan: 'kg' };
+      }
       ensureShipmentFields(r);
     });
+
+    if (dataModified) {
+      saveData();
+    }
 
     console.log('[ExpediLog] Data loaded count:', data.length);
   } catch(err) {
@@ -4054,13 +4220,122 @@ function saveData() {
   }
 }
 
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function detectSmartHeaderRow(grid, maxScan = 25) {
+  if (!grid || !grid.length) return 0;
+  const kwList = [
+    'resi', 'awb', 'connote', 'waybill', 'airwaybill', 'tracking',
+    'penerima', 'consignee', 'customer', 'pelanggan', 'tujuan',
+    'client', 'klien', 'pengirim', 'shipper', 'seller', 'toko', 'merchant',
+    'telp', 'telepon', 'phone', 'wa', 'whatsapp', 'hp', 'kontak', 'mobile',
+    'status', 'kurir', 'driver', 'sprinter', 'rider', 'cod', 'drs', 'sla'
+  ];
+  
+  let bestIdx = -1;
+  let maxMatches = 0;
+
+  for (let r = 0; r < Math.min(grid.length, maxScan); r++) {
+    const row = grid[r];
+    if (!Array.isArray(row)) continue;
+    const nonEmptyCells = row.filter(c => String(c !== undefined && c !== null ? c : '').trim().length > 0);
+    if (nonEmptyCells.length < 2) continue;
+    
+    let matchCount = 0;
+    row.forEach(cell => {
+      const s = String(cell || '').toLowerCase().trim();
+      if (!s) return;
+      if (kwList.some(kw => s.includes(kw))) matchCount++;
+    });
+
+    if (matchCount > maxMatches) {
+      maxMatches = matchCount;
+      bestIdx = r;
+    }
+  }
+
+  return (bestIdx !== -1 && maxMatches >= 1) ? bestIdx : 0;
+}
+
+let _idCounter = 0;
 function genId() {
-  const d = new Date(), p = n => String(n).padStart(2,'0');
-  return `EXP-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${String(Date.now()).slice(-5)}`;
+  _idCounter++;
+  const d = new Date(), p = n => String(n).padStart(2, '0');
+  const datePart = `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}`;
+  const timePart = Date.now().toString(36);
+  const randPart = Math.random().toString(36).substr(2, 6);
+  return `EXP-${datePart}-${timePart}-${_idCounter}-${randPart}`;
+}
+
+function normalizeDateStr(val) {
+  if (!val && val !== 0) return '';
+  val = String(val).trim();
+  if (!val) return '';
+
+  // 1. Excel serial number (e.g. 45230 or "45230.5")
+  const num = Number(val);
+  if (!isNaN(num) && num > 30000 && num < 60000) {
+    const wholeDays = Math.floor(num);
+    const jsDate = new Date((wholeDays - 25569) * 86400 * 1000);
+    const yyyy = jsDate.getUTCFullYear();
+    const mm = String(jsDate.getUTCMonth() + 1).padStart(2, '0');
+    const dd = String(jsDate.getUTCDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  // 2. Already YYYY-MM-DD (optionally followed by time)
+  const ymd = val.match(/^(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})/);
+  if (ymd) {
+    const yyyy = ymd[1];
+    const mm = ymd[2].padStart(2, '0');
+    const dd = ymd[3].padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  // 3. DD/MM/YYYY, MM/DD/YYYY, DD.MM.YYYY or with 2-digit year (DD/MM/YY)
+  const dmy = val.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
+  if (dmy) {
+    const p1 = parseInt(dmy[1], 10);
+    const p2 = parseInt(dmy[2], 10);
+    const rawYear = dmy[3];
+    const yyyy = rawYear.length === 2 ? (parseInt(rawYear, 10) > 50 ? '19' + rawYear : '20' + rawYear) : rawYear;
+
+    let dd, mm;
+    if (p1 > 12 && p2 <= 12) {
+      dd = String(p1).padStart(2, '0');
+      mm = String(p2).padStart(2, '0');
+    } else if (p2 > 12 && p1 <= 12) {
+      mm = String(p1).padStart(2, '0');
+      dd = String(p2).padStart(2, '0');
+    } else {
+      dd = String(p1).padStart(2, '0');
+      mm = String(p2).padStart(2, '0');
+    }
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  // 4. Native Date fallback
+  const d = new Date(val);
+  if (!isNaN(d.getTime())) {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  return val;
 }
 
 // ─── STATUS & BADGE ──────────────────────────────────────────
 const STATUS_CFG = {
+  'Ditolak':          {color:'#ef4444',bg:'rgba(239,68,68,.14)', cls:'badge-red',icon:'<svg width="12" height="12" fill="none" stroke="#ef4444" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>'},
   'Delivered':        {color:'#10b981',bg:'rgba(16,185,129,.12)',cls:'badge-green',icon:'<svg width="12" height="12" fill="none" stroke="#10b981" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>'},
   'Terkirim':         {color:'#10b981',bg:'rgba(16,185,129,.12)',cls:'badge-green',icon:'<svg width="12" height="12" fill="none" stroke="#10b981" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>'},
   'Delivery Return':  {color:'#ef4444',bg:'rgba(239,68,68,.12)', cls:'badge-red',icon:'<svg width="12" height="12" fill="none" stroke="#ef4444" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>'},
@@ -4077,8 +4352,12 @@ const LAYANAN_COLORS = {
   'Reguler':'#6366f1','Express':'#14b8a6','Same Day':'#f59e0b',
   'Kargo':'#f97316','Ekonomi':'#22c55e'
 };
-function badge(s){
-  const c=STATUS_CFG[s]||{color:'var(--muted-foreground)',bg:'var(--accent)',cls:'badge-gray'};
+function badge(s) {
+  if (!s) return '<span class="badge badge-gray">-</span>';
+  if (String(s).toLowerCase().includes('ditolak')) {
+    return '<span class="badge badge-red" style="background:rgba(239,68,68,0.14);color:#ef4444;border:1px solid rgba(239,68,68,0.28);font-weight:700;">Ditolak</span>';
+  }
+  const c = STATUS_CFG[s] || { color: 'var(--muted-foreground)', bg: 'var(--accent)', cls: 'badge-gray' };
   return `<span class="badge ${c.cls}">${s}</span>`;
 }
 function badgeL(l){return `<span class="badge badge-gray">${l}</span>`;}
@@ -4155,7 +4434,7 @@ function updateTopbarSearchPlaceholder(pageId) {
   if (!inp) return;
   const placeholders = {
     'dashboard': 'Cari di seluruh sistem...',
-    'daftar': 'Cari No AWB, kurir, pengirim, penerima...',
+    'daftar': 'Cari No AWB, kurir, pengirim, penerima di Manajemen Resi...',
     'outstanding': 'Cari paket outstanding (AWB, kurir, pengirim)...',
     'client': 'Cari nama client, telepon, alamat...',
     'notepad': 'Cari catatan tim, topik, atau penulis...',
@@ -4478,6 +4757,9 @@ function updateCombinedFilterBadge() {
 
 // ─── BATCH UPDATE STATUS CONTROLLER ──────────────────────────
 function openBatchStatusModal() {
+  initAllModernSelects();
+  const bTarget = document.getElementById('batchTargetStatus');
+  if (bTarget && bTarget._syncModern) bTarget._syncModern();
   if (selectedDaftar.size === 0) {
     showToast('⚠️', 'Pilih minimal satu resi terlebih dahulu');
     return;
@@ -4524,7 +4806,7 @@ function handleBatchStatusSubmit(e) {
   renderOutstanding();
   renderClientPage();
 
-  showToast('📦', `Status ${countUpdated} resi berhasil diubah menjadi "${targetStatus}"`);
+  showToast('✅', `${countUpdated} AWB sudah diperbarui (status: ${targetStatus})`);
 }
 
 // ─── AWB COPY HELPERS ────────────────────────────────────────
@@ -4657,6 +4939,174 @@ function isSlaRtnHigh(sla) {
   return false;
 }
 
+
+// ─── MODERN SELECT DROPDOWN ENGINE (CUSTOM SELECT SYSTEM) ─────
+function setupModernSelect(selectEl) {
+  if (!selectEl || selectEl.dataset.modernEnhanced === 'true') return;
+  selectEl.dataset.modernEnhanced = 'true';
+
+  // Sembunyikan elemen <select> asli dengan aman (tetap aktif untuk form & validation)
+  selectEl.style.position = 'absolute';
+  selectEl.style.opacity = '0';
+  selectEl.style.pointerEvents = 'none';
+  selectEl.style.width = '0';
+  selectEl.style.height = '0';
+  selectEl.style.margin = '0';
+  selectEl.style.padding = '0';
+  selectEl.style.border = 'none';
+
+  // Buat wrapper modern dropdown
+  const wrapper = document.createElement('div');
+  wrapper.className = 'modern-select-wrapper';
+  wrapper.id = 'modernWrap_' + (selectEl.id || Math.random().toString(36).substr(2, 6));
+
+  // Trigger Button
+  const trigger = document.createElement('div');
+  trigger.className = 'modern-select-trigger';
+  trigger.tabIndex = 0;
+
+  const triggerText = document.createElement('span');
+  triggerText.className = 'modern-select-trigger-text';
+
+  const triggerArrow = document.createElement('span');
+  triggerArrow.className = 'modern-select-trigger-arrow';
+  triggerArrow.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+
+  trigger.appendChild(triggerText);
+  trigger.appendChild(triggerArrow);
+  wrapper.appendChild(trigger);
+
+  // Floating Menu List
+  const menu = document.createElement('div');
+  menu.className = 'modern-select-menu';
+  wrapper.appendChild(menu);
+
+  // Sisipkan wrapper tepat setelah selectEl
+  selectEl.parentNode.insertBefore(wrapper, selectEl.nextSibling);
+
+  function syncOptions() {
+    menu.innerHTML = '';
+    const selectedVal = selectEl.value;
+
+    Array.from(selectEl.options).forEach(opt => {
+      const item = document.createElement('div');
+      item.className = 'modern-select-option' + (opt.value === selectedVal ? ' selected' : '');
+      item.dataset.value = opt.value;
+      item.textContent = opt.text;
+
+      item.onclick = (e) => {
+        e.stopPropagation();
+        selectEl.value = opt.value;
+        syncTrigger();
+        wrapper.classList.remove('open');
+        selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+        selectEl.dispatchEvent(new Event('input', { bubbles: true }));
+      };
+
+      menu.appendChild(item);
+    });
+
+    syncTrigger();
+  }
+
+  function syncTrigger() {
+    const activeOpt = selectEl.options[selectEl.selectedIndex];
+    if (activeOpt) {
+      triggerText.textContent = activeOpt.text || activeOpt.value;
+      triggerText.classList.toggle('placeholder', !activeOpt.value && activeOpt.text.toLowerCase().includes('pilih'));
+    } else {
+      triggerText.textContent = selectEl.value || 'Pilih...';
+      triggerText.classList.remove('placeholder');
+    }
+
+    // Update active highlight in menu items
+    Array.from(menu.children).forEach(item => {
+      item.classList.toggle('selected', item.dataset.value === selectEl.value);
+    });
+  }
+
+  // Toggle open / close
+  trigger.onclick = (e) => {
+    e.stopPropagation();
+    document.querySelectorAll('.modern-select-wrapper.open').forEach(w => {
+      if (w !== wrapper) w.classList.remove('open');
+    });
+    wrapper.classList.toggle('open');
+  };
+
+  // Keyboard navigation
+  trigger.onkeydown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      wrapper.classList.toggle('open');
+    } else if (e.key === 'Escape') {
+      wrapper.classList.remove('open');
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (!wrapper.classList.contains('open')) {
+        wrapper.classList.add('open');
+      } else if (selectEl.selectedIndex < selectEl.options.length - 1) {
+        selectEl.selectedIndex++;
+        syncTrigger();
+        selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (selectEl.selectedIndex > 0) {
+        selectEl.selectedIndex--;
+        syncTrigger();
+        selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+  };
+
+  selectEl._syncModern = syncTrigger;
+  selectEl._rebuildModern = syncOptions;
+
+  syncOptions();
+}
+
+function initAllModernSelects() {
+  const targetIds = [
+    'fStatus', 'fSlaRtn', 'fSlaEv',
+    'batchTargetStatus',
+    'newStatus',
+    'portalColorInput',
+    'waGatewayProvider',
+    'blastTemplatePreset'
+  ];
+  targetIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.tagName === 'SELECT') {
+      setupModernSelect(el);
+    }
+  });
+}
+
+function syncAllModernSelects() {
+  const targetIds = [
+    'fStatus', 'fSlaRtn', 'fSlaEv',
+    'batchTargetStatus',
+    'newStatus',
+    'portalColorInput',
+    'waGatewayProvider',
+    'blastTemplatePreset'
+  ];
+  targetIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el._syncModern) {
+      el._syncModern();
+    }
+  });
+}
+
+// Global click outside listener to close all open modern selects
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.modern-select-wrapper')) {
+    document.querySelectorAll('.modern-select-wrapper.open').forEach(w => w.classList.remove('open'));
+  }
+});
+
 // Auto-fill SLA and DRS fields based on selected status in modal
 function autoFillSlaFields(status) {
   const fSlaRtn = document.getElementById('fSlaRtn');
@@ -4689,6 +5139,8 @@ function autoFillSlaFields(status) {
     fSlaEv.value = 'On-Track';
     fDrsKe.value = '1';
   }
+  if (fSlaRtn && fSlaRtn._syncModern) fSlaRtn._syncModern();
+  if (fSlaEv && fSlaEv._syncModern) fSlaEv._syncModern();
 }
 
 // Reusable Pagination Generator with Page Size Selector
@@ -4888,7 +5340,7 @@ function renderOutstanding() {
 
   const tbody = document.getElementById('outstandingTableBody');
   if (!paged.length) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted-foreground);">${data.length ? 'Tidak ada paket outstanding dengan SLA RTN ≥ 5 sesuai filter.' : 'Belum ada data resi.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--muted-foreground);">${data.length ? 'Tidak ada paket outstanding dengan SLA RTN ≥ 5 sesuai filter.' : 'Belum ada data resi.'}</td></tr>`;
   } else {
     tbody.innerHTML = paged.map((r, idx) => {
       const globalNo = String(start + idx + 1).padStart(2, '0');
@@ -4906,20 +5358,24 @@ function renderOutstanding() {
           </td>
           <td class="col-no no-select">${globalNo}</td>
           <td class="col-awb-cell" style="white-space:nowrap;">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div style="display:inline-flex;align-items:center;gap:6px;min-width:170px;">
-                <span class="awb-text-selectable awb-link-click" onclick="openDetailModal('${r.id}')" title="Lihat Detail Resi">${r.nomorResi}</span>
-                <button type="button" class="btn-copy-row-awb no-select" onclick="copySingleAwb(event, '${r.nomorResi}')" title="Salin No AWB">
-                  <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                </button>
+            <div style="display:inline-flex;align-items:center;gap:6px;">
+              <span class="awb-text-selectable awb-link-click" onclick="openDetailModal('${r.id}')" title="Lihat Detail Resi">${r.nomorResi}</span>
+              <button type="button" class="btn-copy-row-awb no-select" onclick="copySingleAwb(event, '${r.nomorResi}')" title="Salin No AWB">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+            </div>
+          </td>
+          <td class="col-client-cell no-select" style="white-space:nowrap;">
+            <div style="display:inline-flex;align-items:center;gap:7px;">
+              <div style="width:22px;height:22px;border-radius:6px;background:rgba(16,185,129,0.12);color:#059669;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">
+                ${escapeHtml(((r.pengirim && r.pengirim.nama) || r.namaClient || 'C').charAt(0).toUpperCase())}
               </div>
-              <span class="awb-client-divider no-select" aria-hidden="true"></span>
-              <span class="no-select" style="font-size:11.5px;font-weight:600;color:var(--muted-foreground);white-space:nowrap;">${(r.pengirim && r.pengirim.nama) || r.namaClient || '-'}</span>
+              <span style="font-size:12px;font-weight:600;color:var(--foreground);">${escapeHtml((r.pengirim && r.pengirim.nama) || r.namaClient || '-')}</span>
             </div>
           </td>
           <td class="no-select"${cellAlertRtn}>${slaRtnHtml}</td>
           <td class="no-select"${cellAlertEv}>${slaEvHtml}</td>
-          <td class="no-select"><span class="badge-drs">DRS ${r.drsKe || 1}</span></td>
+          <td class="no-select"><span class="badge-drs">${r.drsKe || 1}</span></td>
           <td class="no-select">${badge(r.status)}</td>
           <td class="no-select">
             <div style="font-size:12.5px;font-weight:600;color:var(--foreground);">${r.kurir || '-'}</div>
@@ -5715,50 +6171,70 @@ function buildBlastMessage(templateStr, customer) {
   return res;
 }
 
-// ─── IMPORT EXCEL CUSTOMER ───
-function handleBlastExcelUpload(e) {
-  const file = e.target.files && e.target.files[0];
-  if (!file) return;
+// ─── IMPORT EXCEL CUSTOMER & DRAG-AND-DROP WA BLAST ───
+function handleBlastDragOver(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const dz = document.getElementById('blastDropzone');
+  if (dz) {
+    dz.style.borderColor = '#059669';
+    dz.style.background = '#dcfce7';
+  }
+}
 
-  const reader = new FileReader();
+function handleBlastDragLeave(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const dz = document.getElementById('blastDropzone');
+  if (dz) {
+    dz.style.borderColor = '#10b981';
+    dz.style.background = '#f0fdf4';
+  }
+}
+
+function handleBlastDrop(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const dz = document.getElementById('blastDropzone');
+  if (dz) {
+    dz.style.borderColor = '#10b981';
+    dz.style.background = '#f0fdf4';
+  }
+  const files = e.dataTransfer ? e.dataTransfer.files : null;
+  if (files && files.length > 0) {
+    processBlastUploadFile(files[0]);
+  }
+}
+
+function handleBlastExcelUpload(e) {
+  const file = (e.target && e.target.files && e.target.files[0]) || (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]);
+  if (!file) return;
+  processBlastUploadFile(file);
+}
+
+function processBlastUploadFile(file) {
+  if (!file) return;
   const filename = file.name || '';
-  const isCSV = filename.toLowerCase().endsWith('.csv');
+  const reader = new FileReader();
 
   reader.onload = function(evt) {
     try {
       let rows = [];
 
-      if (!isCSV && typeof XLSX !== 'undefined') {
+      if (typeof XLSX !== 'undefined') {
         const dataArr = new Uint8Array(evt.target.result);
         const wb = XLSX.read(dataArr, { type: 'array' });
         const firstSheet = wb.SheetNames[0];
         const ws = wb.Sheets[firstSheet];
 
-        // 1. Coba baca sebagai 2D grid untuk mendeteksi letak header jika ada judul/banner di baris atas
         const rawGrid = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-        let headerIdx = -1;
+        const headerIdx = detectSmartHeaderRow(rawGrid);
 
-        if (rawGrid && rawGrid.length > 0) {
-          for (let r = 0; r < Math.min(rawGrid.length, 10); r++) {
-            const row = rawGrid[r];
-            if (Array.isArray(row)) {
-              const hasKeyword = row.some(cell => {
-                const s = String(cell || '').toLowerCase().trim();
-                return s.includes('resi') || s.includes('awb') || s.includes('nama') || s.includes('penerima') || s.includes('consignee') || s.includes('phone') || s.includes('telp') || s.includes('wa') || s.includes('toko') || s.includes('pengirim');
-              });
-              if (hasKeyword) {
-                headerIdx = r;
-                break;
-              }
-            }
-          }
-        }
-
-        if (headerIdx !== -1) {
+        if (headerIdx !== -1 && rawGrid && rawGrid.length > headerIdx) {
           const headers = rawGrid[headerIdx].map(h => String(h || '').trim());
           for (let r = headerIdx + 1; r < rawGrid.length; r++) {
             const rowData = rawGrid[r];
-            if (rowData && rowData.some(val => String(val || '').trim().length > 0)) {
+            if (rowData && rowData.some(val => String(val !== undefined && val !== null ? val : '').trim().length > 0)) {
               const obj = {};
               headers.forEach((h, cIdx) => {
                 const key = h || ('COL_' + cIdx);
@@ -5768,7 +6244,6 @@ function handleBlastExcelUpload(e) {
             }
           }
         } else {
-          // Fallback ke sheet_to_json default
           rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
         }
       } else {
@@ -5784,29 +6259,35 @@ function handleBlastExcelUpload(e) {
       parseAndLoadCustomerRows(rows, filename);
     } catch(err) {
       console.error('Error importing blast excel:', err);
-      showToast('⚠️', 'Gagal memproses file Excel: ' + err.message);
+      showToast('⚠️', 'Gagal memproses file Excel/CSV: ' + err.message);
+    } finally {
+      const blastInput = document.getElementById('blastExcelFileInput');
+      if (blastInput) blastInput.value = '';
     }
   };
 
-  if (isCSV) {
-    reader.readAsText(file, 'utf-8');
-  } else {
-    reader.readAsArrayBuffer(file);
-  }
+  reader.readAsArrayBuffer(file);
 }
 
 function parseBlastCSVText(text) {
   const lines = text.split(/\r\n|\n/).filter(l => l.trim().length > 0);
   if (lines.length < 2) return [];
-  // Deteksi pemisah koma (,) atau titik koma (;) standar Excel Indonesia
+  const grid = [];
   const delimiter = lines[0].includes(';') ? ';' : ',';
-  const headers = lines[0].split(delimiter).map(h => h.trim().replace(/^["']|["']$/g, ''));
-  const list = [];
-  for (let i = 1; i < lines.length; i++) {
+  for (let i = 0; i < lines.length; i++) {
     const cols = lines[i].split(delimiter).map(c => c.trim().replace(/^["']|["']$/g, ''));
-    if (cols.some(c => c.length > 0)) {
+    if (cols.some(c => c.length > 0)) grid.push(cols);
+  }
+  const headerIdx = detectSmartHeaderRow(grid);
+  if (headerIdx === -1 || headerIdx >= grid.length) return [];
+
+  const headers = grid[headerIdx].map(h => String(h || '').trim());
+  const list = [];
+  for (let i = headerIdx + 1; i < grid.length; i++) {
+    const row = grid[i];
+    if (row.some(c => String(c).length > 0)) {
       const obj = {};
-      headers.forEach((h, idx) => { obj[h] = cols[idx] !== undefined ? cols[idx] : ''; });
+      headers.forEach((h, idx) => { obj[h] = row[idx] !== undefined ? row[idx] : ''; });
       list.push(obj);
     }
   }
@@ -5817,23 +6298,63 @@ function parseAndLoadCustomerRows(rows, filename) {
   const findVal = (row, keywords) => {
     for (const key of Object.keys(row)) {
       const k = key.toLowerCase().trim();
-      if (keywords.some(kw => k.includes(kw))) {
+      if (keywords.some(kw => k === kw || k.includes(kw))) {
         const v = String(row[key] !== undefined && row[key] !== null ? row[key] : '').trim();
-        if (v) return v;
+        if (v && v !== '-' && v !== 'null' && v !== 'undefined') return v;
       }
     }
     return '';
   };
 
   blastCustomerList = rows.map((r, idx) => {
-    const nama = findVal(r, ['nama customer', 'nama penerima', 'penerima paket', 'customer', 'penerima', 'consignee', 'nama', 'client', 'name', 'recipient', 'kepada']) || `Customer ${idx + 1}`;
-    const rawTelp = findVal(r, ['nomor whatsapp', 'no whatsapp', 'no wa', 'whatsapp', 'nomor wa', 'telepon', 'no telepon', 'no telp', 'telp', 'phone', 'hp', 'nohp', 'no hp', 'consignee phone', 'consignee telp', 'handphone', 'kontak', 'mobile']) || '';
+    const nama = findVal(r, [
+      'nama customer', 'nama penerima', 'penerima paket', 'customer name', 'customer',
+      'penerima', 'consignee name', 'consignee', 'receiver name', 'receiver',
+      'nama klien', 'nama client', 'klien', 'client', 'nama lengkap', 'nama',
+      'name', 'recipient', 'kepada', 'penerima_nama', 'nama_penerima'
+    ]) || `Customer ${idx + 1}`;
+
+    const rawTelp = findVal(r, [
+      'nomor whatsapp', 'no whatsapp', 'no wa', 'whatsapp', 'nomor wa',
+      'wa penerima', 'no wa penerima', 'telepon penerima', 'telp penerima',
+      'no hp penerima', 'nomor hp penerima', 'kontak penerima', 'telepon tujuan',
+      'telp tujuan', 'telepon', 'no telepon', 'no telp', 'telp', 'phone', 'hp',
+      'nohp', 'no hp', 'no. hp', 'no. telp', 'no. wa', 'consignee phone',
+      'consignee telp', 'consignee mobile', 'receiver phone', 'receiver telp',
+      'receiver mobile', 'customer phone', 'handphone', 'kontak', 'mobile',
+      'no_hp', 'no_wa', 'no_telp', 'contact'
+    ]) || '';
+
     const cleanP = cleanPhone(rawTelp);
-    const resi = findVal(r, ['no awb', 'no resi', 'nomor resi', 'nomor awb', 'no. awb', 'no. resi', 'airwaybill', 'airway bill', 'awb', 'resi', 'waybill', 'connote', 'tracking', 'no paket']) || '-';
-    const rawCod = findVal(r, ['nilai cod', 'nominal cod', 'total cod', 'cod amount', 'cod value', 'cod', 'tagihan', 'harga', 'total', 'biaya', 'amount']) || '';
-    const pengirim = findVal(r, ['penjual/pengirim', 'penjual', 'pengirim', 'nama pengirim', 'shipper', 'shipper name', 'seller', 'toko', 'asal', 'sender']) || '-';
-    const deskripsi = findVal(r, ['des. barang', 'deskripsi barang', 'deskripsi', 'nama barang', 'keterangan barang', 'goods desc', 'goods description', 'barang', 'komoditi', 'commodity', 'item', 'produk', 'isi paket', 'content']) || '-';
-    const status = findVal(r, ['status terakhir', 'status paket', 'status barang', 'alasan gagal', 'alasan', 'status', 'keterangan', 'kondisi', 'posisi', 'reason', 'remark', 'problem', 'undelivered']) || 'Gagal Antar';
+    const resi = findVal(r, [
+      'nomor resi', 'no resi', 'nomor awb', 'no awb', 'no. resi', 'no. awb',
+      'airwaybill', 'airway bill', 'awb', 'resi', 'waybill', 'connote',
+      'tracking number', 'tracking', 'no paket', 'no_resi', 'no_awb', 'cnote'
+    ]) || '-';
+
+    const rawCod = findVal(r, [
+      'nilai cod', 'nominal cod', 'total cod', 'cod amount', 'cod value',
+      'biaya cod', 'harga cod', 'cod_amount', 'cod', 'tagihan', 'harga',
+      'total', 'biaya', 'amount', 'nilai barang'
+    ]) || '';
+
+    const pengirim = findVal(r, [
+      'penjual/pengirim', 'penjual', 'pengirim', 'nama pengirim', 'shipper name',
+      'shipper', 'seller name', 'seller', 'nama toko', 'toko', 'shop', 'store',
+      'asal', 'sender', 'client name', 'nama client', 'client', 'klien', 'merchant'
+    ]) || '-';
+
+    const deskripsi = findVal(r, [
+      'des. barang', 'deskripsi barang', 'deskripsi', 'nama barang', 'keterangan barang',
+      'goods desc', 'goods description', 'barang', 'komoditi', 'commodity',
+      'item', 'produk', 'isi paket', 'content', 'nama_barang', 'detail barang'
+    ]) || '-';
+
+    const status = findVal(r, [
+      'status terakhir', 'status paket', 'status barang', 'alasan gagal', 'alasan',
+      'status', 'keterangan', 'kondisi', 'posisi', 'reason', 'remark', 'problem',
+      'undelivered', 'keterangan gagal', 'catatan', 'keterangan kendala'
+    ]) || 'Gagal Antar';
 
     let formattedCod = '-';
     if (rawCod) {
@@ -5870,7 +6391,10 @@ function parseAndLoadCustomerRows(rows, filename) {
   renderBlastTable();
   updateBlastStats();
   updateBlastPreviewText();
-  showToast('✓', `Berhasil memuat ${validCount} kontak customer dari file Excel!`);
+  showToast('✓', `Berhasil memuat ${validCount} kontak customer dari file Excel/CSV!`);
+  
+  const blastFileInput = document.getElementById('blastExcelFileInput');
+  if (blastFileInput) blastFileInput.value = '';
 }
 
 function loadBlastFromCurrentData(showNotification = true) {
@@ -6424,6 +6948,31 @@ function renderNotes() {
 
 function loadTeamNotes() {
   renderNotes();
+}
+
+function selectUrgency(urg) {
+  const inp = document.getElementById('noteUrgencyInput');
+  if (inp) inp.value = urg;
+
+  const btns = {
+    'Biasa': { id: 'urgencyBtnBiasa', color: '#059669', border: '#10b981', bg: 'rgba(16,185,129,0.08)' },
+    'Penting': { id: 'urgencyBtnPenting', color: '#d97706', border: '#f59e0b', bg: 'rgba(245,158,11,0.08)' },
+    'Sangat Penting': { id: 'urgencyBtnSangatPenting', color: '#dc2626', border: '#ef4444', bg: 'rgba(239,68,68,0.08)' }
+  };
+
+  Object.keys(btns).forEach(key => {
+    const el = document.getElementById(btns[key].id);
+    if (!el) return;
+    if (key === urg) {
+      el.style.border = `1px solid ${btns[key].border}`;
+      el.style.background = btns[key].bg;
+      el.style.color = btns[key].color;
+    } else {
+      el.style.border = '1px solid #e2e8f0';
+      el.style.background = '#f8fafc';
+      el.style.color = '#64748b';
+    }
+  });
 }
 
 function openNoteModal(noteId = null) {
@@ -7856,55 +8405,50 @@ function contactClientWA(phone, clientName, returnCount) {
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
 }
 
-// ─── CARD 6: KURIR RETURN TERTINGGI ──────────────────────────
-const KNOWN_COURIERS = [
-  { name: 'Budi Santoso', avatar: 'BS', color: '#6366f1' },
-  { name: 'Eko Prasetyo', avatar: 'EP', color: '#14b8a6' },
-  { name: 'Andi Kurniawan', avatar: 'AK', color: '#f59e0b' },
-  { name: 'Rini Wulandari', avatar: 'RW', color: '#ec4899' },
-  { name: 'Dedi Saputra', avatar: 'DS', color: '#8b5cf6' }
-];
-
+// ─── CARD 6: KURIR RETURN TERTINGGI (REAL DATA COMPUTATION) ──
 function getCourierForResi(r) {
-  if (r.kurir) return r.kurir;
-  let hash = 0;
-  const str = r.nomorResi || r.id || 'default';
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(i);
-    hash |= 0;
-  }
-  const idx = Math.abs(hash) % KNOWN_COURIERS.length;
-  return KNOWN_COURIERS[idx].name;
+  return (r && r.kurir && r.kurir !== '-') ? r.kurir : '';
 }
 
 function renderTopReturnCouriers() {
   const el = document.getElementById('topReturnCouriersPanel');
   if (!el) return;
 
+  if (!data || !data.length) {
+    el.innerHTML = '<div style="text-align:center;padding:28px 16px;color:var(--muted-foreground);font-size:13px;">Belum ada data kurir yang tercatat.</div>';
+    return;
+  }
+
   const courierStats = {};
-  KNOWN_COURIERS.forEach(k => {
-    courierStats[k.name] = {
-      name: k.name,
-      avatar: k.avatar,
-      color: k.color,
-      total: 0,
-      returns: 0
-    };
-  });
+  let hasValidCourier = false;
 
   data.forEach(r => {
-    const cName = getCourierForResi(r);
+    const cName = (r.kurir || '').trim();
+    if (!cName || cName === '-' || cName.toLowerCase() === 'kurir operasional') return;
+
+    hasValidCourier = true;
     if (!courierStats[cName]) {
       const parts = cName.split(' ');
       const av = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : cName.slice(0, 2).toUpperCase();
-      courierStats[cName] = { name: cName, avatar: av, color: '#64748b', total: 0, returns: 0 };
+      const colors = ['#10b981', '#6366f1', '#f59e0b', '#ec4899', '#8b5cf6', '#14b8a6', '#3b82f6'];
+      let hash = 0;
+      for (let i = 0; i < cName.length; i++) hash = ((hash << 5) - hash) + cName.charCodeAt(i);
+      const color = colors[Math.abs(hash) % colors.length];
+      courierStats[cName] = { name: cName, avatar: av, color: color, total: 0, returns: 0 };
     }
     courierStats[cName].total++;
-    const s = (r.status || '').toLowerCase();
-    if (s.includes('return') || s.includes('bermasalah')) {
-      courierStats[cName].returns++;
+    const s = (r.status || '').toLowerCase().trim();
+    if (s === 'delivery return' || s === 'return' || s.includes('delivery return') || s.includes('retur')) {
+      if (!s.includes('ditolak')) {
+        courierStats[cName].returns++;
+      }
     }
   });
+
+  if (!hasValidCourier) {
+    el.innerHTML = '<div style="text-align:center;padding:28px 16px;color:var(--muted-foreground);font-size:13px;">Belum ada data kurir yang tercatat.</div>';
+    return;
+  }
 
   const sorted = Object.values(courierStats)
     .map(c => {
@@ -7915,19 +8459,22 @@ function renderTopReturnCouriers() {
     .slice(0, 5);
 
   if (!sorted.length) {
-    el.innerHTML = '<div style="color:var(--muted-foreground);font-size:13px;padding:12px 0;">Belum ada data kurir.</div>';
+    el.innerHTML = '<div style="text-align:center;padding:28px 16px;color:var(--muted-foreground);font-size:13px;">Belum ada data kurir yang tercatat.</div>';
     return;
   }
 
-  el.innerHTML = sorted.map(k => `
+  el.innerHTML = sorted.map(k => {
+    const barColor = k.rate >= 40 ? '#ef4444' : (k.rate >= 25 ? '#f97316' : '#10b981');
+    const badgeClass = k.returns >= 2 ? 'badge-red' : (k.returns === 1 ? 'badge-amber' : 'badge-green');
+    return `
     <div class="kurir-item" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
       <div class="kurir-avatar" style="width:36px;height:36px;border-radius:10px;background:${k.color};color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
         ${k.avatar}
       </div>
       <div style="flex:1;min-width:0;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
-          <div style="font-size:13px;font-weight:700;color:var(--foreground);">${k.name}</div>
-          <span class="badge ${k.returns >= 2 ? 'badge-red' : (k.returns === 1 ? 'badge-amber' : 'badge-green')}" style="font-size:10.5px;padding:2px 7px;">
+          <div style="font-size:13px;font-weight:700;color:var(--foreground);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${k.name}</div>
+          <span class="badge ${badgeClass}" style="font-size:10.5px;padding:2px 7px;">
             ${k.returns} Retur (${k.rate}%)
           </span>
         </div>
@@ -7936,11 +8483,12 @@ function renderTopReturnCouriers() {
           <span>Rasio: ${k.rate}%</span>
         </div>
         <div style="height:5px;background:var(--border);border-radius:99px;overflow:hidden;">
-          <div class="courier-bar-fill" data-w="${Math.min(k.rate, 100)}%" style="width:0%;height:100%;background:${k.rate >= 40 ? '#ef4444' : (k.rate >= 25 ? '#f97316' : '#f59e0b')};border-radius:99px;transition:width 0.75s cubic-bezier(0.16, 1, 0.3, 1);"></div>
+          <div class="courier-bar-fill" data-w="${Math.min(k.rate, 100)}%" style="width:0%;height:100%;background:${barColor};border-radius:99px;transition:width 0.75s cubic-bezier(0.16, 1, 0.3, 1);"></div>
         </div>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 
   requestAnimationFrame(() => {
     el.querySelectorAll('.courier-bar-fill').forEach(bar => {
@@ -7999,22 +8547,27 @@ function timeSince(ts) {
 }
 
 // ─── CARD 2: GRAFIK PENGIRIMAN (MINGGU / BULAN / TAHUN) ──────
+function isDarkMode() {
+  return document.documentElement.classList.contains('dark') || document.body.classList.contains('dark');
+}
+
 let chartTimeframe = 'bulan';
 
 function setChartTimeframe(mode) {
   chartTimeframe = mode;
-  ['filterMinggu', 'filterBulan', 'filterTahun'].forEach(id => {
+  ['filterHari', 'filterMinggu', 'filterBulan', 'filterTahun'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
   const activeBtn = document.getElementById(
-    mode === 'minggu' ? 'filterMinggu' : (mode === 'tahun' ? 'filterTahun' : 'filterBulan')
+    mode === 'hari' ? 'filterHari' : (mode === 'minggu' ? 'filterMinggu' : (mode === 'tahun' ? 'filterTahun' : 'filterBulan'))
   );
   if (activeBtn) activeBtn.classList.add('active');
 
   const subEl = document.getElementById('chartFilterSub');
   if (subEl) {
-    if (mode === 'minggu') subEl.textContent = 'Tren pengiriman 8 minggu terakhir (Data Real)';
+    if (mode === 'hari') subEl.textContent = 'Tren pengiriman 7 hari terakhir (Data Real)';
+    else if (mode === 'minggu') subEl.textContent = 'Tren pengiriman 8 minggu terakhir (Data Real)';
     else if (mode === 'tahun') subEl.textContent = 'Tren pengiriman 5 tahun terakhir (Data Real)';
     else subEl.textContent = 'Tren pengiriman 12 bulan terakhir (Data Real)';
   }
@@ -8022,19 +8575,80 @@ function setChartTimeframe(mode) {
   drawLineChart();
 }
 
-function getChartDataPoints() {
-  const now = new Date();
-  const MS_DAY = 86400000;
+function isSuksesStatus(s) {
+  if (!s) return false;
+  const st = String(s).toLowerCase().trim();
+  if (st.includes('return') || st.includes('retur') || st.includes('on delivery') || st.includes('dalam pengiriman') || st.includes('hold') || st.includes('ditolak')) {
+    return false;
+  }
+  return st === 'delivered' || st === 'sukses' || st === 'terkirim' || st === 'success' || st === 'pod' || st === 'selesai' || st === 'diterima' || st.includes('sukses') || st.includes('terkirim') || st.startsWith('delivered') || st.includes('pod') || st.includes('berhasil');
+}
 
-  const isReturnStatus = (s) => {
-    const st = (s || '').toLowerCase();
-    return st.includes('return') || st.includes('retur') || st.includes('ditolak');
-  };
+function isReturnStatus(s) {
+  if (!s) return false;
+  const st = String(s).toLowerCase().trim();
+  if (st.includes('ditolak') || st.includes('tolak')) return false;
+  return st === 'delivery return' || st === 'return' || st === 'retur' || st === 'rts' || st.includes('delivery return') || st.includes('retur') || st.includes('return') || st.includes('rts') || st.includes('dikembalikan');
+}
+
+function getChartDataPoints() {
+  const MS_DAY = 86400000;
+  let anchor = new Date();
+
+  // Anchor cerdas ke tanggal data terbaru jika ada
+  if (data && data.length > 0) {
+    let latestTime = 0;
+    data.forEach(r => {
+      if (r.tanggalKirim) {
+        const std = normalizeDateStr(r.tanggalKirim);
+        if (std) {
+          const dt = new Date(std + 'T12:00:00');
+          if (!isNaN(dt.getTime()) && dt.getTime() > latestTime) {
+            latestTime = dt.getTime();
+          }
+        }
+      }
+    });
+    if (latestTime > 0 && Math.abs(anchor.getTime() - latestTime) > (7 * MS_DAY)) {
+      anchor = new Date(latestTime);
+    }
+  }
+
+  if (chartTimeframe === 'hari') {
+    const pts = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(anchor.getTime() - (i * MS_DAY));
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${yyyy}-${mm}-${dd}`;
+      const dayName = d.toLocaleDateString('id-ID', { weekday: 'short' });
+      const label = `${dayName} ${d.getDate()}`;
+
+      const inRange = data.filter(r => {
+        if (!r.tanggalKirim) return false;
+        const std = normalizeDateStr(r.tanggalKirim);
+        return std === dateStr;
+      });
+
+      const delivered = inRange.filter(r => isSuksesStatus(r.status)).length;
+      const returnCount = inRange.filter(r => isReturnStatus(r.status)).length;
+
+      pts.push({
+        label,
+        delivered,
+        returnCount,
+        total: inRange.length,
+        range: d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+      });
+    }
+    return pts;
+  }
 
   if (chartTimeframe === 'minggu') {
     const pts = [];
     for (let i = 7; i >= 0; i--) {
-      const end = new Date(now.getTime() - (i * 7 * MS_DAY));
+      const end = new Date(anchor.getTime() - (i * 7 * MS_DAY));
       const start = new Date(end.getTime() - (6 * MS_DAY));
       start.setHours(0, 0, 0, 0);
       end.setHours(23, 59, 59, 999);
@@ -8045,11 +8659,13 @@ function getChartDataPoints() {
 
       const inRange = data.filter(r => {
         if (!r.tanggalKirim) return false;
-        const rd = new Date(r.tanggalKirim + 'T12:00:00');
-        return rd >= start && rd <= end;
+        const std = normalizeDateStr(r.tanggalKirim);
+        if (!std) return false;
+        const rd = new Date(std + 'T12:00:00');
+        return !isNaN(rd.getTime()) && rd >= start && rd <= end;
       });
 
-      const delivered = inRange.filter(r => r.status === 'Delivered').length;
+      const delivered = inRange.filter(r => isSuksesStatus(r.status)).length;
       const returnCount = inRange.filter(r => isReturnStatus(r.status)).length;
 
       pts.push({ label, delivered, returnCount, total: inRange.length, range: `${sStr} - ${eStr}` });
@@ -8058,16 +8674,18 @@ function getChartDataPoints() {
   }
 
   if (chartTimeframe === 'tahun') {
-    const currentYear = now.getFullYear();
+    const currentYear = anchor.getFullYear();
     const pts = [];
     for (let y = currentYear - 4; y <= currentYear; y++) {
       const inRange = data.filter(r => {
         if (!r.tanggalKirim) return false;
-        const rd = new Date(r.tanggalKirim + 'T12:00:00');
-        return rd.getFullYear() === y;
+        const std = normalizeDateStr(r.tanggalKirim);
+        if (!std) return false;
+        const rd = new Date(std + 'T12:00:00');
+        return !isNaN(rd.getTime()) && rd.getFullYear() === y;
       });
 
-      const delivered = inRange.filter(r => r.status === 'Delivered').length;
+      const delivered = inRange.filter(r => isSuksesStatus(r.status)).length;
       const returnCount = inRange.filter(r => isReturnStatus(r.status)).length;
 
       pts.push({ label: String(y), delivered, returnCount, total: inRange.length, range: `Tahun ${y}` });
@@ -8078,18 +8696,20 @@ function getChartDataPoints() {
   // Default: bulan (12 bulan terakhir)
   const pts = [];
   for (let i = 11; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const d = new Date(anchor.getFullYear(), anchor.getMonth() - i, 1);
     const label = d.toLocaleDateString('id-ID', { month: 'short' });
     const y = d.getFullYear();
     const m = d.getMonth();
 
     const inRange = data.filter(r => {
       if (!r.tanggalKirim) return false;
-      const rd = new Date(r.tanggalKirim + 'T12:00:00');
-      return rd.getFullYear() === y && rd.getMonth() === m;
+      const std = normalizeDateStr(r.tanggalKirim);
+      if (!std) return false;
+      const rd = new Date(std + 'T12:00:00');
+      return !isNaN(rd.getTime()) && rd.getFullYear() === y && rd.getMonth() === m;
     });
 
-    const delivered = inRange.filter(r => r.status === 'Delivered').length;
+    const delivered = inRange.filter(r => isSuksesStatus(r.status)).length;
     const returnCount = inRange.filter(r => isReturnStatus(r.status)).length;
 
     pts.push({
@@ -8102,8 +8722,6 @@ function getChartDataPoints() {
   }
   return pts;
 }
-
-function isDarkMode() { return document.documentElement.classList.contains('dark'); }
 
 let chartAnimId = null;
 
@@ -8247,7 +8865,7 @@ function drawLineChart(animate = true) {
       const lastI = xs.length - 1;
       const lx = xs[lastI];
       const lastPt = pts[lastI];
-      const badgeText = `Delivered: ${lastPt.delivered} | Return: ${lastPt.returnCount}`;
+      const badgeText = `Sukses: ${lastPt.delivered} | Return: ${lastPt.returnCount}`;
       ctx.font = 'bold 10px sans-serif';
       const tw = ctx.measureText(badgeText).width + 16;
       const bh = 22;
@@ -8293,10 +8911,95 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 
+
+// ─── TAKEOUT DELIVERY RETURN / RETURN PADA JAM 8 PAGI ─────────
+// Paket Return yang terjadi sebelum/pada jam 08:00 pagi di-takeout dari tabel Manajemen Resi,
+// namun TETAP tersimpan di database data sehingga grafik & statistik return tetap 100% akurat.
+function isTakenOutReturn(r) {
+  if (!r || !isReturnStatus(r.status)) return false;
+
+  const now = new Date();
+  // Cutoff jam 8:00 pagi hari ini
+  const today8am = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0, 0);
+  // Jika saat ini >= jam 8 pagi, batas adalah jam 8 pagi hari ini.
+  // Jika saat ini < jam 8 pagi, batas adalah jam 8 pagi kemarin.
+  const cutoffTime = now.getTime() >= today8am.getTime() 
+    ? today8am.getTime() 
+    : today8am.getTime() - 86400000;
+
+  let returnTime = 0;
+  if (r.returnTimestamp) {
+    returnTime = Number(r.returnTimestamp);
+  } else if (r.riwayatStatus && Array.isArray(r.riwayatStatus)) {
+    for (let i = r.riwayatStatus.length - 1; i >= 0; i--) {
+      const h = r.riwayatStatus[i];
+      if (isReturnStatus(h.status)) {
+        const t = new Date(h.tanggal || h.waktu).getTime();
+        if (!isNaN(t) && t > 0) { returnTime = t; break; }
+      }
+    }
+  }
+
+  // Fallback ke tanggalKirim jika tidak ada timestamp jam
+  if (!returnTime && r.tanggalKirim) {
+    const std = normalizeDateStr(r.tanggalKirim);
+    if (std) {
+      const dt = new Date(std + 'T07:59:59');
+      if (!isNaN(dt.getTime())) returnTime = dt.getTime();
+    }
+  }
+  if (!returnTime && r.createdAt) {
+    returnTime = Number(r.createdAt);
+  }
+
+  return returnTime > 0 && returnTime <= cutoffTime;
+}
+
 // ─── TABLE DAFTAR RESI ────────────────────────────────────────
 function setPageDaftar(p) {
   pageDaftar = p;
   renderTable();
+}
+
+
+// ─── RESET CHECKLIST & TOP BATCH ACTIONS CONTROLLER ───────────
+function resetChecklistDaftar() {
+  selectedDaftar.clear();
+  const chHeader = document.getElementById('checkAllDaftarHeader');
+  if (chHeader) chHeader.checked = false;
+  const chBottom = document.getElementById('checkAllDaftarBottom');
+  if (chBottom) chBottom.checked = false;
+  renderTable();
+  updateDaftarBatchActionsUI();
+  showToast('🔄', 'Checklist berhasil di-reset');
+}
+
+function updateDaftarBatchActionsUI() {
+  const topContainer = document.getElementById('topBatchActionsDaftar');
+  const count = selectedDaftar.size;
+  if (topContainer) {
+    if (count > 0) {
+      topContainer.style.removeProperty('display');
+      topContainer.style.setProperty('display', 'inline-flex', 'important');
+    } else {
+      topContainer.style.setProperty('display', 'none', 'important');
+    }
+  }
+
+  const btnBatchStatus = document.getElementById('btnBatchStatusDaftar');
+  if (btnBatchStatus) {
+    btnBatchStatus.disabled = count === 0;
+    btnBatchStatus.innerHTML = `
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      <span id="btnBatchStatusLabel">${count > 0 ? `Ubah Status Masal (${count})` : 'Ubah Status Masal'}</span>
+    `;
+  }
+
+  const btnDel = document.getElementById('btnBatchDeleteDaftar');
+  if (btnDel) {
+    btnDel.disabled = count === 0;
+    btnDel.textContent = count > 0 ? `Hapus Terpilih (${count})` : 'Hapus Terpilih';
+  }
 }
 
 function toggleSelectAllDaftar(checked) {
@@ -8306,6 +9009,9 @@ function toggleSelectAllDaftar(checked) {
   const fKur = document.getElementById('filterKurir')?.value || '';
 
   const filtered = data.filter(r => {
+    // Takeout return paket pada jam 8 pagi (hanya dari tampilan tabel data)
+    if (isTakenOutReturn(r)) return false;
+
     const mq = !q || r.nomorResi.toLowerCase().includes(q) || (r.kurir && r.kurir.toLowerCase().includes(q)) || r.pengirim.nama.toLowerCase().includes(q) || r.penerima.nama.toLowerCase().includes(q) || r.barang.deskripsi.toLowerCase().includes(q);
     return mq && (!fs || r.status === fs) && (!fSla || r.slaRtn === fSla) && (!fKur || r.kurir === fKur);
   });
@@ -8539,7 +9245,7 @@ function renderTable() {
 
   const tbody = document.getElementById('mainTableBody');
   if (!paged.length) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted-foreground);">${data.length ? 'Tidak ada data resi yang cocok dengan filter.' : 'Belum ada data resi.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--muted-foreground);">${data.length ? 'Tidak ada data resi yang cocok dengan filter.' : 'Belum ada data resi.'}</td></tr>`;
   } else {
     tbody.innerHTML = paged.map((r, idx) => {
       const globalNo = String(start + idx + 1).padStart(2, '0');
@@ -8557,20 +9263,24 @@ function renderTable() {
           </td>
           <td class="col-no no-select">${globalNo}</td>
           <td class="col-awb-cell" style="white-space:nowrap;">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div style="display:inline-flex;align-items:center;gap:6px;min-width:170px;">
-                <span class="awb-text-selectable awb-link-click" onclick="openDetailModal('${r.id}')" title="Klik untuk lihat detail">${r.nomorResi}</span>
-                <button type="button" class="btn-copy-row-awb no-select" onclick="copySingleAwb(event, '${r.nomorResi}')" title="Salin No AWB">
-                  <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                </button>
+            <div style="display:inline-flex;align-items:center;gap:6px;">
+              <span class="awb-text-selectable awb-link-click" onclick="openDetailModal('${r.id}')" title="Klik untuk lihat detail">${r.nomorResi}</span>
+              <button type="button" class="btn-copy-row-awb no-select" onclick="copySingleAwb(event, '${r.nomorResi}')" title="Salin No AWB">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+            </div>
+          </td>
+          <td class="col-client-cell no-select" style="white-space:nowrap;">
+            <div style="display:inline-flex;align-items:center;gap:7px;">
+              <div style="width:22px;height:22px;border-radius:6px;background:rgba(16,185,129,0.12);color:#059669;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">
+                ${escapeHtml(((r.pengirim && r.pengirim.nama) || r.namaClient || 'C').charAt(0).toUpperCase())}
               </div>
-              <span class="awb-client-divider no-select" aria-hidden="true"></span>
-              <span class="no-select" style="font-size:11.5px;font-weight:600;color:var(--muted-foreground);white-space:nowrap;">${(r.pengirim && r.pengirim.nama) || r.namaClient || '-'}</span>
+              <span style="font-size:12px;font-weight:600;color:var(--foreground);">${escapeHtml((r.pengirim && r.pengirim.nama) || r.namaClient || '-')}</span>
             </div>
           </td>
           <td class="no-select"${cellAlertRtn}>${slaRtnHtml}</td>
           <td class="no-select"${cellAlertEv}>${slaEvHtml}</td>
-          <td class="no-select"><span class="badge-drs">DRS ${r.drsKe || 1}</span></td>
+          <td class="no-select"><span class="badge-drs">${r.drsKe || 1}</span></td>
           <td class="no-select">${badge(r.status)}</td>
           <td class="no-select">
             <div style="font-size:12.5px;font-weight:600;color:var(--foreground);">${r.kurir || '-'}</div>
@@ -8603,14 +9313,7 @@ function renderTable() {
     btnBatch.textContent = selectedDaftar.size > 0 ? `Hapus Terpilih (${selectedDaftar.size})` : 'Hapus Terpilih';
   }
 
-  const btnBatchStatus = document.getElementById('btnBatchStatusDaftar');
-  if (btnBatchStatus) {
-    btnBatchStatus.disabled = selectedDaftar.size === 0;
-    btnBatchStatus.innerHTML = `
-      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-      <span>${selectedDaftar.size > 0 ? `Ubah Status (${selectedDaftar.size})` : 'Ubah Status'}</span>
-    `;
-  }
+  updateDaftarBatchActionsUI();
 
   renderPaginationHelper(pageDaftar, totalPages, totalItems, 'mainTablePagination', 'setPageDaftar', 'jumpInputDaftar');
 }
@@ -8623,64 +9326,195 @@ function openModal(id=null){
   document.getElementById('resiForm').reset();
   document.getElementById('editId').value='';
   document.getElementById('modalTitle').textContent='Tambah Resi Baru';
-  if(id){
-    const r=data.find(x=>x.id===id); if(!r)return;
-    document.getElementById('editId').value=r.id;
-    document.getElementById('modalTitle').textContent='Edit Resi';
-    document.getElementById('fResi').value=r.nomorResi;
-    document.getElementById('fTanggal').value=r.tanggalKirim;
-    document.getElementById('fLayanan').value=r.layanan;
-    document.getElementById('fStatus').value=r.status;
-    document.getElementById('fKurir').value=r.kurir || 'Budi Santoso';
-    document.getElementById('fSlaRtn').value=r.slaRtn || '-';
-    document.getElementById('fSlaEv').value=r.slaEv || 'On-Track';
-    document.getElementById('fDrsKe').value=r.drsKe || '1';
-    document.getElementById('fNamaPengirim').value=r.pengirim.nama;
-    document.getElementById('fTelpPengirim').value=r.pengirim.telepon||'';
-    document.getElementById('fAlamatPengirim').value=r.pengirim.alamat||'';
-    document.getElementById('fNamaPenerima').value=r.penerima.nama;
-    document.getElementById('fTelpPenerima').value=r.penerima.telepon||'';
-    document.getElementById('fAlamatPenerima').value=r.penerima.alamat||'';
-    document.getElementById('fDeskripsi').value=r.barang.deskripsi;
-    document.getElementById('fBerat').value=r.barang.berat;
-    document.getElementById('fSatuan').value=r.barang.satuan;
-    document.getElementById('fBiaya').value=r.biaya||'';
-    document.getElementById('fKeterangan').value=r.keterangan||'';
-  } else {
-    document.getElementById('fTanggal').value=new Date().toISOString().split('T')[0];
-    document.getElementById('fKurir').value='Budi Santoso';
-    document.getElementById('fSlaRtn').value='-';
-    document.getElementById('fSlaEv').value='On-Track';
-    document.getElementById('fDrsKe').value='1';
+
+  // Populate dynamic kurir datalist from data
+  const kurirDatalist = document.getElementById('kurirDatalist');
+  if (kurirDatalist) {
+    const kurirSet = new Set();
+    data.forEach(x => { if (x.kurir && x.kurir !== '-') kurirSet.add(x.kurir); });
+    kurirDatalist.innerHTML = Array.from(kurirSet).map(k => `<option value="${escapeHtml(k)}">`).join('');
   }
+
+  const fStatus = document.getElementById('fStatus');
+
+  if(id){
+    loadData();
+    const r = data.find(x => String(x.id) === String(id));
+    if(!r) {
+      showToast('⚠️', 'Data resi tidak ditemukan.');
+      return;
+    }
+
+    document.getElementById('editId').value = r.id;
+    document.getElementById('modalTitle').textContent = 'Edit Resi - ' + (r.nomorResi || '');
+    document.getElementById('fResi').value = r.nomorResi || '';
+
+    // Standardize date for <input type="date">
+    const stdDate = normalizeDateStr(r.tanggalKirim) || new Date().toISOString().split('T')[0];
+    document.getElementById('fTanggal').value = stdDate;
+
+    document.getElementById('fLayanan').value = r.layanan || 'Reguler';
+
+    // Handle custom or non-listed status gracefully
+    const currentStatus = r.status || 'Manifest';
+    let statusOptionExists = false;
+    for (let opt of fStatus.options) {
+      if (opt.value.toLowerCase() === currentStatus.toLowerCase()) {
+        fStatus.value = opt.value;
+        statusOptionExists = true;
+        break;
+      }
+    }
+    if (!statusOptionExists) {
+      const customOpt = document.createElement('option');
+      customOpt.value = currentStatus;
+      customOpt.textContent = currentStatus;
+      fStatus.appendChild(customOpt);
+      fStatus.value = currentStatus;
+    }
+
+    document.getElementById('fKurir').value = r.kurir && r.kurir !== '-' ? r.kurir : '';
+    document.getElementById('fSlaRtn').value = r.slaRtn || '-';
+    document.getElementById('fSlaEv').value = r.slaEv || 'On-Track';
+    document.getElementById('fDrsKe').value = String(r.drsKe || '1');
+
+    // Pengirim / Client:
+    document.getElementById('fNamaPengirim').value = (r.pengirim && r.pengirim.nama) || r.namaClient || '';
+    document.getElementById('fTelpPengirim').value = (r.pengirim && r.pengirim.telepon) || '';
+    document.getElementById('fAlamatPengirim').value = (r.pengirim && r.pengirim.alamat) || '';
+
+    // Penerima:
+    document.getElementById('fNamaPenerima').value = (r.penerima && r.penerima.nama) || '';
+    document.getElementById('fTelpPenerima').value = (r.penerima && r.penerima.telepon) || '';
+    document.getElementById('fAlamatPenerima').value = (r.penerima && r.penerima.alamat) || '';
+
+    // Barang:
+    document.getElementById('fDeskripsi').value = (r.barang && r.barang.deskripsi) || 'Paket';
+    document.getElementById('fBerat').value = (r.barang && r.barang.berat) || 1;
+    document.getElementById('fSatuan').value = (r.barang && r.barang.satuan) || 'kg';
+
+    // Biaya & Keterangan:
+    document.getElementById('fBiaya').value = r.biaya !== undefined && r.biaya !== null ? r.biaya : '';
+    document.getElementById('fKeterangan').value = r.keterangan || '';
+  } else {
+    document.getElementById('fTanggal').value = new Date().toISOString().split('T')[0];
+    document.getElementById('fKurir').value = '';
+    document.getElementById('fStatus').value = 'Manifest';
+    document.getElementById('fSlaRtn').value = '-';
+    document.getElementById('fSlaEv').value = 'On-Track';
+    document.getElementById('fDrsKe').value = '1';
+    document.getElementById('fBerat').value = '1';
+  }
+  // Sync modern dropdowns
+  initAllModernSelects();
+  if (fStatus._rebuildModern) fStatus._rebuildModern();
+  else if (fStatus._syncModern) fStatus._syncModern();
+  const fRtn = document.getElementById('fSlaRtn'); if (fRtn && fRtn._syncModern) fRtn._syncModern();
+  const fEv = document.getElementById('fSlaEv'); if (fEv && fEv._syncModern) fEv._syncModern();
+
   document.getElementById('formModal').classList.remove('hidden');
 }
+
 function closeModal(){document.getElementById('formModal').classList.add('hidden');}
 
 function saveResi(e){
-  e.preventDefault();
-  const eid=document.getElementById('editId').value;
-  const st=document.getElementById('fStatus').value;
-  const kurir=document.getElementById('fKurir').value;
-  const slaRtn=document.getElementById('fSlaRtn').value;
-  const slaEv=document.getElementById('fSlaEv').value;
-  const drsKe=parseInt(document.getElementById('fDrsKe').value)||1;
-  const now=Date.now();
-  const pengirim={nama:document.getElementById('fNamaPengirim').value.trim(),telepon:document.getElementById('fTelpPengirim').value.trim(),alamat:document.getElementById('fAlamatPengirim').value.trim()};
-  const penerima={nama:document.getElementById('fNamaPenerima').value.trim(),telepon:document.getElementById('fTelpPenerima').value.trim(),alamat:document.getElementById('fAlamatPenerima').value.trim()};
-  const barang={deskripsi:document.getElementById('fDeskripsi').value.trim(),berat:parseFloat(document.getElementById('fBerat').value),satuan:document.getElementById('fSatuan').value};
-  const base={nomorResi:document.getElementById('fResi').value.trim(),tanggalKirim:document.getElementById('fTanggal').value,layanan:document.getElementById('fLayanan').value,status:st,kurir,slaRtn,slaEv,drsKe,pengirim,penerima,barang,biaya:parseInt(document.getElementById('fBiaya').value)||0,keterangan:document.getElementById('fKeterangan').value.trim()};
+  if (e && e.preventDefault) e.preventDefault();
+  const eid = document.getElementById('editId').value;
+  const st = document.getElementById('fStatus').value || 'Manifest';
+  const kurir = document.getElementById('fKurir').value.trim() || '-';
+  const slaRtn = document.getElementById('fSlaRtn').value;
+  const slaEv = document.getElementById('fSlaEv').value;
+  const drsKe = parseInt(document.getElementById('fDrsKe')?.value || '1', 10) || 1;
+  const now = Date.now();
+
+  const nomorResi = document.getElementById('fResi').value.trim();
+  const namaClient = document.getElementById('fNamaPengirim').value.trim();
+
+  // Hidden / preserved fields
+  const elTgl = document.getElementById('fTanggal');
+  const tanggalKirim = (elTgl && elTgl.value) ? normalizeDateStr(elTgl.value) : new Date().toISOString().split('T')[0];
+  const layanan = document.getElementById('fLayanan')?.value || 'Reguler';
+  const telpPengirim = document.getElementById('fTelpPengirim')?.value || '';
+  const alamatPengirim = document.getElementById('fAlamatPengirim')?.value || '';
+  const namaPenerima = document.getElementById('fNamaPenerima')?.value || 'Penerima';
+  const telpPenerima = document.getElementById('fTelpPenerima')?.value || '';
+  const alamatPenerima = document.getElementById('fAlamatPenerima')?.value || '';
+  const deskripsi = document.getElementById('fDeskripsi')?.value || 'Paket';
+  const berat = parseFloat(document.getElementById('fBerat')?.value) || 1;
+  const satuan = document.getElementById('fSatuan')?.value || 'kg';
+  const biaya = parseInt(document.getElementById('fBiaya')?.value, 10) || 0;
+  const keterangan = document.getElementById('fKeterangan')?.value || '';
+
   if(eid){
-    const idx=data.findIndex(x=>x.id===eid); if(idx<0)return;
-    const oldSt=data[idx].status;
-    data[idx]={...data[idx],...base};
-    if(oldSt!==st){data[idx].riwayat=data[idx].riwayat||[];data[idx].riwayat.push({waktu:now,status:st,keterangan:'Diperbarui via form'});}
-    showToast('✅','Resi berhasil diperbarui!');
+    const idx = data.findIndex(x => String(x.id) === String(eid));
+    if(idx < 0) {
+      showToast('⚠️', 'Gagal memperbarui: ID data tidak ditemukan.');
+      return;
+    }
+    const oldSt = data[idx].status;
+
+    data[idx].nomorResi = nomorResi;
+    data[idx].namaClient = namaClient;
+    data[idx].status = st;
+    data[idx].kurir = kurir;
+    data[idx].slaRtn = slaRtn;
+    data[idx].slaEv = slaEv;
+    data[idx].drsKe = drsKe;
+
+    if (!data[idx].pengirim) data[idx].pengirim = {};
+    data[idx].pengirim.nama = namaClient;
+    if (telpPengirim) data[idx].pengirim.telepon = telpPengirim;
+    if (alamatPengirim) data[idx].pengirim.alamat = alamatPengirim;
+
+    if (oldSt !== st) {
+      data[idx].riwayatStatus = data[idx].riwayatStatus || data[idx].riwayat || [];
+      data[idx].riwayatStatus.push({
+        tanggal: new Date().toISOString(),
+        status: st,
+        keterangan: 'Diperbarui via form edit AWB'
+      });
+      data[idx].riwayat = data[idx].riwayatStatus;
+    }
+
+    ensureShipmentFields(data[idx]);
+    showToast('✅', 'Data AWB ' + nomorResi + ' sudah diperbarui!');
   } else {
-    data.unshift({id:genId(),...base,createdAt:now,riwayat:[{waktu:now,status:st,keterangan:'Resi dibuat'}]});
-    showToast('✅','Resi berhasil ditambahkan!');
+    const newId = genId();
+    const newShipment = {
+      id: newId,
+      nomorResi,
+      tanggalKirim,
+      layanan,
+      status: st,
+      kurir,
+      slaRtn,
+      slaEv,
+      drsKe,
+      namaClient,
+      pengirim: { nama: namaClient, telepon: telpPengirim, alamat: alamatPengirim },
+      penerima: { nama: namaPenerima, telepon: telpPenerima, alamat: alamatPenerima },
+      barang: { deskripsi, berat, satuan },
+      biaya,
+      keterangan,
+      createdAt: now,
+      riwayatStatus: [{
+        tanggal: new Date().toISOString(),
+        status: st,
+        keterangan: 'Data AWB dibuat manual'
+      }]
+    };
+    newShipment.riwayat = newShipment.riwayatStatus;
+    ensureShipmentFields(newShipment);
+    data.unshift(newShipment);
+    showToast('✅', 'Data AWB baru berhasil ditambahkan!');
   }
-  saveData(); closeModal(); refreshDashboard(); renderTable(); renderOutstanding(); renderClientPage();
+
+  saveData();
+  closeModal();
+  refreshDashboard();
+  renderTable();
+  renderOutstanding();
+  renderClientPage();
 }
 
 // ─── DETAIL MODAL ─────────────────────────────────────────────
@@ -8872,235 +9706,359 @@ function downloadTemplateCSV() {
 }
 
 function handleImportCSV(e) {
-  const file = e.target.files[0];
+  const file = e.target.files && e.target.files[0];
   if (!file) return;
 
+  const filename = file.name || '';
   const reader = new FileReader();
-  reader.onload = function(evt) {
-    try {
-      const text = evt.target.result;
-      const lines = text.split(/\r\n|\n/).filter(line => line.trim().length > 0);
-      if (lines.length < 2) {
-        showToast('⚠️', 'File CSV kosong atau hanya berisi judul kolom');
-        return;
+
+  const processRows = (rows) => {
+    if (!rows || rows.length < 1) {
+      showToast('⚠️', 'File kosong atau tidak dapat dibaca.');
+      return;
+    }
+
+    let updatedCount = 0;
+    let newCount = 0;
+
+    const findVal = (row, keywords) => {
+      for (const key of Object.keys(row)) {
+        const k = key.toLowerCase().trim();
+        if (keywords.some(kw => k === kw || k.includes(kw))) {
+          const v = String(row[key] !== undefined && row[key] !== null ? row[key] : '').trim();
+          if (v && v !== '-' && v !== 'null' && v !== 'undefined') return v;
+        }
+      }
+      return '';
+    };
+
+    rows.forEach((r, idx) => {
+      const resi = findVal(r, [
+        'nomor resi', 'no resi', 'no. resi', 'nomor awb', 'no awb', 'no. awb',
+        'airwaybill', 'awb', 'resi', 'waybill', 'connote', 'tracking number',
+        'tracking', 'cnote', 'no_resi', 'no_awb'
+      ]);
+      if (!resi || resi === '-' || resi === '') return;
+
+      const clientNama = findVal(r, [
+        'nama client', 'nama klien', 'client name', 'client', 'klien',
+        'merchant', 'partner', 'nama toko', 'toko', 'seller name', 'seller',
+        'penjual', 'nama pengirim', 'pengirim', 'shipper', 'sender', 'akun'
+      ]) || '-';
+
+      const pengirimTelp = findVal(r, [
+        'telepon pengirim', 'telp pengirim', 'kontak pengirim', 'hp pengirim',
+        'wa pengirim', 'shipper phone', 'sender phone'
+      ]) || '';
+
+      const pengirimAlamat = findVal(r, [
+        'alamat pengirim', 'asal', 'origin', 'shipper address'
+      ]) || '';
+
+      const penerimaNama = findVal(r, [
+        'nama penerima', 'nama customer', 'customer name', 'penerima', 'customer',
+        'consignee name', 'consignee', 'receiver name', 'receiver', 'recipient',
+        'tujuan', 'pelanggan'
+      ]) || 'Penerima';
+
+      const penerimaTelp = findVal(r, [
+        'nomor whatsapp', 'no whatsapp', 'no wa', 'whatsapp', 'wa penerima',
+        'telepon penerima', 'telp penerima', 'no hp penerima', 'kontak penerima',
+        'telepon', 'no telepon', 'no telp', 'telp', 'phone', 'hp', 'nohp',
+        'no hp', 'consignee phone', 'consignee telp', 'handphone', 'mobile'
+      ]) || '';
+
+      const penerimaAlamat = findVal(r, [
+        'alamat penerima', 'alamat tujuan', 'alamat', 'tujuan', 'destination', 'address'
+      ]) || '';
+
+      const kurir = findVal(r, [
+        'nama kurir', 'kurir', 'courier', 'driver', 'sprinter', 'rider',
+        'petugas', 'pic', 'pengantar'
+      ]) || '-';
+
+      const layanan = findVal(r, [
+        'layanan', 'service', 'tipe layanan', 'jenis layanan', 'service type', 'produk'
+      ]) || 'Reguler';
+
+      const drsRaw = findVal(r, [
+        'drs ke', 'drs', 'antaran ke', 'percobaan ke', 'attempt', 'run sheet', 'runs', 'drs_ke'
+      ]);
+      let drsKe = null;
+      if (drsRaw) {
+        const numMatch = drsRaw.match(/\d+/);
+        if (numMatch) drsKe = parseInt(numMatch[0], 10);
       }
 
-      // Simple CSV parser supporting quotes and delimiters
-      const parseCSVLine = (str) => {
-        const result = [];
-        let cur = '';
-        let inQuotes = false;
-        const delim = str.includes(';') && !str.includes(',') ? ';' : ',';
-        for (let i = 0; i < str.length; i++) {
-          const char = str[i];
-          if (char === '"') {
-            if (inQuotes && str[i + 1] === '"') {
-              cur += '"';
-              i++;
-            } else {
-              inQuotes = !inQuotes;
-            }
-          } else if (char === delim && !inQuotes) {
-            result.push(cur.trim());
-            cur = '';
-          } else {
-            cur += char;
-          }
+      const slaRtn = findVal(r, [
+        'sla rtn', 'sla return', 'sla retur', 'aging', 'hari retur', 'masa simpan', 'rtn', 'hari hold', 'sla_rtn'
+      ]);
+
+      const slaEv = findVal(r, [
+        'sla ev', 'sla evaluasi', 'evaluasi', 'sla_ev', 'kondisi sla', 'sla alert'
+      ]);
+
+      const statusRaw = findVal(r, [
+        'status terakhir', 'status pengiriman', 'status paket', 'status delivery',
+        'last status', 'pod status', 'status', 'kondisi', 'alasan', 'reason'
+      ]) || '';
+
+      let standardStatus = 'Manifest';
+      const sLow = statusRaw.toLowerCase();
+      if (sLow.includes('delivered') || sLow.includes('terkirim') || sLow.includes('sukses') || sLow.includes('selesai') || sLow.includes('diterima') || sLow.includes('success') || sLow.includes('pod')) {
+        standardStatus = 'Delivered';
+      } else if (sLow.includes('on delivery') || sLow.includes('sedang diantar') || sLow.includes('out for delivery') || sLow.includes('antar') || sLow.includes('jalan') || sLow.includes('delivery out')) {
+        standardStatus = 'On Delivery';
+      } else if (sLow.includes('delivery return') || sLow.includes('return') || sLow.includes('retur') || sLow.includes('rts') || sLow.includes('dikembalikan')) {
+        standardStatus = 'Delivery Return';
+      } else if (sLow.includes('ditolak') || sLow.includes('tolak') || sLow.includes('rejected')) {
+        standardStatus = 'Ditolak';
+      } else if (sLow.includes('h-3') || sLow.includes('hold 3') || sLow.includes('hold (h-3)')) {
+        standardStatus = 'Masa Hold (H-3)';
+      } else if (sLow.includes('h-2') || sLow.includes('hold 2') || sLow.includes('hold (h-2)')) {
+        standardStatus = 'Masa Hold (H-2)';
+      } else if (sLow.includes('h-1') || sLow.includes('hold 1') || sLow.includes('hold (h-1)') || sLow.includes('hold') || sLow.includes('pending') || sLow.includes('gagal') || sLow.includes('undelivered')) {
+        standardStatus = 'Masa Hold (H-1)';
+      } else if (statusRaw) {
+        standardStatus = statusRaw;
+      }
+
+      let tanggalKirim = findVal(r, ['tanggal kirim', 'tgl kirim', 'tanggal', 'tgl', 'date', 'pickup date', 'posting date', 'waktu']) || '';
+      if (tanggalKirim) {
+        const serialNum = Number(tanggalKirim);
+        if (!isNaN(serialNum) && serialNum > 30000 && serialNum < 60000) {
+          const jsDate = new Date((serialNum - 25569) * 86400 * 1000);
+          tanggalKirim = jsDate.toISOString().split('T')[0];
         }
-        result.push(cur.trim());
-        return result;
-      };
+      }
+      if (!tanggalKirim) {
+        tanggalKirim = new Date().toISOString().split('T')[0];
+      }
 
-      const headerLine = lines[0];
-      const headers = parseCSVLine(headerLine).map(h => h.replace(/^["']|["']$/g, '').trim().toLowerCase());
+      const existing = data.find(item => item.nomorResi && String(item.nomorResi).trim().toLowerCase() === String(resi).trim().toLowerCase());
 
-      const getColIndex = (keywords) => {
-        return headers.findIndex(h => keywords.some(k => h === k || h.includes(k)));
-      };
+      if (existing) {
+        let isModified = false;
 
-      const idxResi = getColIndex(['no resi', 'no_resi', 'resi', 'awb', 'no awb', 'no_awb', 'nomor resi', 'nomor awb', 'tracking']);
-      const idxTanggal = getColIndex(['tanggal', 'tgl', 'date', 'created']);
-      const idxLayanan = getColIndex(['layanan', 'service', 'paket']);
-      const idxStatus = getColIndex(['status', 'status pengiriman', 'last status', 'pod status']);
-      const idxKurir = getColIndex(['kurir', 'nama kurir', 'courier', 'driver', 'sprinter']);
-      const idxSlaRtn = getColIndex(['sla rtn', 'sla_rtn', 'sla return', 'rtn', 'sla']);
-      const idxSlaEv = getColIndex(['sla ev', 'sla_ev', 'ev', 'sla estimasi']);
-      const idxDrsKe = getColIndex(['drs ke', 'drs_ke', 'drs', 'antaran ke']);
-      const idxPengirim = getColIndex(['nama client', 'nama_client', 'client', 'customer', 'toko', 'shipper', 'pengirim', 'sender', 'nama pengirim']);
-      const idxTelpPengirim = getColIndex(['telp client', 'no wa client', 'wa client', 'telp pengirim', 'telepon pengirim', 'phone pengirim', 'hp pengirim', 'telp shipper', 'telepon shipper']);
-      const idxAlamatPengirim = getColIndex(['alamat client', 'kota client', 'alamat pengirim', 'alamat shipper']);
-      const idxPenerima = getColIndex(['penerima', 'nama penerima', 'receiver', 'customer receiver', 'consignee']);
-      const idxTelpPenerima = getColIndex(['telp penerima', 'telepon penerima', 'phone penerima', 'hp penerima']);
-      const idxAlamatPenerima = getColIndex(['alamat penerima', 'alamat tujuan', 'kota tujuan', 'destination']);
-      const idxBarang = getColIndex(['deskripsi', 'nama barang', 'barang', 'item', 'isi paket']);
-      const idxBerat = getColIndex(['berat', 'weight', 'kg']);
-      const idxBiaya = getColIndex(['biaya', 'ongkir', 'tarif', 'amount', 'cod']);
-      const idxKet = getColIndex(['keterangan', 'catatan', 'note', 'remarks']);
-
-      let newCount = 0;
-      let updatedCount = 0;
-      let duplicateCount = 0;
-      const now = Date.now();
-
-      for (let i = 1; i < lines.length; i++) {
-        const cols = parseCSVLine(lines[i]);
-        if (!cols || cols.length < 2) continue;
-
-        const val = (idx, fallback = '') => (idx >= 0 && cols[idx] !== undefined) ? cols[idx].replace(/^["']|["']$/g, '').trim() : fallback;
-
-        const rawResi = val(idxResi);
-        if (!rawResi) continue;
-        const resiNo = rawResi;
-        const tglKirim = val(idxTanggal) || new Date().toISOString().split('T')[0];
-        const layanan = val(idxLayanan) || 'Reguler';
-        let rawStatus = val(idxStatus);
-        let st = 'Masa Hold (H-1)';
-        if (rawStatus) {
-          const stLow = rawStatus.toLowerCase();
-          if (stLow.includes('hold 3') || stLow.includes('h-3') || stLow.includes('h3')) st = 'Masa Hold (H-3)';
-          else if (stLow.includes('hold 2') || stLow.includes('h-2') || stLow.includes('h2')) st = 'Masa Hold (H-2)';
-          else if (stLow.includes('hold 1') || stLow.includes('h-1') || stLow.includes('h1')) st = 'Masa Hold (H-1)';
-          else if (stLow.includes('return') || stLow.includes('retur') || stLow.includes('rts') || stLow.includes('gagal')) st = 'Delivery Return';
-          else if (stLow.includes('deliver') || stLow.includes('terkirim') || stLow.includes('pod') || stLow.includes('sukses')) st = 'Delivered';
-          else if (stLow.includes('hold') || stLow.includes('follup') || stLow.includes('follow') || stLow.includes('pending')) st = 'Masa Hold (H-1)';
-          else st = rawStatus;
-        }
-
-        const kurir = val(idxKurir) || 'Budi Santoso';
-        let slaRtn = val(idxSlaRtn);
-        let slaEv = val(idxSlaEv);
-        let drsKe = parseInt(val(idxDrsKe)) || 1;
-        const clientName = val(idxPengirim) || ('Client Mitra ' + i);
-
-        // Check if AWB already exists in database
-        const existingIdx = data.findIndex(r => (r.nomorResi || '').trim().toLowerCase() === resiNo.toLowerCase());
-
-        if (existingIdx !== -1) {
-          const existing = data[existingIdx];
-          const curStatus = (existing.status || '').trim();
-          const curSlaRtn = (existing.slaRtn || '-').trim();
-          const curSlaEv = (existing.slaEv || '-').trim();
-          const curDrs = parseInt(existing.drsKe) || 1;
-          const curKurir = (existing.kurir || '').trim();
-
-          const newStatus = st.trim();
-          const newSlaRtn = (slaRtn || existing.slaRtn || '-').trim();
-          const newSlaEv = (slaEv || existing.slaEv || '-').trim();
-          const newDrs = drsKe || curDrs;
-          const newKurir = kurir.trim();
-
-          // Check if any of the key attributes are different
-          const isDiff = (curStatus !== newStatus) ||
-                         (slaRtn && curSlaRtn !== newSlaRtn) ||
-                         (slaEv && curSlaEv !== newSlaEv) ||
-                         (val(idxDrsKe) && curDrs !== newDrs) ||
-                         (val(idxKurir) && curKurir !== newKurir);
-
-          if (isDiff) {
-            // Update existing record
-            existing.status = newStatus;
-            if (slaRtn) existing.slaRtn = newSlaRtn;
-            if (slaEv) existing.slaEv = newSlaEv;
-            if (val(idxDrsKe)) existing.drsKe = newDrs;
-            if (val(idxKurir)) existing.kurir = newKurir;
-            if (val(idxTanggal)) existing.tanggalKirim = tglKirim;
-            if (val(idxLayanan)) existing.layanan = layanan;
-            if (val(idxPengirim)) {
-              existing.namaClient = clientName;
-              existing.client = clientName;
-              existing.pengirim = existing.pengirim || {};
-              existing.pengirim.nama = clientName;
-            }
-            if (val(idxPenerima)) {
-              existing.penerima = existing.penerima || {};
-              existing.penerima.nama = val(idxPenerima);
-            }
-
-            existing.riwayat = existing.riwayat || [];
-            existing.riwayat.push({
-              waktu: now,
-              status: newStatus,
-              keterangan: `Diperbarui via Impor CSV (${curStatus} → ${newStatus})`
+        // 1. Update Status jika berbeda
+        if (standardStatus) {
+          const curSt = String(existing.status || '').trim();
+          if (curSt.toLowerCase() !== String(standardStatus).trim().toLowerCase()) {
+            const oldSt = existing.status;
+            existing.status = standardStatus;
+            existing.riwayatStatus = existing.riwayatStatus || existing.riwayat || [];
+            existing.riwayatStatus.push({
+              tanggal: new Date().toISOString(),
+              status: standardStatus,
+              keterangan: `Status diperbarui via impor data (${oldSt} -> ${standardStatus})`
             });
-            ensureShipmentFields(existing);
-            updatedCount++;
-          } else {
-            // Exactly the same -> skip
-            duplicateCount++;
+            existing.riwayat = existing.riwayatStatus;
+            if (isReturnStatus(standardStatus) && !existing.returnTimestamp) {
+              existing.returnTimestamp = Date.now();
+            }
+            isModified = true;
           }
-        } else {
-          // New shipment
-          const newShipment = {
-            id: genId() + '-' + i,
-            nomorResi: resiNo,
-            namaClient: clientName,
-            client: clientName,
-            tanggalKirim: tglKirim,
-            layanan: layanan,
-            status: st,
-            kurir: kurir,
-            slaRtn: slaRtn,
-            slaEv: slaEv,
-            drsKe: drsKe,
-            pengirim: {
-              nama: clientName,
-              telepon: val(idxTelpPengirim, ''),
-              alamat: val(idxAlamatPengirim, '')
-            },
-            penerima: {
-              nama: val(idxPenerima, 'Penerima Paket ' + i),
-              telepon: val(idxTelpPenerima, ''),
-              alamat: val(idxAlamatPenerima, '')
-            },
-            barang: {
-              deskripsi: val(idxBarang, 'Paket Logistik'),
-              berat: parseFloat(val(idxBerat)) || 1.0,
-              satuan: 'kg'
-            },
-            biaya: parseInt(val(idxBiaya)) || 0,
-            keterangan: val(idxKet, 'Impor CSV'),
-            createdAt: now - (i * 1000),
-            riwayat: [{ waktu: now, status: st, keterangan: 'Data diimpor dari file CSV' }]
-          };
-
-          ensureShipmentFields(newShipment);
-          data.unshift(newShipment);
-          newCount++;
         }
-      }
 
-      saveData();
-      refreshDashboard();
-      renderTable();
-      renderOutstanding();
-      renderClientPage();
+        // 2. Update SLA RTN jika berbeda
+        if (slaRtn !== undefined && slaRtn !== null && slaRtn !== '') {
+          const cleanRtn = String(slaRtn).trim() || '-';
+          const curRtn = String(existing.slaRtn || '').trim() || '-';
+          if (curRtn.toLowerCase() !== cleanRtn.toLowerCase()) {
+            existing.slaRtn = cleanRtn;
+            isModified = true;
+          }
+        }
 
-      // Clear feedback notifications
-      if (newCount > 0 && updatedCount > 0 && duplicateCount > 0) {
-        showToast('📦', `Impor selesai: ${newCount} baru, ${updatedCount} diperbarui, ${duplicateCount} duplikat diabaikan.`);
-      } else if (newCount > 0 && updatedCount > 0) {
-        showToast('✅', `Impor berhasil: ${newCount} data baru ditambahkan & ${updatedCount} data berhasil diperbarui.`);
-      } else if (newCount > 0 && duplicateCount > 0) {
-        showToast('✅', `Impor berhasil: ${newCount} data baru ditambahkan (${duplicateCount} duplikat diabaikan).`);
-      } else if (updatedCount > 0 && duplicateCount > 0) {
-        showToast('🔄', `Pembaruan selesai: ${updatedCount} data diperbarui (${duplicateCount} duplikat diabaikan).`);
-      } else if (updatedCount > 0) {
-        showToast('🔄', `Berhasil memperbarui ${updatedCount} data resi!`);
-      } else if (newCount > 0) {
-        showToast('✅', `Berhasil mengimpor ${newCount} data resi baru!`);
-      } else if (duplicateCount > 0) {
-        showToast('⚠️', `Semua data (${duplicateCount} resi) sama persis dengan yang sudah ada (duplikat diabaikan).`);
+        // 3. Update SLA EV jika berbeda
+        if (slaEv !== undefined && slaEv !== null && slaEv !== '') {
+          const cleanEv = String(slaEv).trim() || '-';
+          const curEv = String(existing.slaEv || '').trim() || '-';
+          if (curEv.toLowerCase() !== cleanEv.toLowerCase()) {
+            existing.slaEv = cleanEv;
+            isModified = true;
+          }
+        }
+
+        // 4. Update DRS KE jika berbeda
+        if (drsKe !== null && drsKe !== undefined && Number(drsKe) > 0) {
+          const newDrs = Number(drsKe);
+          const curDrs = Number(existing.drsKe || 0);
+          if (curDrs !== newDrs) {
+            existing.drsKe = newDrs;
+            isModified = true;
+          }
+        }
+
+        // 5. Update Kurir jika berbeda
+        if (kurir && kurir !== '' && kurir !== '-') {
+          const cleanKurir = String(kurir).trim();
+          const curKurir = String(existing.kurir || existing.courier || '').trim();
+          if (curKurir.toLowerCase() !== cleanKurir.toLowerCase() && cleanKurir !== '-') {
+            existing.kurir = cleanKurir;
+            isModified = true;
+          }
+        }
+
+        // 6. Update Client / Pengirim jika berbeda
+        if (clientNama && clientNama !== '' && clientNama !== '-') {
+          const cleanClient = String(clientNama).trim();
+          const curClient = String(existing.namaClient || (existing.pengirim && existing.pengirim.nama) || '').trim();
+          if (curClient.toLowerCase() !== cleanClient.toLowerCase()) {
+            if (!existing.pengirim) existing.pengirim = {};
+            existing.pengirim.nama = cleanClient;
+            existing.namaClient = cleanClient;
+            isModified = true;
+          }
+        }
+
+        // 7. Update Penerima jika berbeda
+        if (penerimaNama && penerimaNama !== 'Penerima' && penerimaNama !== '' && penerimaNama !== '-') {
+          const cleanPenNama = String(penerimaNama).trim();
+          const curPenNama = String((existing.penerima && existing.penerima.nama) || '').trim();
+          if (curPenNama.toLowerCase() !== cleanPenNama.toLowerCase()) {
+            if (!existing.penerima) existing.penerima = {};
+            existing.penerima.nama = cleanPenNama;
+            isModified = true;
+          }
+        }
+        if (penerimaTelp && penerimaTelp !== '' && penerimaTelp !== '-') {
+          const cleanPenTelp = String(penerimaTelp).trim();
+          const curPenTelp = String((existing.penerima && existing.penerima.telepon) || '').trim();
+          if (curPenTelp !== cleanPenTelp) {
+            if (!existing.penerima) existing.penerima = {};
+            existing.penerima.telepon = cleanPenTelp;
+            isModified = true;
+          }
+        }
+        if (penerimaAlamat && penerimaAlamat !== '' && penerimaAlamat !== '-') {
+          const cleanPenAlamat = String(penerimaAlamat).trim();
+          const curPenAlamat = String((existing.penerima && existing.penerima.alamat) || '').trim();
+          if (curPenAlamat.toLowerCase() !== cleanPenAlamat.toLowerCase()) {
+            if (!existing.penerima) existing.penerima = {};
+            existing.penerima.alamat = cleanPenAlamat;
+            isModified = true;
+          }
+        }
+
+        // 8. Update Tanggal Kirim jika berbeda
+        if (tanggalKirim) {
+          const stdDate = normalizeDateStr(tanggalKirim);
+          const curDate = existing.tanggalKirim ? normalizeDateStr(existing.tanggalKirim) : '';
+          if (stdDate && curDate !== stdDate) {
+            existing.tanggalKirim = stdDate;
+            isModified = true;
+          }
+        }
+
+        ensureShipmentFields(existing);
+        if (isModified) {
+          updatedCount++;
+        }
       } else {
-        showToast('ℹ️', 'Tidak ada data resi yang diproses.');
+        const newShipment = {
+          id: genId(),
+          nomorResi: resi,
+          tanggalKirim: tanggalKirim,
+          layanan: layanan,
+          status: standardStatus,
+          createdAt: Date.now() - (idx * 60000),
+          kurir: kurir,
+          drsKe: drsKe !== null && drsKe !== undefined ? drsKe : null,
+          slaRtn: slaRtn || '',
+          slaEv: slaEv || '',
+          namaClient: clientNama !== '-' ? clientNama : '',
+          pengirim: { nama: clientNama, telepon: pengirimTelp, alamat: pengirimAlamat },
+          penerima: { nama: penerimaNama, telepon: penerimaTelp, alamat: penerimaAlamat },
+          barang: { deskripsi: 'Paket', berat: 1, satuan: 'kg' },
+          riwayatStatus: [{ tanggal: new Date().toISOString(), status: standardStatus, keterangan: 'Data diimpor dari file' }]
+        };
+        ensureShipmentFields(newShipment);
+        data.unshift(newShipment);
+        newCount++;
       }
+    });
 
-      e.target.value = '';
-    } catch(err) {
-      console.error('Import CSV error:', err);
-      showToast('⚠️', 'Gagal memproses file CSV: ' + err.message);
+    saveData();
+    refreshDashboard();
+    renderTable();
+    renderOutstanding();
+    renderClientPage();
+
+    if (newCount > 0 && updatedCount > 0) {
+      showToast('✅', `${updatedCount} AWB sudah diperbarui & ${newCount} AWB baru ditambahkan`);
+    } else if (updatedCount > 0) {
+      showToast('✅', `${updatedCount} AWB sudah diperbarui`);
+    } else if (newCount > 0) {
+      showToast('✅', `Berhasil mengimpor ${newCount} AWB baru!`);
+    } else {
+      showToast('ℹ️', 'Seluruh data AWB sudah sesuai (tidak ada data yang berubah).');
     }
   };
-  reader.readAsText(file);
+
+  reader.onload = function(evt) {
+    try {
+      let rows = [];
+      if (typeof XLSX !== 'undefined') {
+        const dataArr = new Uint8Array(evt.target.result);
+        const wb = XLSX.read(dataArr, { type: 'array' });
+        const firstSheet = wb.SheetNames[0];
+        const ws = wb.Sheets[firstSheet];
+
+        const rawGrid = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+        const headerIdx = detectSmartHeaderRow(rawGrid);
+
+        if (headerIdx !== -1 && rawGrid && rawGrid.length > headerIdx) {
+          const headers = rawGrid[headerIdx].map(h => String(h || '').trim());
+          for (let r = headerIdx + 1; r < rawGrid.length; r++) {
+            const rowData = rawGrid[r];
+            if (rowData && rowData.some(val => String(val !== undefined && val !== null ? val : '').trim().length > 0)) {
+              const obj = {};
+              headers.forEach((h, cIdx) => {
+                const key = h || ('COL_' + cIdx);
+                obj[key] = rowData[cIdx] !== undefined && rowData[cIdx] !== null ? rowData[cIdx] : '';
+              });
+              rows.push(obj);
+            }
+          }
+        } else {
+          rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+        }
+      } else {
+        const text = typeof evt.target.result === 'string' ? evt.target.result : new TextDecoder('utf-8').decode(evt.target.result);
+        const lines = text.split(/\r\n|\n/).filter(line => line.trim().length > 0);
+        if (lines.length >= 2) {
+          const grid = [];
+          const delim = lines[0].includes(';') ? ';' : ',';
+          for (let i = 0; i < lines.length; i++) {
+            const cols = lines[i].split(delim).map(c => c.trim().replace(/^["']|["']$/g, ''));
+            if (cols.some(c => c.length > 0)) grid.push(cols);
+          }
+          const headerIdx = detectSmartHeaderRow(grid);
+          if (headerIdx !== -1 && headerIdx < grid.length) {
+            const headers = grid[headerIdx].map(h => String(h || '').trim());
+            for (let i = headerIdx + 1; i < grid.length; i++) {
+              const row = grid[i];
+              if (row.some(c => String(c).length > 0)) {
+                const obj = {};
+                headers.forEach((h, idx) => { obj[h] = row[idx] !== undefined ? row[idx] : ''; });
+                rows.push(obj);
+              }
+            }
+          }
+        }
+      }
+
+      processRows(rows);
+    } catch(err) {
+      console.error('Import error:', err);
+      showToast('⚠️', 'Gagal memproses file: ' + err.message);
+    } finally {
+      if (e && e.target) e.target.value = '';
+    }
+  };
+
+  reader.readAsArrayBuffer(file);
 }
 
 // ─── FITUR SCAN CEPAT AWB (LIGHTNING SCANNER) ────────────────
@@ -9240,7 +10198,7 @@ function openQuickScanResultModal(r) {
 
   // 3. DRS KE: Tetap dengan warna hitam
   if (drsEl) {
-    drsEl.textContent = `DRS ${r.drsKe || 1}`;
+    drsEl.textContent = String(r.drsKe || 1);
     drsEl.style.color = '#0f172a';
   }
 
@@ -9315,7 +10273,14 @@ function exportCSV(){
 }
 
 // ─── UTILS ───────────────────────────────────────────────────
-function fmtDate(d){if(!d)return'-';return new Date(d+'T00:00:00').toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});}
+function fmtDate(d) {
+  if (!d) return '-';
+  const std = normalizeDateStr(d);
+  if (!std) return String(d);
+  const dt = new Date(std + 'T12:00:00');
+  if (isNaN(dt.getTime())) return String(d);
+  return dt.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+}
 function fmtDT(ts){if(!ts)return'-';return new Date(ts).toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
 function fmtRp(n){return'Rp '+Number(n).toLocaleString('id-ID');}
 
@@ -9633,7 +10598,7 @@ function handleLogout() {
     overlay.style.setProperty('visibility', 'visible', 'important');
     overlay.style.setProperty('pointer-events', 'auto', 'important');
     overlay.style.setProperty('z-index', '99999', 'important');
-    overlay.style.setProperty('background', 'rgba(11, 19, 43, 0.85)', 'important');
+    overlay.style.setProperty('background', '#ffffff', 'important');
     overlay.style.setProperty('backdrop-filter', 'blur(12px)', 'important');
     overlay.style.setProperty('-webkit-backdrop-filter', 'blur(12px)', 'important');
   }
@@ -9751,7 +10716,7 @@ function checkLoginSession() {
       overlay.style.setProperty('visibility', 'visible', 'important');
       overlay.style.setProperty('pointer-events', 'auto', 'important');
       overlay.style.setProperty('z-index', '99999', 'important');
-      overlay.style.setProperty('background', 'rgba(11, 19, 43, 0.85)', 'important');
+      overlay.style.setProperty('background', '#ffffff', 'important');
       overlay.style.setProperty('backdrop-filter', 'blur(12px)', 'important');
       overlay.style.setProperty('-webkit-backdrop-filter', 'blur(12px)', 'important');
     }
@@ -9765,6 +10730,7 @@ initGreeting();
 initSidebarState();
 checkLoginSession();
 refreshDashboard();
+initAllModernSelects();
 </script>
 
 <!-- ========================================================== -->
