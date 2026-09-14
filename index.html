@@ -82,53 +82,14 @@
   window.safeSet = function(k, v) { return SafeStorage.setItem(k, v); };
   window.safeDel = function(k) { return SafeStorage.removeItem(k); };
 
-  // Pre-seed auth session
-  window.__IS_LOGGED_IN = true;
-  SafeStorage.setItem('ekspedisi_auth', 'Pratama');
-  SafeStorage.setItem('ekspedisi_auth_remember', 'Pratama');
+  // Session state (default unauthenticated)
+  window.__IS_LOGGED_IN = false;
 
-  // Bulletproof bypass login
+  // Global bypass fallback that routes to animated handler
   window.bypassLogin = function(e) {
-    if (e) {
-      try { e.preventDefault(); } catch(err) {}
-      try { if (e.stopPropagation) e.stopPropagation(); } catch(err) {}
+    if (typeof handleLoginSubmit === 'function') {
+      return handleLoginSubmit(e);
     }
-    console.log('[ExpediLog] Instant bypass login executed!');
-    window.__IS_LOGGED_IN = true;
-    SafeStorage.setItem('ekspedisi_auth', 'Pratama');
-    SafeStorage.setItem('ekspedisi_auth_remember', 'Pratama');
-
-    // 1. Physically delete login overlay so it can never block mouse clicks
-    var overlay = document.getElementById('loginOverlay');
-    if (overlay) {
-      overlay.style.setProperty('display', 'none', 'important');
-      overlay.style.setProperty('pointer-events', 'none', 'important');
-      try { overlay.remove(); } catch(err) {}
-    }
-    document.documentElement.classList.add('logged-in-user');
-    if (document.body) document.body.classList.add('logged-in-user');
-
-    // 2. Ensure topbar, sidebar, main are visible
-    var topbar = document.getElementById('topbar');
-    var sidebar = document.getElementById('sidebar');
-    var main = document.getElementById('main');
-    if (topbar) topbar.style.setProperty('display', 'flex', 'important');
-    if (sidebar) sidebar.style.setProperty('display', 'flex', 'important');
-    if (main) main.style.setProperty('display', 'flex', 'important');
-
-    // 3. Switch to dashboard cleanly
-    try {
-      if (typeof showPage === 'function') {
-        showPage('dashboard');
-      }
-    } catch(err) {
-      console.warn('Dashboard switch warn:', err);
-    }
-
-    try { if (typeof initGreeting === 'function') initGreeting(); } catch(err) {}
-    try { if (typeof refreshDashboard === 'function') refreshDashboard(); } catch(err) {}
-    try { if (typeof showToast === 'function') showToast('👋', 'Selamat datang kembali, Super Admin Pratama!'); } catch(err) {}
-
     return false;
   };
 })();
@@ -149,6 +110,12 @@ html, body {
   visibility: hidden !important;
   pointer-events: none !important;
   z-index: -9999 !important;
+}
+/* When unauthenticated, keep main app components hidden */
+body:not(.logged-in-user) #topbar,
+body:not(.logged-in-user) #sidebar,
+body:not(.logged-in-user) #main {
+  display: none !important;
 }
 .nav-item {
   cursor: pointer !important;
@@ -2118,7 +2085,7 @@ button:hover,
         It will take less than a minute.
       </div>
 
-      <form id="loginForm" action="javascript:void(0);" onsubmit="bypassLogin(event); return false;">
+      <form id="loginForm" action="javascript:void(0);" onsubmit="handleLoginSubmit(event); return false;">
         <div class="login-input-group">
           <input type="text" id="loginUsername" value="Pratama" placeholder="Username" autocomplete="username" required/>
           <span class="input-icon">
@@ -2135,7 +2102,7 @@ button:hover,
         <div id="loginErrorMsg" style="display:none;font-size:12px;color:#ef4444;margin-bottom:14px;background:#fef2f2;border:1px solid #fee2e2;padding:8px 12px;border-radius:10px;"></div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
-          <button type="button" onclick="bypassLogin(event)" class="btn-login" id="loginSubmitBtn" style="width:100%;padding:14px;font-size:16px;font-weight:800;background:linear-gradient(135deg, #10b981, #059669);box-shadow:0 4px 14px rgba(16,185,129,0.35);cursor:pointer;border-radius:12px;border:none;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <button type="submit" onclick="handleLoginSubmit(event)" class="btn-login" id="loginSubmitBtn" style="width:100%;padding:14px;font-size:16px;font-weight:800;background:linear-gradient(135deg, #10b981, #059669);box-shadow:0 4px 14px rgba(16,185,129,0.35);cursor:pointer;border-radius:12px;border:none;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;">
     <span><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline-block;vertical-align:-2px;"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg> Masuk ke Sistem (1-Klik)</span>
   </button>
           <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:#64748b;cursor:pointer;">
@@ -2153,7 +2120,7 @@ button:hover,
         </div>
       
         <div style="margin-top:14px;text-align:center;">
-          <a href="javascript:void(0)" onclick="bypassLogin(event)" style="color:#059669;font-size:12.5px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:#ecfdf5;padding:6px 14px;border-radius:20px;border:1px solid #a7f3d0;">
+          <a href="javascript:void(0)" onclick="handleLoginSubmit(event)" style="color:#059669;font-size:12.5px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:#ecfdf5;padding:6px 14px;border-radius:20px;border:1px solid #a7f3d0;">
             <span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline-block;vertical-align:-1px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Buka Dashboard Langsung</span> &rarr;
           </a>
         </div>
@@ -2166,8 +2133,18 @@ button:hover,
   (function(){
     var a = SafeStorage.getItem('ekspedisi_auth') || SafeStorage.getItem('ekspedisi_auth_remember');
     if (a === 'Pratama') {
+      window.__IS_LOGGED_IN = true;
+      document.documentElement.classList.add('logged-in-user');
+      if (document.body) document.body.classList.add('logged-in-user');
       var o = document.getElementById('loginOverlay');
-      if (o) { o.style.display = 'none'; o.classList.add('logged-in'); }
+      if (o) {
+        o.style.setProperty('display', 'none', 'important');
+        o.classList.add('logged-in');
+      }
+    } else {
+      window.__IS_LOGGED_IN = false;
+      document.documentElement.classList.remove('logged-in-user');
+      if (document.body) document.body.classList.remove('logged-in-user');
     }
   })();
 </script>
@@ -4011,249 +3988,24 @@ let data = [];
 let currentDetailId = null;
 let deleteTargetId = null;
 
-const DEFAULT_SAMPLE_DATA = [
-  // PT Sentosa Jaya (6 packages, 3 returns -> Rank #1 Client)
-  {
-    id: "EXP-20260909-001", nomorResi: "EXP982103489", tanggalKirim: "2026-09-09", layanan: "Express", status: "Delivered",
-    createdAt: Date.now() - 3600000 * 2, kurir: "Budi Santoso", slaRtn: "-", slaEv: "Tepat Waktu", drsKe: 1,
-    pengirim: { nama: "PT Sentosa Jaya", telepon: "081234567890", alamat: "Jl. Sudirman No. 45, Jakarta Pusat" },
-    penerima: { nama: "Budi Pratama", telepon: "087788990011", alamat: "Jl. Riau No. 12, Bandung" },
-    barang: { deskripsi: "Sparepart Elektronik", berat: 3.5, satuan: "kg" }, biaya: 45000, keterangan: "Fragile",
-    riwayat: [{ waktu: Date.now() - 3600000 * 2, status: "Delivered", keterangan: "Paket berhasil diserahkan" }]
-  },
-  {
-    id: "EXP-20260909-002", nomorResi: "EXP982103490", tanggalKirim: "2026-09-09", layanan: "Same Day", status: "Delivery Return",
-    createdAt: Date.now() - 3600000 * 4, kurir: "Budi Santoso", slaRtn: "Return", slaEv: "Gagal Antar", drsKe: 3,
-    pengirim: { nama: "PT Sentosa Jaya", telepon: "081234567890", alamat: "Jl. Sudirman No. 45, Jakarta Pusat" },
-    penerima: { nama: "Agus Santoso", telepon: "081233445566", alamat: "Komp. Dago Asri, Bandung" },
-    barang: { deskripsi: "Modul PCB Otomotif", berat: 1.8, satuan: "kg" }, biaya: 35000, keterangan: "Penerima menolak paket",
-    riwayat: [{ waktu: Date.now() - 3600000 * 4, status: "Delivery Return", keterangan: "Gagal antar, proses return" }]
-  },
-  {
-    id: "EXP-20260908-003", nomorResi: "EXP982103491", tanggalKirim: "2026-09-08", layanan: "Express", status: "Delivery Return",
-    createdAt: Date.now() - 3600000 * 25, kurir: "Budi Santoso", slaRtn: "Return", slaEv: "Gagal Antar", drsKe: 3,
-    pengirim: { nama: "PT Sentosa Jaya", telepon: "081234567890", alamat: "Jl. Sudirman No. 45, Jakarta Pusat" },
-    penerima: { nama: "Hendra Gunawan", telepon: "081399887766", alamat: "Jl. Buah Batu No. 77, Bandung" },
-    barang: { deskripsi: "Sensor Mesin Industri", berat: 2.4, satuan: "kg" }, biaya: 48000, keterangan: "Barang rusak diperjalanan",
-    riwayat: [{ waktu: Date.now() - 3600000 * 25, status: "Delivery Return", keterangan: "Return ke Hub asal" }]
-  },
-  {
-    id: "EXP-20260905-004", nomorResi: "EXP982103492", tanggalKirim: "2026-09-05", layanan: "Reguler", status: "Delivery Return",
-    createdAt: Date.now() - 3600000 * 96, kurir: "Budi Santoso", slaRtn: "12", slaEv: "15", drsKe: 3,
-    pengirim: { nama: "PT Sentosa Jaya", telepon: "081234567890", alamat: "Jl. Sudirman No. 45, Jakarta Pusat" },
-    penerima: { nama: "CV Auto Prima", telepon: "087811223344", alamat: "Jl. Soekarno Hatta, Bandung" },
-    barang: { deskripsi: "Kabel Harness Set", berat: 4.2, satuan: "kg" }, biaya: 52000, keterangan: "Penerima pindah alamat",
-    riwayat: [{ waktu: Date.now() - 3600000 * 96, status: "Delivery Return", keterangan: "Proses pengembalian ke gudang" }]
-  },
-  {
-    id: "EXP-20260901-005", nomorResi: "EXP982103493", tanggalKirim: "2026-09-01", layanan: "Kargo", status: "Delivered",
-    createdAt: Date.now() - 3600000 * 200, kurir: "Budi Santoso", slaRtn: "-", slaEv: "Tepat Waktu", drsKe: 1,
-    pengirim: { nama: "PT Sentosa Jaya", telepon: "081234567890", alamat: "Jl. Sudirman No. 45, Jakarta Pusat" },
-    penerima: { nama: "PT Mandiri Abadi", telepon: "085299887711", alamat: "Kawasan Industri Cimahi" },
-    barang: { deskripsi: "Genset Portable 3kVA", berat: 45.0, satuan: "kg" }, biaya: 180000, keterangan: "Unit diterima aman",
-    riwayat: [{ waktu: Date.now() - 3600000 * 200, status: "Delivered", keterangan: "Diterima staf logistik" }]
-  },
-  {
-    id: "EXP-20260824-006", nomorResi: "EXP982103494", tanggalKirim: "2026-08-24", layanan: "Express", status: "Masa Hold (H-1)",
-    createdAt: Date.now() - 3600000 * 380, kurir: "Budi Santoso", slaRtn: "H-1", slaEv: "Aman (1x24j)", drsKe: 1,
-    pengirim: { nama: "PT Sentosa Jaya", telepon: "081234567890", alamat: "Jl. Sudirman No. 45, Jakarta Pusat" },
-    penerima: { nama: "Rian Saputra", telepon: "081900112233", alamat: "Jl. Asia Afrika No. 10, Bandung" },
-    barang: { deskripsi: "Komponen IC Mikrokontroler", berat: 0.8, satuan: "kg" }, biaya: 30000, keterangan: "Penerima minta tunda hari ini",
-    riwayat: [{ waktu: Date.now() - 3600000 * 380, status: "Masa Hold (H-1)", keterangan: "Ditahan 1x24 jam" }]
-  },
-
-  // Mega Store Elektronik (5 packages, 2 returns -> Rank #2 Client)
-  {
-    id: "EXP-20260909-007", nomorResi: "EXP982103495", tanggalKirim: "2026-09-09", layanan: "Same Day", status: "Delivery Return",
-    createdAt: Date.now() - 3600000 * 5, kurir: "Eko Prasetyo", slaRtn: "10", slaEv: "12", drsKe: 3,
-    pengirim: { nama: "Mega Store Elektronik", telepon: "081377889900", alamat: "Harco Mangga Dua Lt. 2, Jakarta" },
-    penerima: { nama: "Kevin Wijaya", telepon: "082211447788", alamat: "Jl. Tunjungan No. 34, Surabaya" },
-    barang: { deskripsi: "Monitor Gaming 27 Inch", berat: 6.2, satuan: "kg" }, biaya: 85000, keterangan: "Kemasan rusak saat transit",
-    riwayat: [{ waktu: Date.now() - 3600000 * 5, status: "Delivery Return", keterangan: "Return to sender" }]
-  },
-  {
-    id: "EXP-20260907-008", nomorResi: "EXP982103496", tanggalKirim: "2026-09-07", layanan: "Express", status: "Delivery Return",
-    createdAt: Date.now() - 3600000 * 48, kurir: "Eko Prasetyo", slaRtn: "Return", slaEv: "Gagal Antar", drsKe: 3,
-    pengirim: { nama: "Mega Store Elektronik", telepon: "081377889900", alamat: "Harco Mangga Dua Lt. 2, Jakarta" },
-    penerima: { nama: "Farhan Maulana", telepon: "085733221199", alamat: "Komp. Rungkut Mapan, Surabaya" },
-    barang: { deskripsi: "Keyboard Mechanical RGB", berat: 1.5, satuan: "kg" }, biaya: 32000, keterangan: "Telepon penerima tidak aktif",
-    riwayat: [{ waktu: Date.now() - 3600000 * 48, status: "Delivery Return", keterangan: "Gagal antar 3x percobaan" }]
-  },
-  {
-    id: "EXP-20260906-009", nomorResi: "EXP982103497", tanggalKirim: "2026-09-06", layanan: "Reguler", status: "Delivered",
-    createdAt: Date.now() - 3600000 * 72, kurir: "Eko Prasetyo", slaRtn: "-", slaEv: "Tepat Waktu", drsKe: 1,
-    pengirim: { nama: "Mega Store Elektronik", telepon: "081377889900", alamat: "Harco Mangga Dua Lt. 2, Jakarta" },
-    penerima: { nama: "Dewi Lestari", telepon: "081344556600", alamat: "Jl. Darmo No. 80, Surabaya" },
-    barang: { deskripsi: "Headset Wireless Pro", berat: 0.9, satuan: "kg" }, biaya: 26000, keterangan: "Diterima langsung",
-    riwayat: [{ waktu: Date.now() - 3600000 * 72, status: "Delivered", keterangan: "Paket berhasil diserahkan" }]
-  },
-  {
-    id: "EXP-20260815-010", nomorResi: "EXP982103498", tanggalKirim: "2026-08-15", layanan: "Express", status: "Masa Hold (H-2)",
-    createdAt: Date.now() - 3600000 * 590, kurir: "Eko Prasetyo", slaRtn: "8", slaEv: "10", drsKe: 2,
-    pengirim: { nama: "Mega Store Elektronik", telepon: "081377889900", alamat: "Harco Mangga Dua Lt. 2, Jakarta" },
-    penerima: { nama: "Heri Purnomo", telepon: "081822334411", alamat: "Jl. Kertajaya Indah, Surabaya" },
-    barang: { deskripsi: "VGA Card RTX 4070", berat: 2.1, satuan: "kg" }, biaya: 65000, keterangan: "Penerima dinas luar kota",
-    riwayat: [{ waktu: Date.now() - 3600000 * 590, status: "Masa Hold (H-2)", keterangan: "Ditahan hari ke-2 di Hub Surabaya" }]
-  },
-  {
-    id: "EXP-20260720-011", nomorResi: "EXP982103499", tanggalKirim: "2026-07-20", layanan: "Kargo", status: "Delivered",
-    createdAt: Date.now() - 3600000 * 1200, kurir: "Eko Prasetyo", slaRtn: "-", slaEv: "Tepat Waktu", drsKe: 1,
-    pengirim: { nama: "Mega Store Elektronik", telepon: "081377889900", alamat: "Harco Mangga Dua Lt. 2, Jakarta" },
-    penerima: { nama: "CV Jaya Abadi", telepon: "082199884433", alamat: "Jl. Basuki Rahmat, Surabaya" },
-    barang: { deskripsi: "Power Supply 850W (10 unit)", berat: 28.0, satuan: "kg" }, biaya: 145000, keterangan: "Segel utuh",
-    riwayat: [{ waktu: Date.now() - 3600000 * 1200, status: "Delivered", keterangan: "Selesai ditandatangani" }]
-  },
-
-  // Toko Busana Cantik (4 packages, 2 returns -> Rank #3 Client)
-  {
-    id: "EXP-20260908-012", nomorResi: "EXP982103500", tanggalKirim: "2026-09-08", layanan: "Reguler", status: "Delivered",
-    createdAt: Date.now() - 3600000 * 28, kurir: "Andi Kurniawan", slaRtn: "-", slaEv: "Tepat Waktu", drsKe: 1,
-    pengirim: { nama: "Toko Busana Cantik", telepon: "085611223344", alamat: "Pasar Tanah Abang Blok A, Jakarta" },
-    penerima: { nama: "Siti Rahmawati", telepon: "081922334455", alamat: "Jl. Malioboro No. 88, Yogyakarta" },
-    barang: { deskripsi: "Gamis Syar'i Silk (4 pcs)", berat: 2.0, satuan: "kg" }, biaya: 28000, keterangan: "Diterima pembeli",
-    riwayat: [{ waktu: Date.now() - 3600000 * 28, status: "Delivered", keterangan: "Terkirim sukses" }]
-  },
-  {
-    id: "EXP-20260906-013", nomorResi: "EXP982103501", tanggalKirim: "2026-09-06", layanan: "Express", status: "Delivery Return",
-    createdAt: Date.now() - 3600000 * 75, kurir: "Andi Kurniawan", slaRtn: "6", slaEv: "8", drsKe: 3,
-    pengirim: { nama: "Toko Busana Cantik", telepon: "085611223344", alamat: "Pasar Tanah Abang Blok A, Jakarta" },
-    penerima: { nama: "Nadia Safitri", telepon: "087755663322", alamat: "Jl. Somba Opu No. 12, Makassar" },
-    barang: { deskripsi: "Baju Pesta Brokat", berat: 1.2, satuan: "kg" }, biaya: 42000, keterangan: "COD ditolak penerima (salah ukuran)",
-    riwayat: [{ waktu: Date.now() - 3600000 * 75, status: "Delivery Return", keterangan: "Return COD paket" }]
-  },
-  {
-    id: "EXP-20260830-014", nomorResi: "EXP982103502", tanggalKirim: "2026-08-30", layanan: "Reguler", status: "Masa Hold (H-3)",
-    createdAt: Date.now() - 3600000 * 240, kurir: "Andi Kurniawan", slaRtn: "5", slaEv: "6", drsKe: 3,
-    pengirim: { nama: "Toko Busana Cantik", telepon: "085611223344", alamat: "Pasar Tanah Abang Blok A, Jakarta" },
-    penerima: { nama: "Fitri Handayani", telepon: "081322119944", alamat: "Jl. Veteran Selatan No. 45, Makassar" },
-    barang: { deskripsi: "Jilbab Voal Premium (1 lusin)", berat: 1.0, satuan: "kg" }, biaya: 36000, keterangan: "Hold H-3 batas akhir",
-    riwayat: [{ waktu: Date.now() - 3600000 * 240, status: "Masa Hold (H-3)", keterangan: "Menunggu instruksi retur hari ke-3" }]
-  },
-  {
-    id: "EXP-20260805-015", nomorResi: "EXP982103503", tanggalKirim: "2026-08-05", layanan: "Express", status: "Delivery Return",
-    createdAt: Date.now() - 3600000 * 840, kurir: "Andi Kurniawan", slaRtn: "Return", slaEv: "Gagal Antar", drsKe: 3,
-    pengirim: { nama: "Toko Busana Cantik", telepon: "085611223344", alamat: "Pasar Tanah Abang Blok A, Jakarta" },
-    penerima: { nama: "Nurul Aini", telepon: "081299881122", alamat: "Jl. Perintis Kemerdekaan, Makassar" },
-    barang: { deskripsi: "Setelan Kebaya Modern", berat: 1.5, satuan: "kg" }, biaya: 39000, keterangan: "Penerima menolak membayar COD",
-    riwayat: [{ waktu: Date.now() - 3600000 * 840, status: "Delivery Return", keterangan: "Retur tercatat" }]
-  },
-
-  // CV Maju Logistik (4 packages, 1 return -> Rank #4 Client)
-  {
-    id: "EXP-20260907-016", nomorResi: "EXP982103504", tanggalKirim: "2026-09-07", layanan: "Kargo", status: "Delivered",
-    createdAt: Date.now() - 3600000 * 52, kurir: "Rini Wulandari", slaRtn: "-", slaEv: "Tepat Waktu", drsKe: 1,
-    pengirim: { nama: "CV Maju Logistik", telepon: "081122334455", alamat: "Kawasan Industri MM2100, Cikarang" },
-    penerima: { nama: "Gudang Sentral Medan", telepon: "082233445566", alamat: "Jl. Gatot Subroto No. 99, Medan" },
-    barang: { deskripsi: "Karton Box Kemasan (20 koli)", berat: 85.0, satuan: "kg" }, biaya: 250000, keterangan: "Palletized",
-    riwayat: [{ waktu: Date.now() - 3600000 * 52, status: "Delivered", keterangan: "Diterima tim gudang" }]
-  },
-  {
-    id: "EXP-20260905-017", nomorResi: "EXP982103505", tanggalKirim: "2026-09-05", layanan: "Kargo", status: "Masa Hold (H-1)",
-    createdAt: Date.now() - 3600000 * 98, kurir: "Rini Wulandari", slaRtn: "H-1", slaEv: "Aman (1x24j)", drsKe: 1,
-    pengirim: { nama: "CV Maju Logistik", telepon: "081122334455", alamat: "Kawasan Industri MM2100, Cikarang" },
-    penerima: { nama: "PT Sumatra Makmur", telepon: "081377665544", alamat: "KIM 2 Mabar, Deli Serdang" },
-    barang: { deskripsi: "Pipa PVC Industri (15 batang)", berat: 60.0, satuan: "kg" }, biaya: 190000, keterangan: "Gudang tutup akhir pekan",
-    riwayat: [{ waktu: Date.now() - 3600000 * 98, status: "Masa Hold (H-1)", keterangan: "Jadwal ulang antar" }]
-  },
-  {
-    id: "EXP-20260818-018", nomorResi: "EXP982103506", tanggalKirim: "2026-08-18", layanan: "Express", status: "Delivery Return",
-    createdAt: Date.now() - 3600000 * 520, kurir: "Rini Wulandari", slaRtn: "5", slaEv: "7", drsKe: 3,
-    pengirim: { nama: "CV Maju Logistik", telepon: "081122334455", alamat: "Kawasan Industri MM2100, Cikarang" },
-    penerima: { nama: "CV Prima Karya", telepon: "081288776655", alamat: "Jl. Brigjend Katamso, Medan" },
-    barang: { deskripsi: "Sparepart Katup Pneumatik", berat: 5.5, satuan: "kg" }, biaya: 65000, keterangan: "Salah tipe barang",
-    riwayat: [{ waktu: Date.now() - 3600000 * 520, status: "Delivery Return", keterangan: "Retur ke pabrik Cikarang" }]
-  },
-  {
-    id: "EXP-20260710-019", nomorResi: "EXP982103507", tanggalKirim: "2026-07-10", layanan: "Kargo", status: "Delivered",
-    createdAt: Date.now() - 3600000 * 1440, kurir: "Rini Wulandari", slaRtn: "-", slaEv: "Tepat Waktu", drsKe: 1,
-    pengirim: { nama: "CV Maju Logistik", telepon: "081122334455", alamat: "Kawasan Industri MM2100, Cikarang" },
-    penerima: { nama: "Toko Bangunan Sentosa", telepon: "085344332211", alamat: "Jl. Yos Sudarso, Medan" },
-    barang: { deskripsi: "Fitting Besi Galvanis", berat: 42.0, satuan: "kg" }, biaya: 135000, keterangan: "Selesai",
-    riwayat: [{ waktu: Date.now() - 3600000 * 1440, status: "Delivered", keterangan: "Diterima Pak Usman" }]
-  },
-
-  // Apotek Medika (3 packages, 1 return -> Rank #5 Client)
-  {
-    id: "EXP-20260909-020", nomorResi: "EXP982103508", tanggalKirim: "2026-09-09", layanan: "Same Day", status: "Delivered",
-    createdAt: Date.now() - 3600000 * 3, kurir: "Dedi Saputra", slaRtn: "-", slaEv: "Tepat Waktu", drsKe: 1,
-    pengirim: { nama: "Apotek Medika", telepon: "082199887766", alamat: "Jl. Gajah Mada, Jakarta Barat" },
-    penerima: { nama: "Dr. Hendra Wijaya", telepon: "081344556677", alamat: "Klinik Sehat, Tangerang" },
-    barang: { deskripsi: "Paket Obat & Vitamin", berat: 1.2, satuan: "kg" }, biaya: 35000, keterangan: "Suhu ruang",
-    riwayat: [{ waktu: Date.now() - 3600000 * 3, status: "Delivered", keterangan: "Diterima staf apotek klinik" }]
-  },
-  {
-    id: "EXP-20260904-021", nomorResi: "EXP982103509", tanggalKirim: "2026-09-04", layanan: "Express", status: "Delivery Return",
-    createdAt: Date.now() - 3600000 * 120, kurir: "Dedi Saputra", slaRtn: "Return", slaEv: "Gagal Antar", drsKe: 3,
-    pengirim: { nama: "Apotek Medika", telepon: "082199887766", alamat: "Jl. Gajah Mada, Jakarta Barat" },
-    penerima: { nama: "Bambang Irawan", telepon: "081399008877", alamat: "Jl. Slamet Riyadi No. 120, Solo" },
-    barang: { deskripsi: "Termometer Digital & Tensimeter", berat: 2.0, satuan: "kg" }, biaya: 38000, keterangan: "Kemasan basah terkena hujan",
-    riwayat: [{ waktu: Date.now() - 3600000 * 120, status: "Delivery Return", keterangan: "Retur klaim asuransi" }]
-  },
-  {
-    id: "EXP-20260822-022", nomorResi: "EXP982103510", tanggalKirim: "2026-08-22", layanan: "Reguler", status: "Masa Hold (H-2)",
-    createdAt: Date.now() - 3600000 * 430, kurir: "Dedi Saputra", slaRtn: "H-2", slaEv: "Peringatan (2x24j)", drsKe: 2,
-    pengirim: { nama: "Apotek Medika", telepon: "082199887766", alamat: "Jl. Gajah Mada, Jakarta Barat" },
-    penerima: { nama: "Puskesmas Banyumanik", telepon: "085711229988", alamat: "Jl. Perintis Kemerdekaan, Semarang" },
-    barang: { deskripsi: "Alat Suntik Sekali Pakai (5 box)", berat: 3.5, satuan: "kg" }, biaya: 44000, keterangan: "Menunggu jadwal serah terima dinas",
-    riwayat: [{ waktu: Date.now() - 3600000 * 430, status: "Masa Hold (H-2)", keterangan: "Hold H-2 di Hub Semarang" }]
-  },
-
-  // Yearly data points (2025 & 2024)
-  {
-    id: "EXP-20251112-023", nomorResi: "EXP982101990", tanggalKirim: "2025-11-12", layanan: "Reguler", status: "Delivered",
-    createdAt: new Date("2025-11-12T10:00:00").getTime(), kurir: "Budi Santoso", slaRtn: "-", slaEv: "Tepat Waktu", drsKe: 1,
-    pengirim: { nama: "PT Sentosa Jaya", telepon: "081234567890", alamat: "Jl. Sudirman No. 45, Jakarta Pusat" },
-    penerima: { nama: "Wawan Kusuma", telepon: "081233445577", alamat: "Jl. Diponegoro, Bandung" },
-    barang: { deskripsi: "Kabel Data Shielded", berat: 1.0, satuan: "kg" }, biaya: 22000, keterangan: "Arsip 2025",
-    riwayat: [{ waktu: new Date("2025-11-12T10:00:00").getTime(), status: "Delivered", keterangan: "Selesai" }]
-  },
-  {
-    id: "EXP-20240815-024", nomorResi: "EXP982100880", tanggalKirim: "2024-08-15", layanan: "Kargo", status: "Delivered",
-    createdAt: new Date("2024-08-15T14:00:00").getTime(), kurir: "Eko Prasetyo", slaRtn: "-", slaEv: "Tepat Waktu", drsKe: 1,
-    pengirim: { nama: "CV Maju Logistik", telepon: "081122334455", alamat: "Kawasan Industri MM2100, Cikarang" },
-    penerima: { nama: "Gudang Perak Surabaya", telepon: "082299887766", alamat: "Tanjung Perak, Surabaya" },
-    barang: { deskripsi: "Komponen Mesin Diesel", berat: 90.0, satuan: "kg" }, biaya: 320000, keterangan: "Arsip 2024",
-    riwayat: [{ waktu: new Date("2024-08-15T14:00:00").getTime(), status: "Delivered", keterangan: "Selesai" }]
-  }
-];
-
-function escapeHtml(str) {
-  if (str === null || str === undefined) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-function ensureShipmentFields(r) {
-  if (!r.kurir) r.kurir = getCourierForResi(r);
-  if (!r.drsKe) {
-    if (r.status === 'Masa Hold (H-3)' || r.status === 'Delivery Return') r.drsKe = 3;
-    else if (r.status === 'Masa Hold (H-2)') r.drsKe = 2;
-    else r.drsKe = 1;
-  }
-  if (!r.slaRtn) {
-    if (r.status === 'Masa Hold (H-1)') r.slaRtn = 'H-1';
-    else if (r.status === 'Masa Hold (H-2)') r.slaRtn = 'H-2';
-    else if (r.status === 'Masa Hold (H-3)') r.slaRtn = 'H-3';
-    else if (r.status === 'Delivery Return' || (r.status && r.status.toLowerCase().includes('return'))) r.slaRtn = 'Return';
-    else if (r.status === 'Delivered' || r.status === 'Terkirim') r.slaRtn = '-';
-    else r.slaRtn = 'H-1';
-  }
-  if (!r.slaEv) {
-    if (r.status === 'Masa Hold (H-3)') r.slaEv = 'Kritis (3x24j)';
-    else if (r.status === 'Masa Hold (H-2)') r.slaEv = 'Peringatan (2x24j)';
-    else if (r.status === 'Masa Hold (H-1)') r.slaEv = 'Aman (1x24j)';
-    else if (r.status === 'Delivery Return') r.slaEv = 'Gagal Antar';
-    else if (r.status === 'Delivered' || r.status === 'Terkirim') r.slaEv = 'Tepat Waktu';
-    else r.slaEv = 'On-Track';
-  }
-}
+const DEFAULT_SAMPLE_DATA = [];
 
 function loadData() {
   try {
+    // One-time auto-wipe for cached dummy data
+    if (!SafeStorage.getItem('ekspedisi_clean_v4')) {
+      SafeStorage.removeItem(STORAGE_KEY);
+      SafeStorage.removeItem('ekspedisi_resi_v4');
+      SafeStorage.removeItem('ekspedisi_data_v1');
+      SafeStorage.removeItem(KEY_DRIVE_FILES);
+      SafeStorage.removeItem(NOTES_KEY_V2);
+      SafeStorage.setItem('ekspedisi_clean_v4', 'true');
+      data = [];
+      saveData();
+      console.log('[ExpediLog] Dummy cache purged!');
+      return;
+    }
+
     let raw = SafeStorage.getItem(STORAGE_KEY);
     if (!raw) raw = SafeStorage.getItem('ekspedisi_data_v1');
     if (raw && raw !== '[]' && raw !== '{}') {
@@ -4266,12 +4018,11 @@ function loadData() {
       data = [];
     }
 
-    // If data is empty or invalid, fallback to complete 24 sample shipments
-    if (!Array.isArray(data) || data.length === 0) {
-      data = JSON.parse(JSON.stringify(DEFAULT_SAMPLE_DATA));
+    if (!Array.isArray(data)) {
+      data = [];
     }
 
-    // Auto-migrate and guarantee shipment fields
+    // Auto-migrate and guarantee shipment fields if items exist
     data.forEach(r => {
       if (!r) return;
       if (r.status === 'Terkirim') r.status = 'Delivered';
@@ -4279,24 +4030,20 @@ function loadData() {
       if (typeof r.pengirim === 'string') {
         r.pengirim = { nama: r.pengirim, telepon: '', alamat: '' };
       } else if (!r.pengirim) {
-        r.pengirim = { nama: r.namaClient || r.client || 'Client Umum', telepon: '', alamat: '' };
+        r.pengirim = { nama: '-', telepon: '', alamat: '' };
       }
       if (typeof r.penerima === 'string') {
         r.penerima = { nama: r.penerima, telepon: '', alamat: '' };
       } else if (!r.penerima) {
-        r.penerima = { nama: 'Penerima Paket', telepon: '', alamat: '' };
-      }
-      if (!r.barang) {
-        r.barang = { deskripsi: 'Paket', berat: 1, satuan: 'kg' };
+        r.penerima = { nama: '-', telepon: '', alamat: '' };
       }
       ensureShipmentFields(r);
     });
-    saveData();
+
+    console.log('[ExpediLog] Data loaded count:', data.length);
   } catch(err) {
     console.error('loadData error:', err);
-    data = JSON.parse(JSON.stringify(DEFAULT_SAMPLE_DATA));
-    data.forEach(r => ensureShipmentFields(r));
-    saveData();
+    data = [];
   }
 }
 function saveData() { 
@@ -4377,6 +4124,12 @@ function showPage(id, btn) {
 
     // 5. Update topbar placeholder
     try { updateTopbarSearchPlaceholder(id); } catch(e) {}
+    try {
+      SafeStorage.setItem('ekspedisi_active_page', id);
+      if (window.location.hash !== '#' + id) {
+        history.replaceState(null, '', '#' + id);
+      }
+    } catch(e) {}
 
     // 6. Execute page renderers with safety catch
     try {
@@ -6544,90 +6297,18 @@ function printManifest() {
 // ─── TEAM NOTEPAD (MULTI-NOTE SYSTEM & MODAL CRUD) ───────────
 const NOTES_KEY_V2 = 'ekspedisi_team_notes_v2';
 
-const DEFAULT_TEAM_NOTES = [
-  {
-    id: 'NOTE-1',
-    title: 'Jadwal Armada Kontainer Hub Barat',
-    urgency: 'Biasa',
-    category: 'Biasa',
-    author: 'Budi Santoso',
-    content: 'Keberangkatan truk armada kontainer Hub Barat dipercepat menjadi pk 16.00 WIB untuk menghindari kemacetan di tol Cikampek. Pastikan seluruh paket outbound sudah discan DRS sebelum pk 15.30 WIB.',
-    updatedAt: Date.now() - 3600000 * 2
-  },
-  {
-    id: 'NOTE-2',
-    title: 'Instruksi Penanganan Khusus Retur Paket Fragile',
-    urgency: 'Penting',
-    category: 'Penting',
-    author: 'Supervisor Logistik',
-    content: 'Semua paket berstatus Delivery Return dengan label Fragile/Elektronik wajib didokumentasikan unboxing video saat serah terima dari kurir dan disimpan di rak aman B-03.',
-    updatedAt: Date.now() - 3600000 * 8
-  },
-  {
-    id: 'NOTE-3',
-    title: 'Overload Antaran Area Tangerang & Jakbar',
-    urgency: 'Sangat Penting',
-    category: 'Sangat Penting',
-    author: 'Koordinator Kurir',
-    content: 'Kurir Andi Kurniawan rute Tangerang mengalami lonjakan kiriman (+18 paket). Sebagian kiriman dialihkan ke Eko Prasetyo untuk coverage Ciledug dan Karang Tengah.',
-    updatedAt: Date.now() - 3600000 * 20
-  }
-];
-
-function selectUrgency(val) {
-  const hiddenInput = document.getElementById('noteUrgencyInput');
-  if (hiddenInput) hiddenInput.value = val;
-
-  const btnBiasa = document.getElementById('urgencyBtnBiasa');
-  const btnPenting = document.getElementById('urgencyBtnPenting');
-  const btnSangat = document.getElementById('urgencyBtnSangatPenting');
-
-  const resetStyle = (btn) => {
-    if (!btn) return;
-    btn.style.borderColor = '#e2e8f0';
-    btn.style.background = '#f8fafc';
-    btn.style.color = '#64748b';
-  };
-
-  resetStyle(btnBiasa);
-  resetStyle(btnPenting);
-  resetStyle(btnSangat);
-
-  if (val === 'Sangat Penting') {
-    if (btnSangat) {
-      btnSangat.style.borderColor = '#ef4444';
-      btnSangat.style.background = 'rgba(239,68,68,0.08)';
-      btnSangat.style.color = '#dc2626';
-    }
-  } else if (val === 'Penting') {
-    if (btnPenting) {
-      btnPenting.style.borderColor = '#f59e0b';
-      btnPenting.style.background = 'rgba(245,158,11,0.08)';
-      btnPenting.style.color = '#d97706';
-    }
-  } else {
-    if (btnBiasa) {
-      btnBiasa.style.borderColor = '#10b981';
-      btnBiasa.style.background = 'rgba(16,185,129,0.08)';
-      btnBiasa.style.color = '#059669';
-    }
-  }
-}
+const DEFAULT_TEAM_NOTES = [];
 
 function getTeamNotes() {
   try {
     const raw = SafeStorage.getItem(NOTES_KEY_V2);
-    if (!raw) {
-      SafeStorage.setItem(NOTES_KEY_V2, JSON.stringify(DEFAULT_TEAM_NOTES));
-      return DEFAULT_TEAM_NOTES;
-    }
+    if (!raw) return [];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : DEFAULT_TEAM_NOTES;
+    return Array.isArray(parsed) ? parsed : [];
   } catch(e) {
-    return DEFAULT_TEAM_NOTES;
+    return [];
   }
 }
-
 function saveTeamNotesToStorage(notes) {
   SafeStorage.setItem(NOTES_KEY_V2, JSON.stringify(notes));
 }
@@ -7248,83 +6929,18 @@ const DRIVE_STORAGE_QUOTA_BYTES = 50 * 1024 * 1024; // 50 MB simulated quota
 let currentDriveCategory = 'all';
 let driveViewMode = SafeStorage.getItem('ekspedisi_drive_view_mode') || 'grid';
 
-const INITIAL_DRIVE_FILES = [
-  {
-    id: 'df-001',
-    name: 'Bukti_POD_Serah_Terima_EXP982103490.jpg',
-    category: 'image',
-    ext: 'jpg',
-    sizeBytes: 1245000,
-    uploadedAt: Date.now() - 3600000 * 2,
-    uploadedBy: 'Budi Santoso (Kurir)',
-    description: 'Foto bukti serah terima paket ke penerima dengan tanda tangan basah di resi fisik.',
-    dataUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="100%" height="100%" fill="%23ecfdf5"/><rect x="40" y="40" width="520" height="320" rx="16" fill="%23ffffff" stroke="%2310b981" stroke-width="3"/><circle cx="120" cy="140" r="45" fill="%23d1fae5"/><path d="M120 120 L120 160 M100 140 L140 140" stroke="%2310b981" stroke-width="5" stroke-linecap="round"/><text x="190" y="130" font-family="sans-serif" font-weight="bold" font-size="20" fill="%230f172a">BUKTI SERAH TERIMA PAKET (POD)</text><text x="190" y="160" font-family="sans-serif" font-size="14" fill="%2364748b">No. Resi: EXP982103490 — Diterima oleh Satpam Cluster</text><line x1="70" y1="210" x2="530" y2="210" stroke="%23e2e8f0" stroke-width="2"/><text x="70" y="250" font-family="sans-serif" font-size="13" fill="%23475569">Status Kiriman: Delivered (Terkirim Sukses)</text><text x="70" y="280" font-family="sans-serif" font-size="13" fill="%23475569">Waktu Dokumentasi: 11 September 2026, 14:15 WIB</text><text x="70" y="310" font-family="sans-serif" font-size="13" fill="%2310b981" font-weight="bold">✓ Terverifikasi Sistem ExpediLog</text></svg>'
-  },
-  {
-    id: 'df-002',
-    name: 'Manifest_Muatan_Armada_Pagi_Surabaya.pdf',
-    category: 'document',
-    ext: 'pdf',
-    sizeBytes: 852000,
-    uploadedAt: Date.now() - 3600000 * 7,
-    uploadedBy: 'Pratama (Super Admin)',
-    description: 'Surat jalan resmi dan daftar muatan van ekspedisi rute Surabaya Barat & Selatan.',
-    dataUrl: ''
-  },
-  {
-    id: 'df-003',
-    name: 'Audit_SLA_Return_Agustus_2026.xlsx',
-    category: 'sheet',
-    ext: 'xlsx',
-    sizeBytes: 1420000,
-    uploadedAt: Date.now() - 3600000 * 36,
-    uploadedBy: 'Pratama (Super Admin)',
-    description: 'Analisis rekapitulasi tingkat retur, kendala hold H-1 s/d H-3, serta evaluasi rasio kurir.',
-    dataUrl: ''
-  },
-  {
-    id: 'df-004',
-    name: 'Foto_Kemasan_Penyok_Klaim_Asuransi.png',
-    category: 'image',
-    ext: 'png',
-    sizeBytes: 940000,
-    uploadedAt: Date.now() - 3600000 * 48,
-    uploadedBy: 'Eko Prasetyo (Kurir)',
-    description: 'Dokumentasi kerusakan kardus luar paket sparepart sebelum proses retur ke pihak shipper.',
-    dataUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="100%" height="100%" fill="%23fef2f2"/><rect x="40" y="40" width="520" height="320" rx="16" fill="%23ffffff" stroke="%23ef4444" stroke-width="3"/><circle cx="120" cy="140" r="45" fill="%23fee2e2"/><path d="M105 125 L135 155 M135 125 L105 155" stroke="%23ef4444" stroke-width="5" stroke-linecap="round"/><text x="190" y="130" font-family="sans-serif" font-weight="bold" font-size="20" fill="%230f172a">DOKUMENTASI KLAIM BARANG RUSAK</text><text x="190" y="160" font-family="sans-serif" font-size="14" fill="%2364748b">Paket Retur: EXP982103494 — Kemasan Rusak Saat Transit</text><line x1="70" y1="210" x2="530" y2="210" stroke="%23e2e8f0" stroke-width="2"/><text x="70" y="250" font-family="sans-serif" font-size="13" fill="%23dc2626" font-weight="bold">Status Investigasi: Return Approved</text><text x="70" y="280" font-family="sans-serif" font-size="13" fill="%23475569">Pengirim: PT Sinar Abadi — Kurir Pelapor: Eko Prasetyo</text><text x="70" y="310" font-family="sans-serif" font-size="13" fill="%2364748b">Dokumen pendukung untuk form klaim ganti rugi asuransi barang.</text></svg>'
-  },
-  {
-    id: 'df-005',
-    name: 'Backup_Database_ExpediLog_11Sept.json',
-    category: 'archive',
-    ext: 'json',
-    sizeBytes: 384000,
-    uploadedAt: Date.now() - 3600000 * 4,
-    uploadedBy: 'Sistem Otomatis',
-    description: 'Cadangan penuh data pengiriman, master client, performa kurir, dan catatan operasional tim.',
-    dataUrl: ''
-  }
-];
+const INITIAL_DRIVE_FILES = [];
 
 function getDriveFiles() {
   try {
     const raw = SafeStorage.getItem(KEY_DRIVE_FILES);
-    if (!raw) {
-      SafeStorage.setItem(KEY_DRIVE_FILES, JSON.stringify(INITIAL_DRIVE_FILES));
-      return INITIAL_DRIVE_FILES;
-    }
+    if (!raw) return [];
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed) || !parsed.length) {
-      SafeStorage.setItem(KEY_DRIVE_FILES, JSON.stringify(INITIAL_DRIVE_FILES));
-      return INITIAL_DRIVE_FILES;
-    }
-    return parsed;
+    return Array.isArray(parsed) ? parsed : [];
   } catch (e) {
-    console.warn('Error reading drive files from localStorage:', e);
-    return INITIAL_DRIVE_FILES;
+    return [];
   }
 }
-
 function saveDriveFiles(files) {
   try {
     SafeStorage.setItem(KEY_DRIVE_FILES, JSON.stringify(files));
@@ -7860,13 +7476,7 @@ function handleRestoreJSON(e) {
 }
 
 function resetToSampleData() {
-  if (confirm("Muat ulang seluruh data sampel ekspedisi demo? Data Anda saat ini akan digantikan dengan data sampel.")) {
-    data = JSON.parse(JSON.stringify(DEFAULT_SAMPLE_DATA));
-    saveData();
-    refreshDashboard();
-    renderTable();
-    showToast('🔄', 'Data sampel berhasil dimuat ulang!');
-  }
+  showToast('ℹ️', 'Sistem beroperasi dalam mode Clean Data (tanpa data dummy bawaan).');
 }
 
 function clearAllData() {
@@ -9895,14 +9505,14 @@ function autoLoginNow() {
 }
 
 function handleLoginSubmit(e) {
-  if(e) {
+  if (e) {
     try { e.preventDefault(); } catch(err) {}
     try { if (e.stopPropagation) e.stopPropagation(); } catch(err) {}
   }
   const uInput = document.getElementById('loginUsername');
   const pInput = document.getElementById('loginPassword');
-  const u = ((uInput ? uInput.value : '') || 'Pratama').trim();
-  const p = ((pInput ? pInput.value : '') || 'Pratama_123').trim();
+  const u = (uInput ? uInput.value : '').trim();
+  const p = (pInput ? pInput.value : '').trim();
   const errMsg = document.getElementById('loginErrorMsg');
   const overlay = document.getElementById('loginOverlay');
   const stage = document.getElementById('loginStage');
@@ -9912,18 +9522,18 @@ function handleLoginSubmit(e) {
   const uLow = u.toLowerCase();
   const pLow = p.toLowerCase();
 
-  // Allow Pratama, admin, superadmin, or matching credentials
+  // Allow Pratama, admin, superadmin, or empty default
   const isUserValid = (uLow === 'pratama' || uLow === 'admin' || uLow === 'superadmin' || u === SUPER_ADMIN.user || u === '');
   const isPassValid = (p === curPass || pLow === 'pratama_123' || pLow === 'admin' || p === '123456' || p === '');
 
   if (isUserValid && isPassValid) {
     if (errMsg) errMsg.style.display = 'none';
     if (btn) {
-      btn.innerHTML = '<span>✓ Berhasil Masuk...</span>';
+      btn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:6px;"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Berhasil Masuk...</span>';
       btn.style.background = '#047857';
     }
 
-    // 1. Session mark
+    // 1. Session mark in SafeStorage
     window.__IS_LOGGED_IN = true;
     try {
       SafeStorage.setItem('ekspedisi_auth', 'Pratama');
@@ -9934,40 +9544,47 @@ function handleLoginSubmit(e) {
       console.warn('Storage warn:', err);
     }
 
-    // 2. Make all layout containers visible
+    // 2. Make all layout containers visible and set classes
+    document.documentElement.classList.add('logged-in-user');
+    if (document.body) document.body.classList.add('logged-in-user');
     const topbar = document.getElementById('topbar');
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('main');
-    if (topbar) topbar.style.display = 'flex';
-    if (sidebar) sidebar.style.display = 'flex';
-    if (main) main.style.display = 'flex';
+    if (topbar) topbar.style.setProperty('display', 'flex', 'important');
+    if (sidebar) sidebar.style.setProperty('display', 'flex', 'important');
+    if (main) main.style.setProperty('display', 'flex', 'important');
 
-    // 3. Render dashboard
+    // 3. Render target page cleanly
     try {
-      showPage('dashboard', document.querySelector('.nav-item'));
+      const hashPage = window.location.hash ? window.location.hash.replace('#', '') : null;
+      const validPages = ['dashboard', 'daftar', 'outstanding', 'client', 'blast', 'notepad', 'portal', 'filemanager', 'pengaturan'];
+      let targetPage = hashPage || SafeStorage.getItem('ekspedisi_active_page') || 'dashboard';
+      if (!validPages.includes(targetPage)) targetPage = 'dashboard';
+      showPage(targetPage);
       initGreeting();
-      refreshDashboard();
     } catch(err) {
       console.warn('Dashboard init warn:', err);
     }
 
-    // 4. Animate curtain & dismiss overlay immediately
+    // 4. Trigger the smooth slide-out curtain parting animation
     if (stage) stage.classList.add('curtain-opening');
     if (overlay) {
       overlay.style.pointerEvents = 'none';
       overlay.classList.add('curtain-opening');
     }
 
+    // 5. Complete animation and hide overlay smoothly after 800ms
     setTimeout(function() {
       if (overlay) {
         overlay.classList.add('logged-in');
         overlay.style.setProperty('display', 'none', 'important');
         overlay.style.setProperty('visibility', 'hidden', 'important');
         overlay.style.setProperty('opacity', '0', 'important');
+        overlay.style.setProperty('pointer-events', 'none', 'important');
         overlay.style.setProperty('z-index', '-9999', 'important');
       }
       try { showToast('👋', 'Selamat datang kembali, Super Admin Pratama!'); } catch(e) {}
-    }, 450);
+    }, 800);
 
     return false;
   } else {
@@ -9989,37 +9606,55 @@ function handleLoginSubmit(e) {
 function handleLogout() {
   SafeStorage.removeItem('ekspedisi_auth');
   SafeStorage.removeItem('ekspedisi_auth_remember');
-  
+  SafeStorage.removeItem('ekspedisi_active_page');
+  window.__IS_LOGGED_IN = false;
+  try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
+
+  document.documentElement.classList.remove('logged-in-user');
+  if (document.body) document.body.classList.remove('logged-in-user');
+
+  const topbar = document.getElementById('topbar');
+  const sidebar = document.getElementById('sidebar');
+  const main = document.getElementById('main');
+  if (topbar) topbar.style.display = 'none';
+  if (sidebar) sidebar.style.display = 'none';
+  if (main) main.style.display = 'none';
+
   const stage = document.getElementById('loginStage');
   const overlay = document.getElementById('loginOverlay');
   const btn = document.getElementById('loginSubmitBtn');
-  
+
   if (overlay) {
     overlay.classList.remove('logged-in');
     overlay.classList.remove('curtain-opening');
     overlay.style.removeProperty('display');
-    overlay.style.display = 'flex';
-    overlay.style.opacity = '1';
-    overlay.style.pointerEvents = 'auto';
+    overlay.style.setProperty('display', 'flex', 'important');
+    overlay.style.setProperty('opacity', '1', 'important');
+    overlay.style.setProperty('visibility', 'visible', 'important');
+    overlay.style.setProperty('pointer-events', 'auto', 'important');
+    overlay.style.setProperty('z-index', '99999', 'important');
+    overlay.style.setProperty('background', 'rgba(11, 19, 43, 0.85)', 'important');
+    overlay.style.setProperty('backdrop-filter', 'blur(12px)', 'important');
+    overlay.style.setProperty('-webkit-backdrop-filter', 'blur(12px)', 'important');
   }
   if (stage) {
     stage.classList.remove('curtain-opening');
   }
-  
+
   if (btn) {
-    btn.innerHTML = 'Sign in';
+    btn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:8px;"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Sign in</span>';
     btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
   }
-  
+
   const pwd = document.getElementById('loginPassword');
   if (pwd) pwd.value = '';
-  
+
   const errMsg = document.getElementById('loginErrorMsg');
   if (errMsg) errMsg.style.display = 'none';
-  
+
   const userMenu = document.getElementById('userDropdownMenu');
   if (userMenu) userMenu.classList.add('hidden');
-  
+
   showToast('🔒', 'Anda telah keluar dari sistem.');
 }
 
@@ -10068,21 +9703,57 @@ function checkLoginSession() {
   const auth = window.safeGet('ekspedisi_auth') || window.safeGet('ekspedisi_auth_remember');
   const overlay = document.getElementById('loginOverlay');
   const stage = document.getElementById('loginStage');
+  const topbar = document.getElementById('topbar');
+  const sidebar = document.getElementById('sidebar');
+  const main = document.getElementById('main');
+
   if (auth === 'Pratama') {
+    window.__IS_LOGGED_IN = true;
+    document.documentElement.classList.add('logged-in-user');
+    if (document.body) document.body.classList.add('logged-in-user');
+
+    if (topbar) topbar.style.setProperty('display', 'flex', 'important');
+    if (sidebar) sidebar.style.setProperty('display', 'flex', 'important');
+    if (main) main.style.setProperty('display', 'flex', 'important');
+
     if (overlay) {
       overlay.classList.add('logged-in');
       overlay.style.setProperty('display', 'none', 'important');
+      overlay.style.setProperty('visibility', 'hidden', 'important');
+      overlay.style.setProperty('opacity', '0', 'important');
+      overlay.style.setProperty('pointer-events', 'none', 'important');
+      overlay.style.setProperty('z-index', '-9999', 'important');
     }
-    showPage('dashboard', document.querySelector('.nav-item'));
+
+    const hashPage = window.location.hash ? window.location.hash.replace('#', '') : null;
+    const validPages = ['dashboard', 'daftar', 'outstanding', 'client', 'blast', 'notepad', 'portal', 'filemanager', 'pengaturan'];
+    let targetPage = hashPage || SafeStorage.getItem('ekspedisi_active_page') || 'dashboard';
+    if (!validPages.includes(targetPage)) {
+      targetPage = 'dashboard';
+    }
+    showPage(targetPage);
   } else {
+    window.__IS_LOGGED_IN = false;
+    document.documentElement.classList.remove('logged-in-user');
+    if (document.body) document.body.classList.remove('logged-in-user');
+
+    if (topbar) topbar.style.setProperty('display', 'none', 'important');
+    if (sidebar) sidebar.style.setProperty('display', 'none', 'important');
+    if (main) main.style.setProperty('display', 'none', 'important');
+
     if (overlay) {
       overlay.classList.remove('logged-in');
       overlay.classList.remove('curtain-opening');
       if (stage) stage.classList.remove('curtain-opening');
       overlay.style.removeProperty('display');
-      overlay.style.display = 'flex';
-      overlay.style.opacity = '1';
-      overlay.style.pointerEvents = 'auto';
+      overlay.style.setProperty('display', 'flex', 'important');
+      overlay.style.setProperty('opacity', '1', 'important');
+      overlay.style.setProperty('visibility', 'visible', 'important');
+      overlay.style.setProperty('pointer-events', 'auto', 'important');
+      overlay.style.setProperty('z-index', '99999', 'important');
+      overlay.style.setProperty('background', 'rgba(11, 19, 43, 0.85)', 'important');
+      overlay.style.setProperty('backdrop-filter', 'blur(12px)', 'important');
+      overlay.style.setProperty('-webkit-backdrop-filter', 'blur(12px)', 'important');
     }
   }
 }
