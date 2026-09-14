@@ -3,24 +3,36 @@
 <head>
 
 <script>
-// ════════════════════════════════════════════════════════════════════════════
-// EXPEDILOG SAFESTORAGE ENGINE (IFRAME / BRAVE / GAS SANDBOX SHIELD)
-// ════════════════════════════════════════════════════════════════════════════
+// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// EXPEDILOG SAFESTORAGE ENGINE (GITHUB PAGES & BROWSER READY)
+// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
 (function() {
   var mem = {};
+  var realLS = null;
+  var realSS = null;
+
+  try {
+    if (typeof window !== 'undefined') {
+      realLS = window['local' + 'Storage'];
+      realSS = window['session' + 'Storage'];
+    }
+  } catch(e) {
+    realLS = null;
+    realSS = null;
+  }
 
   var SafeStorage = {
     _mem: mem,
     getItem: function(k) {
       try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          var v = window.SafeStorage.getItem(k);
+        if (realLS) {
+          var v = realLS.getItem(k);
           if (v !== null && v !== undefined) return v;
         }
       } catch(e) {}
       try {
-        if (typeof window !== 'undefined' && window.sessionStorage) {
-          var sv = window.SafeStorage.getItem(k);
+        if (realSS) {
+          var sv = realSS.getItem(k);
           if (sv !== null && sv !== undefined) return sv;
         }
       } catch(e) {}
@@ -29,35 +41,33 @@
     setItem: function(k, v) {
       mem[k] = String(v);
       try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          window.SafeStorage.setItem(k, String(v));
+        if (realLS) {
+          realLS.setItem(k, String(v));
         }
       } catch(e) {}
       try {
-        if (typeof window !== 'undefined' && window.sessionStorage) {
-          window.SafeStorage.setItem(k, String(v));
+        if (realSS) {
+          realSS.setItem(k, String(v));
         }
       } catch(e) {}
     },
     removeItem: function(k) {
       delete mem[k];
       try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          window.SafeStorage.removeItem(k);
+        if (realLS) {
+          realLS.removeItem(k);
         }
       } catch(e) {}
       try {
-        if (typeof window !== 'undefined' && window.sessionStorage) {
-          window.SafeStorage.removeItem(k);
+        if (realSS) {
+          realSS.removeItem(k);
         }
       } catch(e) {}
     },
     clear: function() {
       for (var prop in mem) { if (mem.hasOwnProperty(prop)) delete mem[prop]; }
       try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          window.SafeStorage.clear();
-        }
+        if (realLS) realLS.clear();
       } catch(e) {}
     }
   };
@@ -113,7 +123,7 @@
 
     try { if (typeof initGreeting === 'function') initGreeting(); } catch(err) {}
     try { if (typeof refreshDashboard === 'function') refreshDashboard(); } catch(err) {}
-    try { if (typeof showToast === 'function') showToast('👋', 'Selamat datang kembali, Super Admin Pratama!'); } catch(err) {}
+    try { if (typeof showToast === 'function') showToast('­ƒæï', 'Selamat datang kembali, Super Admin Pratama!'); } catch(err) {}
 
     return false;
   };
@@ -149,7 +159,7 @@ html, body {
 
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ExpediLog — Sistem Pendataan Barang</title>
+<title>ExpediLog ÔÇö Sistem Pendataan Barang</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
@@ -170,7 +180,7 @@ html,body{background-color:#f8fafc;color:#0f172a;}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--background);color:var(--foreground);display:flex;min-height:100vh;}
 
 
-/* ── FLOATING WHITE SIDEBAR (BELOW FULL-WIDTH TOPBAR) ── */
+/* ÔöÇÔöÇ FLOATING WHITE SIDEBAR (BELOW FULL-WIDTH TOPBAR) ÔöÇÔöÇ */
 #sidebar{
   width:240px;
   height:calc(100vh - 98px);
@@ -273,7 +283,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 }
 .sidebar-divider{height:1px;background:#f1f5f9;margin:12px 6px;}
 
-/* ── SIDEBAR MINIMIZED STATE ── */
+/* ÔöÇÔöÇ SIDEBAR MINIMIZED STATE ÔöÇÔöÇ */
 #sidebar.minimized{
   width:76px;
   padding:20px 10px;
@@ -300,7 +310,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
   margin:10px 4px;
 }
 
-/* ── FULL-WIDTH TOPBAR (FULL KE KIRI) ── */
+/* ÔöÇÔöÇ FULL-WIDTH TOPBAR (FULL KE KIRI) ÔöÇÔöÇ */
 #topbar{
   background:var(--card);
   border-bottom:1px solid var(--border);
@@ -349,7 +359,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .topbar-left h1{font-size:18px;font-weight:800;color:var(--foreground);line-height:1.2;}
 .topbar-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
 
-/* ── TOPBAR GLOBAL SEARCH BAR ── */
+/* ÔöÇÔöÇ TOPBAR GLOBAL SEARCH BAR ÔöÇÔöÇ */
 .topbar-search-wrap{
   position:relative;
   display:flex;
@@ -359,7 +369,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
   margin:0 24px;
 }
 
-/* ── PAGE HEADER OUTLINE CARD (HIJAU CLEAN THEME) ── */
+/* ÔöÇÔöÇ PAGE HEADER OUTLINE CARD (HIJAU CLEAN THEME) ÔöÇÔöÇ */
 .page-header-card{
   background:#ffffff;
   border:1px solid #10b981;
@@ -442,7 +452,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
   background:rgba(239,68,68,.1);
 }
 
-/* ── MAIN WITH FLOATING SIDEBAR ── */
+/* ÔöÇÔöÇ MAIN WITH FLOATING SIDEBAR ÔöÇÔöÇ */
 #main{
   margin-left:272px;
   padding-top:70px;
@@ -465,7 +475,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 #content{padding:24px 28px;overflow-y:auto;}
 
-/* ── STAT CARDS (REFERENCE STYLE) ── */
+/* ÔöÇÔöÇ STAT CARDS (REFERENCE STYLE) ÔöÇÔöÇ */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:24px;}
 .stat-card-ref{
   background:#ffffff;
@@ -510,7 +520,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
   letter-spacing:-0.03em;
   margin-bottom:6px;
 }
-/* ── ROLLING DIGIT ODOMETER ANIMATION ── */
+/* ÔöÇÔöÇ ROLLING DIGIT ODOMETER ANIMATION ÔöÇÔöÇ */
 .roll-counter {
   display: inline-flex;
   align-items: center;
@@ -562,10 +572,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
   margin-bottom:24px;
 }
 .stat-trend-bottom.stat-trend-down{
-  color:#84cc16; /* lime-green matching ref screenshot ▼ 14% */
+  color:#84cc16; /* lime-green matching ref screenshot Ôû╝ 14% */
 }
 .stat-trend-bottom.stat-trend-up{
-  color:#ef4444; /* red matching ref screenshot ▲ 20% */
+  color:#ef4444; /* red matching ref screenshot Ôû▓ 20% */
 }
 .stat-wave-wrap{
   width:100%;
@@ -597,7 +607,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .trend-up{color:#22c55e;background:rgba(34,197,94,.1);}
 .trend-down{color:#ef4444;background:rgba(239,68,68,.1);}
 
-/* ── MIDDLE ROW ── */
+/* ÔöÇÔöÇ MIDDLE ROW ÔöÇÔöÇ */
 .mid-row{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:24px;}
 .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;}
 .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
@@ -606,7 +616,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .view-all-btn{font-size:12px;color:#10b981;font-weight:600;cursor:pointer;background:none;border:none;padding:0;}
 .view-all-btn:hover{text-decoration:underline;}
 
-/* ── CHART & FILTER PILLS ── */
+/* ÔöÇÔöÇ CHART & FILTER PILLS ÔöÇÔöÇ */
 .chart-filter-group{display:inline-flex;align-items:center;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;padding:3px;gap:2px;}
 .chart-filter-pill{
   border:1px solid transparent;
@@ -623,7 +633,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .chart-filter-pill.active{background:#10b981;color:#ffffff;border-color:#059669;box-shadow:0 1px 3px rgba(16,185,129,.28);}
 canvas{display:block;}
 
-/* ── PERF BARS ── */
+/* ÔöÇÔöÇ PERF BARS ÔöÇÔöÇ */
 .perf-item{margin-bottom:12px;}
 .perf-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
 .perf-name{font-size:12.5px;font-weight:500;color:var(--foreground);display:flex;align-items:center;gap:6px;}
@@ -631,10 +641,10 @@ canvas{display:block;}
 .perf-bar-bg{height:7px;border-radius:999px;background:var(--accent);overflow:hidden;}
 .perf-bar-fill{height:100%;border-radius:999px;transition:width .6s ease;}
 
-/* ── BOTTOM ROW (2 KOLOM SETELAH NOTIFIKASI DIHAPUS) ── */
+/* ÔöÇÔöÇ BOTTOM ROW (2 KOLOM SETELAH NOTIFIKASI DIHAPUS) ÔöÇÔöÇ */
 .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
 
-/* ── REFERENCE STYLE DATA TABLE ── */
+/* ÔöÇÔöÇ REFERENCE STYLE DATA TABLE ÔöÇÔöÇ */
 .table-panel{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.03);margin-bottom:24px;}
 .data-table{width:100%;border-collapse:collapse;font-size:13px;}
 .data-table thead th{
@@ -798,7 +808,7 @@ canvas{display:block;}
 .btn-jump:hover{background:#059669;border-color:#047857;}
 .total-count-label{margin-left:8px;font-weight:500;font-size:12px;color:#64748b;}
 
-/* ─── VERTICAL AWB COLUMN SELECTION & QUICK COPY ─── */
+/* ÔöÇÔöÇÔöÇ VERTICAL AWB COLUMN SELECTION & QUICK COPY ÔöÇÔöÇÔöÇ */
 .no-select {
   user-select: none !important;
   -webkit-user-select: none !important;
@@ -908,7 +918,7 @@ tr:hover .btn-copy-row-awb { opacity: 0.85; }
   border-color: rgba(16,185,129,0.25);
 }
 
-/* ─── PAGE SIZE SELECTOR ─── */
+/* ÔöÇÔöÇÔöÇ PAGE SIZE SELECTOR ÔöÇÔöÇÔöÇ */
 .footer-page-size-wrap {
   display: inline-flex;
   align-items: center;
@@ -933,7 +943,7 @@ tr:hover .btn-copy-row-awb { opacity: 0.85; }
   border-color: #10b981;
 }
 
-/* ─── MODERN FILTER POPOVER (HIJAU PUTIH CLEAN) ─── */
+/* ÔöÇÔöÇÔöÇ MODERN FILTER POPOVER (HIJAU PUTIH CLEAN) ÔöÇÔöÇÔöÇ */
 .modern-filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -1159,7 +1169,7 @@ tr:hover .btn-copy-row-awb { opacity: 0.85; }
   opacity: 1;
 }
 
-/* ─── DYNAMIC SLA RTN PILL BUTTONS ─── */
+/* ÔöÇÔöÇÔöÇ DYNAMIC SLA RTN PILL BUTTONS ÔöÇÔöÇÔöÇ */
 .sla-btn-filter-group {
   display: flex;
   align-items: center;
@@ -1205,7 +1215,7 @@ tr:hover .btn-copy-row-awb { opacity: 0.85; }
   color: #ffffff;
 }
 
-/* ─── NOTEPAD TIM MULTI-CARD GRID ─── */
+/* ÔöÇÔöÇÔöÇ NOTEPAD TIM MULTI-CARD GRID ÔöÇÔöÇÔöÇ */
 .notes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1286,7 +1296,7 @@ tr:hover .btn-copy-row-awb { opacity: 0.85; }
 .dark .note-badge.penting { background: rgba(245,158,11,0.2); color: #fbbf24; }
 .dark .note-badge.sangat-penting { background: rgba(239,68,68,0.2); color: #f87171; }
 
-/* ── NOTIF ── */
+/* ÔöÇÔöÇ NOTIF ÔöÇÔöÇ */
 .notif-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
 .notif-item:last-child{border-bottom:none;}
 .notif-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
@@ -1294,14 +1304,14 @@ tr:hover .btn-copy-row-awb { opacity: 0.85; }
 .notif-content .notif-desc{font-size:11.5px;color:var(--muted-foreground);}
 .notif-time{font-size:10.5px;color:var(--muted-foreground);white-space:nowrap;}
 
-/* ── KURIR / DRIVER ── */
+/* ÔöÇÔöÇ KURIR / DRIVER ÔöÇÔöÇ */
 .kurir-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
 .kurir-item:last-child{border-bottom:none;}
 .kurir-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0;}
 .kurir-name{font-size:13px;font-weight:600;color:var(--foreground);}
 .kurir-route{font-size:11px;color:var(--muted-foreground);}
 
-/* ── RESI LIST ── */
+/* ÔöÇÔöÇ RESI LIST ÔöÇÔöÇ */
 .resi-list-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
 .resi-list-item:last-child{border-bottom:none;}
 .resi-date-box{width:40px;text-align:center;flex-shrink:0;}
@@ -1313,7 +1323,7 @@ tr:hover .btn-copy-row-awb { opacity: 0.85; }
 .room-online{background:rgba(34,197,94,.12);color:#22c55e;}
 .room-offline{background:rgba(99,102,241,.12);color:#6366f1;}
 
-/* ── MODAL ── */
+/* ÔöÇÔöÇ MODAL ÔöÇÔöÇ */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
 .modal-overlay.hidden, .hidden{display:none !important;}
 #deleteModal{z-index:60;}
@@ -1322,9 +1332,9 @@ input,select,textarea{background:var(--background);border:1px solid var(--border
 input:focus,select:focus,textarea:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.18);}
 select option{background:var(--card);color:var(--foreground);}
 
-/* ═══════════════════════════════════════════════════════════
+/* ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
    CRISP & SHARP BUTTON SYSTEM (ANTI-BLUR HARDENING)
-   ═══════════════════════════════════════════════════════════ */
+   ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ */
 button,
 .btn,
 .btn-primary,
@@ -1462,7 +1472,7 @@ button:hover,
   border-radius: 6px;
 }
 
-/* ── BLAST & OUTSTANDING SPECIFIC ACTION BUTTONS (CRISP HOVER) ── */
+/* ÔöÇÔöÇ BLAST & OUTSTANDING SPECIFIC ACTION BUTTONS (CRISP HOVER) ÔöÇÔöÇ */
 .btn-export-outstanding {
   background: #10b981;
   color: #ffffff !important;
@@ -1605,16 +1615,16 @@ button:hover,
   box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
 }
 
-/* ── DONUT ── */
+/* ÔöÇÔöÇ DONUT ÔöÇÔöÇ */
 .donut-legend{display:flex;flex-direction:column;gap:6px;margin-top:12px;}
 .legend-item{display:flex;align-items:center;gap:8px;font-size:12px;}
 .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 
-/* ── TOAST ── */
+/* ÔöÇÔöÇ TOAST ÔöÇÔöÇ */
 #toast{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;background:var(--card);border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.15);font-size:13px;font-weight:500;color:var(--foreground);min-width:220px;transition:all .3s;}
 #toast.hidden{display:none;}
 
-/* ── SECTION PAGES WITH SMOOTH TRANSITION ── */
+/* ÔöÇÔöÇ SECTION PAGES WITH SMOOTH TRANSITION ÔöÇÔöÇ */
 @keyframes pageFadeSlideIn {
   0% {
     opacity: 0;
@@ -1632,12 +1642,12 @@ button:hover,
   will-change: opacity, transform;
 }
 
-/* ── SCROLLBAR ── */
+/* ÔöÇÔöÇ SCROLLBAR ÔöÇÔöÇ */
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 
-/* ── CLOUD DRIVE & DASHBOARD ANIMATIONS ── */
+/* ÔöÇÔöÇ CLOUD DRIVE & DASHBOARD ANIMATIONS ÔöÇÔöÇ */
 .perf-bar-fill, .courier-bar-fill {
   transition: width 0.75s cubic-bezier(0.16, 1, 0.3, 1) !important;
   will-change: width;
@@ -1750,7 +1760,7 @@ button:hover,
   box-shadow: 0 2px 10px rgba(16,185,129,.28);
 }
 
-/* ── FITUR SCAN CEPAT AWB (ANIMATED EXPANDING PILL) ── */
+/* ÔöÇÔöÇ FITUR SCAN CEPAT AWB (ANIMATED EXPANDING PILL) ÔöÇÔöÇ */
 .quick-scan-wrapper {
   position: relative;
   display: inline-flex;
@@ -1870,7 +1880,7 @@ button:hover,
   .bottom-row{grid-template-columns:1fr 1fr;}
 }
 
-/* ── LOGIN OVERLAY & CURTAIN ANIMATION (GREEN THEME) ── */
+/* ÔöÇÔöÇ LOGIN OVERLAY & CURTAIN ANIMATION (GREEN THEME) ÔöÇÔöÇ */
 #loginOverlay{
   position:fixed;
   inset:0;
@@ -2015,7 +2025,7 @@ button:hover,
 </head>
 <body>
 
-<!-- ══════════════ LOGIN OVERLAY (CURTAIN SYSTEM) ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ LOGIN OVERLAY (CURTAIN SYSTEM) ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="loginOverlay">
   <div class="login-stage" id="loginStage">
     <!-- Left Curtain Card: Info & Welcome (Green) -->
@@ -2122,7 +2132,7 @@ button:hover,
 
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
           <button type="button" onclick="bypassLogin(event)" class="btn-login" id="loginSubmitBtn" style="width:100%;padding:14px;font-size:16px;font-weight:800;background:linear-gradient(135deg, #10b981, #059669);box-shadow:0 4px 14px rgba(16,185,129,0.35);cursor:pointer;border-radius:12px;border:none;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;">
-    <span>🚀 Masuk ke Sistem (1-Klik)</span>
+    <span>­ƒÜÇ Masuk ke Sistem (1-Klik)</span>
   </button>
           <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:#64748b;cursor:pointer;">
             <input type="checkbox" id="rememberMe" checked style="width:15px;height:15px;accent-color:#10b981;cursor:pointer;"/>
@@ -2140,7 +2150,7 @@ button:hover,
       
         <div style="margin-top:14px;text-align:center;">
           <a href="javascript:void(0)" onclick="bypassLogin(event)" style="color:#059669;font-size:12.5px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:#ecfdf5;padding:6px 14px;border-radius:20px;border:1px solid #a7f3d0;">
-            <span>⚡ Buka Dashboard Langsung</span> &rarr;
+            <span>ÔÜí Buka Dashboard Langsung</span> &rarr;
           </a>
         </div>
 
@@ -2158,7 +2168,7 @@ button:hover,
   })();
 </script>
 
-<!-- ══════════════ TOP BAR (FULL WIDTH TO LEFT) ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ TOP BAR (FULL WIDTH TO LEFT) ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <header id="topbar">
   <div class="topbar-brand-area" id="topbarBrandArea">
             <div class="sidebar-brand" style="display:flex;align-items:center;gap:12px;">
@@ -2206,7 +2216,7 @@ button:hover,
       <div id="userDropdownMenu" class="hidden" style="position:absolute;top:44px;right:0;background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.15);min-width:180px;padding:8px;z-index:100;" onclick="event.stopPropagation()">
         <div style="padding:8px 12px;border-bottom:1px solid var(--border);margin-bottom:4px;">
           <div style="font-size:13px;font-weight:700;">Pratama</div>
-          <div style="font-size:11px;color:#10b981;font-weight:700;">● Super Admin Online</div>
+          <div style="font-size:11px;color:#10b981;font-weight:700;">ÔùÅ Super Admin Online</div>
         </div>
         <button type="button" onclick="openChangePasswordModal()" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px 12px;border:none;background:transparent;color:var(--foreground);font-size:13px;font-weight:600;border-radius:8px;cursor:pointer;margin-bottom:2px;transition:background .15s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='transparent'">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -2221,7 +2231,7 @@ button:hover,
   </div>
 </header>
 
-<!-- ══════════════ FLOATING SIDEBAR ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ FLOATING SIDEBAR ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <aside id="sidebar">
   <nav class="sidebar-nav">
     <!-- 1. Dashboard -->
@@ -2316,13 +2326,13 @@ button:hover,
   </nav>
 </aside>
 
-<!-- ══════════════ MAIN ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MAIN ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="main">
 
   <!-- CONTENT -->
   <div id="content">
 
-    <!-- ══ PAGE: DASHBOARD ══ -->
+    <!-- ÔòÉÔòÉ PAGE: DASHBOARD ÔòÉÔòÉ -->
     <div id="page-dashboard" class="page active">
 
       <!-- Header Card with Green Outline -->
@@ -2335,7 +2345,7 @@ button:hover,
           <div class="panel-sub">Ringkasan pengiriman real-time, performa kurir, dan monitoring status logistik</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <button type="button" class="btn btn-ghost btn-sm" onclick="refreshDashboard(); showToast('🔄','Data dashboard diperbarui');" style="display:inline-flex;align-items:center;gap:6px;">
+          <button type="button" class="btn btn-ghost btn-sm" onclick="refreshDashboard(); showToast('­ƒöä','Data dashboard diperbarui');" style="display:inline-flex;align-items:center;gap:6px;">
             <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
             <span>Refresh Data</span>
           </button>
@@ -2377,7 +2387,7 @@ button:hover,
           <div class="stat-value-ref" id="sReturn">0</div>
           <div class="stat-label-ref">Return</div>
           <div class="stat-trend-bottom" id="sReturnTrendWrap" style="margin-bottom:24px;display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;">
-            <span id="sReturnTrendArrow">▲</span>
+            <span id="sReturnTrendArrow">Ôû▓</span>
             <span id="sReturnTrend">0%</span>
           </div>
           <span id="sProses" style="display:none;">0</span>
@@ -2410,7 +2420,7 @@ button:hover,
           <div class="stat-value-ref" id="sTerkirim">0%</div>
           <div class="stat-label-ref">Terkirim</div>
           <div class="stat-trend-bottom stat-trend-up">
-            <span class="trend-arrow">▲</span>
+            <span class="trend-arrow">Ôû▓</span>
             <span id="sTerkirimTrend">0%</span>
           </div>
         </div>
@@ -2486,7 +2496,7 @@ button:hover,
 
     </div><!-- /page-dashboard -->
 
-    <!-- ══ PAGE: DAFTAR RESI ══ -->
+    <!-- ÔòÉÔòÉ PAGE: DAFTAR RESI ÔòÉÔòÉ -->
     <div id="page-daftar" class="page">
       <!-- Header Card with Green Outline -->
       <div class="page-header-card">
@@ -2498,7 +2508,7 @@ button:hover,
           <div class="panel-sub" id="tableCount">0 resi ditemukan</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <!-- ⚡ FITUR SCAN CEPAT AWB (ICON ONLY & AUTO-CHECKLIST) -->
+          <!-- ÔÜí FITUR SCAN CEPAT AWB (ICON ONLY & AUTO-CHECKLIST) -->
           <div id="quickScanWrapper" class="quick-scan-wrapper">
             <button type="button" id="quickScanTriggerBtn" class="quick-scan-trigger-btn" onclick="toggleQuickScan(true)" title="Scan Cepat AWB (Cek SLA RTN, SLA EV, DRS & Auto-Checklist)">
               <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -2631,7 +2641,7 @@ button:hover,
       </div>
     </div><!-- /page-daftar -->
 
-    <!-- ══ PAGE: OUTSTANDING ══ -->
+    <!-- ÔòÉÔòÉ PAGE: OUTSTANDING ÔòÉÔòÉ -->
     <div id="page-outstanding" class="page">
       <!-- Header Card with Green Outline -->
       <div class="page-header-card">
@@ -2707,7 +2717,7 @@ button:hover,
       </div>
     </div><!-- /page-outstanding -->
 
-    <!-- ══ PAGE: DATA CLIENT ══ -->
+    <!-- ÔòÉÔòÉ PAGE: DATA CLIENT ÔòÉÔòÉ -->
     <div id="page-client" class="page">
       <div class="page-header-card">
         <div>
@@ -2745,7 +2755,7 @@ button:hover,
       </div>
     </div><!-- /page-client -->
 
-    <!-- ══ PAGE: BLAST WA ══ -->
+    <!-- ÔòÉÔòÉ PAGE: BLAST WA ÔòÉÔòÉ -->
     <div id="page-blast" class="page">
       <!-- Header Card with Green Outline & Quick Action Buttons -->
       <div class="page-header-card">
@@ -2761,7 +2771,7 @@ button:hover,
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <button type="button" class="btn btn-gateway-wa" onclick="openWaGatewayModal()" title="Pengaturan WhatsApp Gateway untuk pengiriman langsung tanpa membuka tab">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-            <span>⚙️ Pengaturan Gateway WA</span>
+            <span>ÔÜÖ´©Å Pengaturan Gateway WA</span>
           </button>
           <button type="button" class="btn btn-blast-secondary" onclick="downloadSampleBlastExcel()" title="Unduh format template Excel customer">
             <svg width="15" height="15" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -2777,28 +2787,28 @@ button:hover,
       <!-- Quick Summary Stats Bar -->
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;">
         <div class="panel" style="padding:14px 18px;border-radius:14px;display:flex;align-items:center;gap:12px;">
-          <div style="width:40px;height:40px;border-radius:10px;background:#eff6ff;color:#2563eb;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👥</div>
+          <div style="width:40px;height:40px;border-radius:10px;background:#eff6ff;color:#2563eb;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">­ƒæÑ</div>
           <div>
             <div style="font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;">TOTAL CUSTOMER</div>
             <div style="font-size:20px;font-weight:800;color:var(--foreground);" id="blastStatTotal">0</div>
           </div>
         </div>
         <div class="panel" style="padding:14px 18px;border-radius:14px;display:flex;align-items:center;gap:12px;">
-          <div style="width:40px;height:40px;border-radius:10px;background:#fef3c7;color:#d97706;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">⏳</div>
+          <div style="width:40px;height:40px;border-radius:10px;background:#fef3c7;color:#d97706;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">ÔÅ│</div>
           <div>
             <div style="font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;">SIAP DIKIRIM</div>
             <div style="font-size:20px;font-weight:800;color:#d97706;" id="blastStatPending">0</div>
           </div>
         </div>
         <div class="panel" style="padding:14px 18px;border-radius:14px;display:flex;align-items:center;gap:12px;">
-          <div style="width:40px;height:40px;border-radius:10px;background:#ecfdf5;color:#10b981;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">✅</div>
+          <div style="width:40px;height:40px;border-radius:10px;background:#ecfdf5;color:#10b981;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">Ô£à</div>
           <div>
             <div style="font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;">TERKIRIM</div>
             <div style="font-size:20px;font-weight:800;color:#10b981;" id="blastStatSent">0</div>
           </div>
         </div>
         <div class="panel" style="padding:14px 18px;border-radius:14px;display:flex;align-items:center;gap:12px;">
-          <div style="width:40px;height:40px;border-radius:10px;background:#f1f5f9;color:#475569;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">⚡</div>
+          <div style="width:40px;height:40px;border-radius:10px;background:#f1f5f9;color:#475569;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">ÔÜí</div>
           <div>
             <div style="font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;">STATUS ANTREAN</div>
             <div style="font-size:14px;font-weight:800;color:var(--foreground);" id="blastStatStatus">Siap</div>
@@ -2884,7 +2894,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
                 <span>Mulai Blast Otomatis</span>
               </button>
               <button type="button" id="btnPauseAutoBlast" class="btn btn-pause-autoblast" onclick="togglePauseAutoBlast()">
-                <span id="btnPauseText">⏸ Jeda</span>
+                <span id="btnPauseText">ÔÅ© Jeda</span>
               </button>
               <button type="button" class="btn btn-blast-reset" onclick="resetBlastQueue()" title="Reset Status Pengiriman">
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
@@ -2898,7 +2908,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
                 <span style="width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block;" id="waGatewayDot"></span>
                 <span id="waGatewayStatusText" style="color:var(--foreground);font-weight:600;">Metode: Background Direct Send (Tanpa Pindah Tab)</span>
               </div>
-              <button type="button" onclick="openWaGatewayModal()" style="color:#059669;background:none;border:none;cursor:pointer;font-size:11px;font-weight:700;text-decoration:underline;">⚙️ Pengaturan Gateway ↗</button>
+              <button type="button" onclick="openWaGatewayModal()" style="color:#059669;background:none;border:none;cursor:pointer;font-size:11px;font-weight:700;text-decoration:underline;">ÔÜÖ´©Å Pengaturan Gateway Ôåù</button>
             </div>
           </div>
         </div>
@@ -2913,7 +2923,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
               </div>
               <div>
                 <div style="font-size:13.5px;font-weight:700;" id="blastPreviewHeaderName">Budi Santoso (Customer)</div>
-                <div style="font-size:10.5px;color:#a7f3d0;" id="blastPreviewHeaderPhone">081234567890 • Online</div>
+                <div style="font-size:10.5px;color:#a7f3d0;" id="blastPreviewHeaderPhone">081234567890 ÔÇó Online</div>
               </div>
             </div>
             <div style="font-size:11px;background:rgba(255,255,255,.15);padding:3px 8px;border-radius:6px;font-weight:600;">Pratinjau Pesan</div>
@@ -2932,7 +2942,7 @@ Des. Barang: Sneakers Pria Size 42 Hitam
 Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong dibantu konfirmasinya terkait paket tersebut ya kak. Terimakasih :)</div>
               <div style="display:flex;align-items:center;justify-content:flex-end;gap:4px;margin-top:4px;font-size:10px;color:#667781;">
                 <span id="blastPreviewTime">10:45</span>
-                <span style="color:#53bdeb;font-weight:800;">✓✓</span>
+                <span style="color:#53bdeb;font-weight:800;">Ô£ôÔ£ô</span>
               </div>
             </div>
           </div>
@@ -2985,7 +2995,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
       </div>
     </div><!-- /page-blast -->
 
-    <!-- ══ PAGE: FILE MANAGER & CLOUD DRIVE (GOOGLE DRIVE STYLE) ══ -->
+    <!-- ÔòÉÔòÉ PAGE: FILE MANAGER & CLOUD DRIVE (GOOGLE DRIVE STYLE) ÔòÉÔòÉ -->
     <div id="page-filemanager" class="page">
       <!-- Header Card with Green Outline -->
       <div class="page-header-card">
@@ -3061,7 +3071,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
       <div id="driveFilesContainer"></div>
     </div><!-- /page-filemanager -->
 
-    <!-- ══ PAGE: NOTEPAD TIM ══ -->
+    <!-- ÔòÉÔòÉ PAGE: NOTEPAD TIM ÔòÉÔòÉ -->
     <div id="page-notepad" class="page">
       <div class="page-header-card">
         <div>
@@ -3083,7 +3093,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
       <div id="notesGrid" class="notes-grid"></div>
     </div><!-- /page-notepad -->
 
-    <!-- ══ PAGE: PORTAL TERPADU (SISTEM & LINK TERPADU DENGAN CRUD) ══ -->
+    <!-- ÔòÉÔòÉ PAGE: PORTAL TERPADU (SISTEM & LINK TERPADU DENGAN CRUD) ÔòÉÔòÉ -->
     <div id="page-portal" class="page">
       <div class="page-header-card">
         <div>
@@ -3114,7 +3124,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
       </div>
     </div><!-- /page-portal -->
 
-    <!-- ══ PAGE: PENGATURAN DATA ══ -->
+    <!-- ÔòÉÔòÉ PAGE: PENGATURAN DATA ÔòÉÔòÉ -->
     <div id="page-pengaturan" class="page">
       <div class="page-header-card">
         <div>
@@ -3161,20 +3171,20 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div><!-- /content -->
 </div><!-- /main -->
 
-<!-- ══════════════ MODAL PENGATURAN WHATSAPP GATEWAY ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL PENGATURAN WHATSAPP GATEWAY ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="waGatewayModal" class="modal-overlay hidden" style="z-index:9999;">
   <div class="modal-box" style="max-width:540px;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--border);">
       <div style="display:flex;align-items:center;gap:12px;">
         <div style="width:36px;height:36px;border-radius:10px;background:#ecfdf5;color:#10b981;display:flex;align-items:center;justify-content:center;font-size:18px;">
-          ⚡
+          ÔÜí
         </div>
         <div>
           <div class="panel-title" style="font-size:16px;">Pengaturan WhatsApp Gateway</div>
           <div class="panel-sub" style="font-size:12px;">Kirim pesan langsung di latar belakang tanpa berpindah ke WhatsApp</div>
         </div>
       </div>
-      <button type="button" class="btn btn-ghost" style="padding:6px 10px;" onclick="closeWaGatewayModal()">✕</button>
+      <button type="button" class="btn btn-ghost" style="padding:6px 10px;" onclick="closeWaGatewayModal()">Ô£ò</button>
     </div>
     
     <div style="padding:20px 24px;display:flex;flex-direction:column;gap:16px;">
@@ -3211,7 +3221,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
       <!-- Endpoint URL -->
             <div id="waGatewayUrlGroup">
         <div id="localServerHint" style="font-size:11.5px;color:#b45309;background:#fffbeb;border:1px solid #fde68a;padding:9px 12px;border-radius:10px;margin-bottom:10px;display:none;line-height:1.45;">
-          <strong>&#9888;&#65039; Catatan Server Lokal:</strong> Opsi ini memerlukan program server gateway mandiri (seperti Node.js / Baileys) yang sedang aktif berjalan di port 3000 komputer Anda. Jika belum menjalankan server lokal di PC Anda, browser akan menolak koneksi (<em>Failed to fetch</em>). Untuk pengiriman langsung tanpa setup, silakan pilih <strong>Fonnte API</strong>.
+          <strong>&#9888;&#65039;┬Å Catatan Server Lokal:</strong> Opsi ini memerlukan program server gateway mandiri (seperti Node.js / Baileys) yang sedang aktif berjalan di port 3000 komputer Anda. Jika belum menjalankan server lokal di PC Anda, browser akan menolak koneksi (<em>Failed to fetch</em>). Untuk pengiriman langsung tanpa setup, silakan pilih <strong>Fonnte API</strong>.
         </div>
         <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);margin-bottom:6px;">GATEWAY API URL</label>
         <input type="text" id="waGatewayUrl" value="https://api.fonnte.com/send" placeholder="https://api.fonnte.com/send" style="width:100%;font-size:12.5px;padding:8px 12px;border:1px solid var(--border);border-radius:10px;"/>
@@ -3221,7 +3231,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
       <div id="waGatewayTokenGroup">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
           <label style="font-size:11px;font-weight:700;color:var(--muted-foreground);">API TOKEN / KEY *</label>
-          <a href="https://fonnte.com" target="_blank" id="waGatewayRegisterLink" style="font-size:11px;color:#10b981;text-decoration:none;font-weight:600;">Dapatkan Token Fonnte Gratis ↗</a>
+          <a href="https://fonnte.com" target="_blank" id="waGatewayRegisterLink" style="font-size:11px;color:#10b981;text-decoration:none;font-weight:600;">Dapatkan Token Fonnte Gratis Ôåù</a>
         </div>
         <input type="password" id="waGatewayToken" placeholder="Tempel token API gateway Anda di sini..." style="width:100%;font-size:12.5px;padding:8px 12px;border:1px solid var(--border);border-radius:10px;"/>
         <div style="font-size:11px;color:var(--muted-foreground);margin-top:4px;">Token tersimpan aman di peramban lokal (localStorage) Anda.</div>
@@ -3247,7 +3257,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL FORM ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL FORM ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="formModal" class="modal-overlay hidden">
   <div class="modal-box">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--border);">
@@ -3255,7 +3265,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
         <div class="panel-title" id="modalTitle">Tambah Resi Baru</div>
         <div class="panel-sub">Isi data pengiriman dengan lengkap</div>
       </div>
-      <button class="btn btn-ghost" style="padding:6px 10px;" onclick="closeModal()">✕</button>
+      <button class="btn btn-ghost" style="padding:6px 10px;" onclick="closeModal()">Ô£ò</button>
     </div>
     <form id="resiForm" onsubmit="saveResi(event)" style="padding:20px 24px;">
       <input type="hidden" id="editId"/>
@@ -3430,7 +3440,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   <div class="modal-box" style="max-width:560px;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--border);">
       <div class="panel-title">Detail Pengiriman</div>
-      <button class="btn btn-ghost" style="padding:6px 10px;" onclick="closeDetailModal()">✕</button>
+      <button class="btn btn-ghost" style="padding:6px 10px;" onclick="closeDetailModal()">Ô£ò</button>
     </div>
     <div id="detailContent" style="padding:20px 24px;"></div>
     <div style="padding:0 24px 20px;">
@@ -3460,7 +3470,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL HAPUS SATUAN RESI ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL HAPUS SATUAN RESI ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="deleteModal" class="modal-overlay hidden" onclick="if(event.target===this) closeDeleteModal()">
   <div class="modal-box" style="max-width:390px;text-align:center;padding:28px 24px;border-radius:18px;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.15);">
     <div style="width:52px;height:52px;border-radius:50%;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
@@ -3477,7 +3487,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL HAPUS RESI MASAL (BATCH DELETE) ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL HAPUS RESI MASAL (BATCH DELETE) ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="batchDeleteModal" class="modal-overlay hidden" onclick="if(event.target===this) closeBatchDeleteModal()">
   <div class="modal-box" style="max-width:400px;text-align:center;padding:28px 24px;border-radius:18px;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.15);">
     <div style="width:52px;height:52px;border-radius:50%;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
@@ -3495,7 +3505,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL HAPUS CATATAN TIM (NOTEPAD DELETE) ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL HAPUS CATATAN TIM (NOTEPAD DELETE) ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="deleteNoteModal" class="modal-overlay hidden" onclick="if(event.target===this) closeDeleteNoteModal()">
   <div class="modal-box" style="max-width:400px;text-align:center;padding:28px 24px;border-radius:18px;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.15);">
     <div style="width:52px;height:52px;border-radius:50%;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
@@ -3513,7 +3523,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL HASIL SCAN CEPAT AWB (3S AUTO-CLOSE) ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL HASIL SCAN CEPAT AWB (3S AUTO-CLOSE) ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="quickScanResultModal" class="modal-overlay hidden" onclick="if(event.target===this) closeQuickScanResultModal()">
   <div class="modal-box" style="max-width:480px;border-radius:20px;overflow:hidden;border:1px solid rgba(0,0,0,.08);box-shadow:0 25px 60px rgba(0,0,0,.18);">
     
@@ -3539,7 +3549,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
       <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
         <span style="font-size:18px;font-weight:800;color:var(--foreground);letter-spacing:-0.01em;" id="qsResiNo">EXP982103490</span>
         <span style="background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:3px;">
-          <span>✓</span> Terchecklist
+          <span>Ô£ô</span> Terchecklist
         </span>
       </div>
       <div style="font-size:12px;color:var(--muted-foreground);">Hasil pemindaian cepat No. AWB</div>
@@ -3640,7 +3650,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL PORTAL SISTEM (TAMBAH / EDIT LINK) ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL PORTAL SISTEM (TAMBAH / EDIT LINK) ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="portalSystemModal" class="modal-overlay hidden" onclick="if(event.target===this) closePortalModal()">
   <div class="modal-box" style="max-width:520px;border-radius:18px;overflow:hidden;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.15);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #f1f5f9;">
@@ -3713,7 +3723,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL HAPUS SISTEM PORTAL ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL HAPUS SISTEM PORTAL ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="deletePortalModal" class="modal-overlay hidden" onclick="if(event.target===this) closeDeletePortalModal()">
   <div class="modal-box" style="max-width:400px;text-align:center;padding:28px 24px;border-radius:18px;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.15);">
     <div style="width:52px;height:52px;border-radius:50%;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
@@ -3731,7 +3741,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL PRATINJAU FILE (DRIVE PREVIEW) ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL PRATINJAU FILE (DRIVE PREVIEW) ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="filePreviewModal" class="modal-overlay hidden" onclick="if(event.target===this) closeFilePreview()">
   <div class="modal-box" style="max-width:680px;border-radius:18px;overflow:hidden;border:1px solid rgba(0,0,0,.08);box-shadow:0 25px 60px rgba(0,0,0,.2);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #f1f5f9;background:#ffffff;">
@@ -3764,7 +3774,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL HAPUS FILE (DRIVE DELETE) ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL HAPUS FILE (DRIVE DELETE) ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="deleteFileModal" class="modal-overlay hidden" onclick="if(event.target===this) closeDeleteFileModal()">
   <div class="modal-box" style="max-width:400px;text-align:center;padding:28px 24px;border-radius:18px;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.15);">
     <div style="width:52px;height:52px;border-radius:50%;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
@@ -3782,7 +3792,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL UBAH STATUS MASAL ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL UBAH STATUS MASAL ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="batchStatusModal" class="modal-overlay hidden" onclick="if(event.target===this) closeBatchStatusModal()">
   <div class="modal-box" style="max-width:480px;border-radius:18px;overflow:hidden;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.15);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #f1f5f9;">
@@ -3837,7 +3847,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL SCAN & CHECKLIST MASAL ══════════════ -->
+<!-- ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ MODAL SCAN & CHECKLIST MASAL ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ -->
 <div id="bulkScanModal" class="modal-overlay hidden" onclick="if(event.target===this) closeBulkScanModal()">
   <div class="modal-box" style="max-width:540px;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid var(--border);">
@@ -3856,7 +3866,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
           <div class="panel-sub" style="font-size:11.5px;">Masukkan banyak nomor AWB sekaligus untuk otomatis dicentang di tabel</div>
         </div>
       </div>
-      <button class="btn btn-ghost" style="padding:6px 10px;" onclick="closeBulkScanModal()">✕</button>
+      <button class="btn btn-ghost" style="padding:6px 10px;" onclick="closeBulkScanModal()">Ô£ò</button>
     </div>
 
     <div style="padding:18px 22px;">
@@ -3906,7 +3916,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
   </div>
 </div>
 
-<!-- ══════════════ MODAL GANTI PASSWORD SUPER ADMIN ══════════════ -->
+<!-- ÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬É MODAL GANTI PASSWORD SUPER ADMIN ÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬ÉÔòÉ┬É -->
 <div id="changePasswordModal" class="modal-overlay hidden" onclick="if(event.target===this) closeChangePasswordModal()">
   <div class="modal-box" style="max-width:440px;border-radius:18px;overflow:hidden;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.15);background:var(--card);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border);">
@@ -3991,7 +4001,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
 </div>
 
 <script>
-// ─── STORE ───────────────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ STORE ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 const STORAGE_KEY = 'ekspedisi_v1';
 let data = [];
 let currentDetailId = null;
@@ -4298,7 +4308,7 @@ function genId() {
   return `EXP-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${String(Date.now()).slice(-5)}`;
 }
 
-// ─── STATUS & BADGE ──────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ STATUS & BADGE ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 const STATUS_CFG = {
   'Delivered':        {color:'#10b981',bg:'rgba(16,185,129,.12)',cls:'badge-green',icon:'<svg width="12" height="12" fill="none" stroke="#10b981" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>'},
   'Terkirim':         {color:'#10b981',bg:'rgba(16,185,129,.12)',cls:'badge-green',icon:'<svg width="12" height="12" fill="none" stroke="#10b981" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>'},
@@ -4322,7 +4332,7 @@ function badge(s){
 }
 function badgeL(l){return `<span class="badge badge-gray">${l}</span>`;}
 
-// ─── NAVIGATION & GLOBAL TOPBAR SEARCH ──────────────────────
+// ÔöÇÔöÇÔöÇ NAVIGATION & GLOBAL TOPBAR SEARCH ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function showPage(id, btn) {
   try {
     // 1. Reset all pages inline display & active classes
@@ -4439,7 +4449,7 @@ function clearGlobalSearch() {
   }
 }
 
-// ─── PAGINATION, FILTER & SELECTION STATES ───────────────────
+// ÔöÇÔöÇÔöÇ PAGINATION, FILTER & SELECTION STATES ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 let PAGE_SIZE = parseInt(SafeStorage.getItem('ekspedisi_page_size')) || 10;
 let pageDaftar = 1;
 let selectedDaftar = new Set();
@@ -4467,7 +4477,7 @@ function changePageSize(val) {
   renderClientPage();
 }
 
-// ─── MODERN FILTER POPOVER STATE & CONTROLLER ────────────────
+// ÔöÇÔöÇÔöÇ MODERN FILTER POPOVER STATE & CONTROLLER ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 const modernFilters = {
   status: { mode: 'include', selected: new Set() },
   slaRtn: { mode: 'include', selected: new Set() },
@@ -4683,7 +4693,7 @@ function resetAllModernFilters() {
   pageOutstanding = 1;
   renderTable();
   renderOutstanding();
-  showToast('🔄', 'Semua filter berhasil direset');
+  showToast('­ƒöä', 'Semua filter berhasil direset');
 }
 
 function updateCombinedFilterBadge() {
@@ -4709,10 +4719,10 @@ function updateCombinedFilterBadge() {
   }
 }
 
-// ─── BATCH UPDATE STATUS CONTROLLER ──────────────────────────
+// ÔöÇÔöÇÔöÇ BATCH UPDATE STATUS CONTROLLER ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function openBatchStatusModal() {
   if (selectedDaftar.size === 0) {
-    showToast('⚠️', 'Pilih minimal satu resi terlebih dahulu');
+    showToast('ÔÜá´©Å', 'Pilih minimal satu resi terlebih dahulu');
     return;
   }
   const modal = document.getElementById('batchStatusModal');
@@ -4757,23 +4767,23 @@ function handleBatchStatusSubmit(e) {
   renderOutstanding();
   renderClientPage();
 
-  showToast('📦', `Status ${countUpdated} resi berhasil diubah menjadi "${targetStatus}"`);
+  showToast('­ƒôª', `Status ${countUpdated} resi berhasil diubah menjadi "${targetStatus}"`);
 }
 
-// ─── AWB COPY HELPERS ────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ AWB COPY HELPERS ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function copySingleAwb(event, awb) {
   if (event) event.stopPropagation();
   if (!awb) return;
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(awb).then(() => {
-      showToast('📋', `No AWB ${awb} berhasil disalin!`);
+      showToast('­ƒôï', `No AWB ${awb} berhasil disalin!`);
     }).catch(() => {
       copyTextFallback(awb);
-      showToast('📋', `No AWB ${awb} berhasil disalin!`);
+      showToast('­ƒôï', `No AWB ${awb} berhasil disalin!`);
     });
   } else {
     copyTextFallback(awb);
-    showToast('📋', `No AWB ${awb} berhasil disalin!`);
+    showToast('­ƒôï', `No AWB ${awb} berhasil disalin!`);
   }
 }
 
@@ -4781,7 +4791,7 @@ function copyAllVisibleAwbs(tableType = 'main') {
   const selector = tableType === 'outstanding' ? '#outstandingTableBody .awb-text-selectable' : '#mainTableBody .awb-text-selectable';
   const nodes = document.querySelectorAll(selector);
   if (!nodes || nodes.length === 0) {
-    showToast('⚠️', 'Tidak ada nomor AWB yang dapat disalin');
+    showToast('ÔÜá´©Å', 'Tidak ada nomor AWB yang dapat disalin');
     return;
   }
   const awbList = Array.from(nodes).map(n => n.textContent.trim()).filter(Boolean);
@@ -4789,14 +4799,14 @@ function copyAllVisibleAwbs(tableType = 'main') {
   
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(textToCopy).then(() => {
-      showToast('📋', `Berhasil menyalin ${awbList.length} No AWB ke clipboard!`);
+      showToast('­ƒôï', `Berhasil menyalin ${awbList.length} No AWB ke clipboard!`);
     }).catch(() => {
       copyTextFallback(textToCopy);
-      showToast('📋', `Berhasil menyalin ${awbList.length} No AWB ke clipboard!`);
+      showToast('­ƒôï', `Berhasil menyalin ${awbList.length} No AWB ke clipboard!`);
     });
   } else {
     copyTextFallback(textToCopy);
-    showToast('📋', `Berhasil menyalin ${awbList.length} No AWB ke clipboard!`);
+    showToast('­ƒôï', `Berhasil menyalin ${awbList.length} No AWB ke clipboard!`);
   }
 }
 
@@ -4997,7 +5007,7 @@ function jumpToPage(inputId, totalPages, pageChangeFnName) {
   window[pageChangeFnName](target);
 }
 
-// ─── OUTSTANDING (SLA RTN DRIVEN) ────────────────────────────
+// ÔöÇÔöÇÔöÇ OUTSTANDING (SLA RTN DRIVEN) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function setPageOutstanding(p) {
   pageOutstanding = p;
   renderOutstanding();
@@ -5110,7 +5120,7 @@ function renderOutstanding() {
   });
 
   const elCount = document.getElementById('outstandingCount');
-  if (elCount) elCount.textContent = `Menampilkan ${outList.length} paket outstanding (SLA RTN ≥ 5)`;
+  if (elCount) elCount.textContent = `Menampilkan ${outList.length} paket outstanding (SLA RTN ÔëÑ 5)`;
 
   const totalItems = outList.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
@@ -5121,7 +5131,7 @@ function renderOutstanding() {
 
   const tbody = document.getElementById('outstandingTableBody');
   if (!paged.length) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted-foreground);">${data.length ? 'Tidak ada paket outstanding dengan SLA RTN ≥ 5 sesuai filter.' : 'Belum ada data resi.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted-foreground);">${data.length ? 'Tidak ada paket outstanding dengan SLA RTN ÔëÑ 5 sesuai filter.' : 'Belum ada data resi.'}</td></tr>`;
   } else {
     tbody.innerHTML = paged.map((r, idx) => {
       const globalNo = String(start + idx + 1).padStart(2, '0');
@@ -5188,7 +5198,7 @@ function renderOutstanding() {
   renderPaginationHelper(pageOutstanding, totalPages, totalItems, 'outstandingTablePagination', 'setPageOutstanding', 'jumpInputOutstanding');
 }
 
-// ─── EXPORT OUTSTANDING TO EXCEL (IDENTIK SCREENSHOT) ─────────
+// ÔöÇÔöÇÔöÇ EXPORT OUTSTANDING TO EXCEL (IDENTIK SCREENSHOT) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 async function exportOutstandingExcel() {
   loadData();
 
@@ -5201,7 +5211,7 @@ async function exportOutstandingExcel() {
   });
 
   if (!qualified.length) {
-    showToast('⚠️', 'Tidak ada data paket Outstanding untuk diekspor!');
+    showToast('ÔÜá´©Å', 'Tidak ada data paket Outstanding untuk diekspor!');
     return;
   }
 
@@ -5272,7 +5282,7 @@ async function exportOutstandingExcel() {
           ws.getColumn(spacerCol).width = 4; // Jeda 1 kolom
         }
 
-        // ── Baris 2: Header SLA RTN (Merge 2 kolom, Oranye Tua, Bold Hitam)
+        // ÔöÇÔöÇ Baris 2: Header SLA RTN (Merge 2 kolom, Oranye Tua, Bold Hitam)
         ws.mergeCells(2, col1, 2, col2);
         const cellTop = ws.getCell(2, col1);
         cellTop.value = `SLA RTN ${k}`;
@@ -5281,7 +5291,7 @@ async function exportOutstandingExcel() {
         cellTop.alignment = { horizontal: 'center', vertical: 'middle' };
         ws.getCell(2, col2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE26B00' } };
 
-        // ── Baris 3: Subheader (No AWB & Status, Peach / Oranye Muda)
+        // ÔöÇÔöÇ Baris 3: Subheader (No AWB & Status, Peach / Oranye Muda)
         const cellAwb = ws.getCell(3, col1);
         cellAwb.value = 'No AWB';
         cellAwb.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF9CB9C' } };
@@ -5294,7 +5304,7 @@ async function exportOutstandingExcel() {
         cellStat.font = { name: 'Calibri', size: 10, bold: true, color: { argb: 'FF000000' } };
         cellStat.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
 
-        // ── Baris 4 s/d lastRow: Data & Zebra Striping Seragam
+        // ÔöÇÔöÇ Baris 4 s/d lastRow: Data & Zebra Striping Seragam
         for (let r = 0; r < totalDataRows; r++) {
           const rowIdx = 4 + r;
           const item = groups[k][r];
@@ -5318,7 +5328,7 @@ async function exportOutstandingExcel() {
           cStatus.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
         }
 
-        // ── Border Bingkai Kartu & Gridlines
+        // ÔöÇÔöÇ Border Bingkai Kartu & Gridlines
         for (let rw = 2; rw <= lastRow; rw++) {
           for (let cl = col1; cl <= col2; cl++) {
             const cell = ws.getCell(rw, cl);
@@ -5351,14 +5361,14 @@ async function exportOutstandingExcel() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showToast('✓', `Berhasil mengekspor ${qualified.length} paket Outstanding sesuai format Excel!`);
+      showToast('Ô£ô', `Berhasil mengekspor ${qualified.length} paket Outstanding sesuai format Excel!`);
       return;
     } catch(err) {
       console.warn('ExcelJS export error, falling back to SheetJS/XML:', err);
     }
   }
 
-  // ── Fallback SheetJS / XML jika ExcelJS belum terload ──
+  // ÔöÇÔöÇ Fallback SheetJS / XML jika ExcelJS belum terload ÔöÇÔöÇ
   const aoa = [];
   const row0 = ['']; // Margin col A
   const row1 = [''];
@@ -5402,7 +5412,7 @@ async function exportOutstandingExcel() {
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Outstanding SLA RTN');
       XLSX.writeFile(wb, filename);
-      showToast('✓', `Berhasil mengekspor ${qualified.length} paket Outstanding!`);
+      showToast('Ô£ô', `Berhasil mengekspor ${qualified.length} paket Outstanding!`);
       return;
     } catch(err) {
       console.error('XLSX fallback error:', err);
@@ -5433,10 +5443,10 @@ async function exportOutstandingExcel() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast('✓', `Berhasil mengekspor ${qualified.length} paket Outstanding!`);
+  showToast('Ô£ô', `Berhasil mengekspor ${qualified.length} paket Outstanding!`);
 }
 
-// ─── DATA CLIENT & REKANAN ───────────────────────────────────
+// ÔöÇÔöÇÔöÇ DATA CLIENT & REKANAN ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function setPageClient(p) {
   pageClient = p;
   renderClientPage();
@@ -5527,7 +5537,7 @@ function renderClientPage() {
             <div style="font-size:13px;font-weight:700;color:var(--foreground);">${c.nama}</div>
             <div class="no-select" style="font-size:11px;color:var(--muted-foreground);display:flex;align-items:center;gap:4px;margin-top:2px;">
               ${c.telepon ? `<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span>${c.telepon}</span>` : ''} 
-              ${c.alamat ? `<span>· ${c.alamat}</span>` : ''}
+              ${c.alamat ? `<span>┬À ${c.alamat}</span>` : ''}
             </div>
           </td>
           <td class="no-select" style="text-align:center;">
@@ -5583,7 +5593,7 @@ function openModalForClient(name, telp, alamat) {
   document.getElementById('fAlamatPengirim').value = alamat || '';
 }
 
-// ─── MODUL BLAST WHATSAPP OTOMATIS (DIRECT BACKGROUND DISPATCH) ──
+// ÔöÇÔöÇÔöÇ MODUL BLAST WHATSAPP OTOMATIS (DIRECT BACKGROUND DISPATCH) ÔöÇÔöÇ
 let blastCustomerList = [];
 let autoBlastRunning = false;
 let autoBlastPaused = false;
@@ -5598,13 +5608,13 @@ Penjual/Pengirim: {pengirim}
 Des. Barang: {deskripsi}
 
 Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong dibantu konfirmasinya terkait paket tersebut ya kak. Terimakasih :)`,
-  status: `Halo kak *{nama}*,\n\nUpdate informasi kiriman paket Anda dari *PT SAP Express*:\n📦 *No. Resi:* {resi}\n💵 *Nilai COD:* {cod}\n📍 *Status Terkini:* *{status}*\n\nJika ada pertanyaan mengenai paket ini, silakan balas pesan ini. Terima kasih! 🙏✨`,
-  antar: `Halo kak *{nama}*,\n\nPaket Anda dengan No. Resi *{resi}* dari *{pengirim}* saat ini *sedang dibawa oleh kurir kami* untuk diantar ke alamat Anda.\n\n💵 *Tagihan COD:* {cod}\nMohon pastikan nomor telepon Anda dapat dihubungi kurir. Terima kasih! 🛵📦✨`,
-  sampai: `Halo kak *{nama}*,\n\nPaket Anda (*{resi}*) telah *sukses terkirim & diterima*! 🎉\n\nTerima kasih telah mempercayakan pengiriman Anda kepada *PT SAP Express*. Semoga Anda puas dengan layanan kami! ⭐⭐⭐⭐⭐`,
+  status: `Halo kak *{nama}*,\n\nUpdate informasi kiriman paket Anda dari *PT SAP Express*:\n­ƒôª *No. Resi:* {resi}\n­ƒÆÁ *Nilai COD:* {cod}\n­ƒôì *Status Terkini:* *{status}*\n\nJika ada pertanyaan mengenai paket ini, silakan balas pesan ini. Terima kasih! ­ƒÖÅÔ£¿`,
+  antar: `Halo kak *{nama}*,\n\nPaket Anda dengan No. Resi *{resi}* dari *{pengirim}* saat ini *sedang dibawa oleh kurir kami* untuk diantar ke alamat Anda.\n\n­ƒÆÁ *Tagihan COD:* {cod}\nMohon pastikan nomor telepon Anda dapat dihubungi kurir. Terima kasih! ­ƒøÁ­ƒôªÔ£¿`,
+  sampai: `Halo kak *{nama}*,\n\nPaket Anda (*{resi}*) telah *sukses terkirim & diterima*! ­ƒÄë\n\nTerima kasih telah mempercayakan pengiriman Anda kepada *PT SAP Express*. Semoga Anda puas dengan layanan kami! Ô¡ÉÔ¡ÉÔ¡ÉÔ¡ÉÔ¡É`,
   custom: `Halo kak {nama},\n\nInformasi penting terkait paket resi {resi} senilai {cod}.\n\nSalam,\nPT SAP Express`
 };
 
-// ─── PENGATURAN WHATSAPP GATEWAY (DIRECT SEND TANPA PINDAH TAB) ───
+// ÔöÇÔöÇÔöÇ PENGATURAN WHATSAPP GATEWAY (DIRECT SEND TANPA PINDAH TAB) ÔöÇÔöÇÔöÇ
 function openWaGatewayModal() {
   const modal = document.getElementById('waGatewayModal');
   if (!modal) return;
@@ -5650,7 +5660,7 @@ function onGatewayProviderChange() {
     if (regLink) {
       regLink.style.display = 'inline';
       regLink.href = 'https://fonnte.com';
-      regLink.textContent = 'Dapatkan Token Fonnte Gratis ↗';
+      regLink.textContent = 'Dapatkan Token Fonnte Gratis Ôåù';
     }
   } else if (provider === 'wablas') {
     if (urlGroup) urlGroup.style.display = 'block';
@@ -5659,7 +5669,7 @@ function onGatewayProviderChange() {
     if (regLink) {
       regLink.style.display = 'inline';
       regLink.href = 'https://wablas.com';
-      regLink.textContent = 'Dapatkan Token Wablas ↗';
+      regLink.textContent = 'Dapatkan Token Wablas Ôåù';
     }
   } else if (provider === 'custom') {
     if (urlGroup) urlGroup.style.display = 'block';
@@ -5686,7 +5696,7 @@ function saveWaGatewaySettings() {
 
   updateGatewayStatusIndicator();
   closeWaGatewayModal();
-  showToast('✓', 'Pengaturan WhatsApp Gateway berhasil disimpan!');
+  showToast('Ô£ô', 'Pengaturan WhatsApp Gateway berhasil disimpan!');
 }
 
 function updateGatewayStatusIndicator() {
@@ -5702,7 +5712,7 @@ function updateGatewayStatusIndicator() {
     } else if (token) {
       dot.style.background = '#10b981';
       const pName = provider === 'fonnte' ? 'Fonnte Gateway' : provider === 'wablas' ? 'Wablas Gateway' : 'Local REST Gateway';
-      txt.textContent = `Metode: ${pName} (Tersambung • Langsung di Background)`;
+      txt.textContent = `Metode: ${pName} (Tersambung ÔÇó Langsung di Background)`;
     } else {
       dot.style.background = '#10b981';
       txt.textContent = 'Metode: Background Direct Send (Tanpa Pindah Tab)';
@@ -5715,7 +5725,7 @@ async function testWaGatewayConnection() {
   const resDiv = document.getElementById('waGatewayTestResult');
   const btn = document.getElementById('btnTestWaGateway');
   if (!phone) {
-    showToast('&#9888;&#65039;', 'Masukkan nomor WhatsApp tujuan tes terlebih dahulu!');
+    showToast('&#9888;&#65039;┬Å', 'Masukkan nomor WhatsApp tujuan tes terlebih dahulu!');
     return;
   }
 
@@ -5735,9 +5745,9 @@ async function testWaGatewayConnection() {
     await sendDirectWhatsAppMessage(phone, testMsg, { provider, url, token });
     if (resDiv) {
       resDiv.style.color = '#059669';
-      resDiv.textContent = 'âœ“ Pesan uji coba berhasil terkirim di latar belakang tanpa membuka tab!';
+      resDiv.textContent = '├ó┼ôÔÇ£ Pesan uji coba berhasil terkirim di latar belakang tanpa membuka tab!';
     }
-    showToast('âœ“', 'Tes kirim pesan berhasil!');
+    showToast('├ó┼ôÔÇ£', 'Tes kirim pesan berhasil!');
   } catch (err) {
     let errMsg = err.message || 'Terjadi kesalahan jaringan';
     if (errMsg.includes('Failed to fetch') || errMsg.includes('NetworkError')) {
@@ -5749,9 +5759,9 @@ async function testWaGatewayConnection() {
     }
     if (resDiv) {
       resDiv.style.color = '#dc2626';
-      resDiv.textContent = 'âœ• Gagal: ' + errMsg;
+      resDiv.textContent = '├ó┼ôÔÇó Gagal: ' + errMsg;
     }
-    showToast('&#9888;&#65039;', 'Gagal: ' + errMsg);
+    showToast('&#9888;&#65039;┬Å', 'Gagal: ' + errMsg);
   } finally {
     if (btn) btn.disabled = false;
   }
@@ -5891,7 +5901,7 @@ function updateBlastPreviewText() {
   const hName = document.getElementById('blastPreviewHeaderName');
   if (hName) hName.textContent = `${sample.nama} (Customer)`;
   const hPhone = document.getElementById('blastPreviewHeaderPhone');
-  if (hPhone) hPhone.textContent = `${sample.rawPhone || sample.phone} • Online`;
+  if (hPhone) hPhone.textContent = `${sample.rawPhone || sample.phone} ÔÇó Online`;
 
   const timeEl = document.getElementById('blastPreviewTime');
   if (timeEl) {
@@ -5948,7 +5958,7 @@ function buildBlastMessage(templateStr, customer) {
   return res;
 }
 
-// ─── IMPORT EXCEL CUSTOMER ───
+// ÔöÇÔöÇÔöÇ IMPORT EXCEL CUSTOMER ÔöÇÔöÇÔöÇ
 function handleBlastExcelUpload(e) {
   const file = e.target.files && e.target.files[0];
   if (!file) return;
@@ -6010,14 +6020,14 @@ function handleBlastExcelUpload(e) {
       }
 
       if (!rows || rows.length === 0) {
-        showToast('⚠️', 'File Excel/CSV kosong atau tidak dapat dibaca.');
+        showToast('ÔÜá´©Å', 'File Excel/CSV kosong atau tidak dapat dibaca.');
         return;
       }
 
       parseAndLoadCustomerRows(rows, filename);
     } catch(err) {
       console.error('Error importing blast excel:', err);
-      showToast('⚠️', 'Gagal memproses file Excel: ' + err.message);
+      showToast('ÔÜá´©Å', 'Gagal memproses file Excel: ' + err.message);
     }
   };
 
@@ -6103,13 +6113,13 @@ function parseAndLoadCustomerRows(rows, filename) {
   renderBlastTable();
   updateBlastStats();
   updateBlastPreviewText();
-  showToast('✓', `Berhasil memuat ${validCount} kontak customer dari file Excel!`);
+  showToast('Ô£ô', `Berhasil memuat ${validCount} kontak customer dari file Excel!`);
 }
 
 function loadBlastFromCurrentData(showNotification = true) {
   loadData();
   if (!data || !data.length) {
-    if (showNotification) showToast('⚠️', 'Belum ada data resi di sistem untuk dimuat.');
+    if (showNotification) showToast('ÔÜá´©Å', 'Belum ada data resi di sistem untuk dimuat.');
     return;
   }
 
@@ -6147,7 +6157,7 @@ function loadBlastFromCurrentData(showNotification = true) {
   updateBlastStats();
   updateBlastPreviewText();
   if (showNotification) {
-    showToast('✓', `Berhasil memuat ${validCount} kontak dari data resi aktif!`);
+    showToast('Ô£ô', `Berhasil memuat ${validCount} kontak dari data resi aktif!`);
   }
 }
 
@@ -6166,7 +6176,7 @@ function downloadSampleBlastExcel() {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Data Customer');
     XLSX.writeFile(wb, 'Format_Contoh_Customer_Blast_WA.xlsx');
-    showToast('✓', 'Berhasil mengunduh Format Contoh Excel Customer SAP Express!');
+    showToast('Ô£ô', 'Berhasil mengunduh Format Contoh Excel Customer SAP Express!');
   } else {
     const csv = 'Nama Customer,Nomor WhatsApp,No Resi,Nilai COD,Penjual/Pengirim,Des. Barang,Status Terakhir\n' +
       'Budi Santoso,081234567890,SAP982103490,145000,Official Store Sepatu,Sneakers Pria Size 42 Hitam,DITOLAK\n' +
@@ -6183,11 +6193,11 @@ function downloadSampleBlastExcel() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('✓', 'Berhasil mengunduh Format Contoh CSV Customer!');
+    showToast('Ô£ô', 'Berhasil mengunduh Format Contoh CSV Customer!');
   }
 }
 
-// ─── TABLE & STATS RENDERING ───
+// ÔöÇÔöÇÔöÇ TABLE & STATS RENDERING ÔöÇÔöÇÔöÇ
 function renderBlastTable() {
   const tbody = document.getElementById('blastTableBody');
   if (!tbody) return;
@@ -6211,7 +6221,7 @@ function renderBlastTable() {
     tbody.innerHTML = `
       <tr>
         <td colspan="11" style="text-align:center;padding:40px 20px;color:var(--muted-foreground);">
-          <div style="font-size:32px;margin-bottom:8px;">📭</div>
+          <div style="font-size:32px;margin-bottom:8px;">­ƒô¡</div>
           <div style="font-weight:700;font-size:13.5px;color:var(--foreground);">Tidak ada kontak customer</div>
           <div style="font-size:12px;margin-top:2px;">Silakan upload file Excel customer atau klik "Muat Dari Resi Aktif" di atas.</div>
         </td>
@@ -6223,11 +6233,11 @@ function renderBlastTable() {
   tbody.innerHTML = filtered.map((c, idx) => {
     let statusBadge = '';
     if (c.blastStatus === 'sent') {
-      statusBadge = `<span class="badge badge-green" style="display:inline-flex;align-items:center;gap:3px;font-weight:700;"><span>✓</span> Terkirim ${c.sentAt ? `(${c.sentAt})` : ''}</span>`;
+      statusBadge = `<span class="badge badge-green" style="display:inline-flex;align-items:center;gap:3px;font-weight:700;"><span>Ô£ô</span> Terkirim ${c.sentAt ? `(${c.sentAt})` : ''}</span>`;
     } else if (c.blastStatus === 'sending') {
       statusBadge = `<span class="badge badge-amber" style="animation:pulse 1s infinite;font-weight:700;">Mengirim...</span>`;
     } else if (c.blastStatus === 'failed') {
-      statusBadge = `<span class="badge badge-red" style="font-weight:700;" title="${c.errorMsg || 'Gagal'}">Gagal ✕</span>`;
+      statusBadge = `<span class="badge badge-red" style="font-weight:700;" title="${c.errorMsg || 'Gagal'}">Gagal Ô£ò</span>`;
     } else if (c.blastStatus === 'invalid') {
       statusBadge = `<span class="badge badge-gray" style="color:#94a3b8;">No. Tidak Valid</span>`;
     } else {
@@ -6292,10 +6302,10 @@ function updateBlastStats() {
   const elStatus = document.getElementById('blastStatStatus');
   if (elStatus) {
     if (autoBlastRunning) {
-      elStatus.textContent = autoBlastPaused ? 'Dijeda ⏸' : 'Mengirim ⚡';
+      elStatus.textContent = autoBlastPaused ? 'Dijeda ÔÅ©' : 'Mengirim ÔÜí';
       elStatus.style.color = autoBlastPaused ? '#b45309' : '#10b981';
     } else {
-      elStatus.textContent = sent === total && total > 0 ? 'Selesai ✓' : 'Siap';
+      elStatus.textContent = sent === total && total > 0 ? 'Selesai Ô£ô' : 'Siap';
       elStatus.style.color = 'var(--foreground)';
     }
   }
@@ -6327,7 +6337,7 @@ function toggleSelectBlastCustomer(id, chk) {
 async function sendSingleBlastWA(id) {
   const c = blastCustomerList.find(x => x.id === id);
   if (!c || !c.phone) {
-    showToast('⚠️', 'Nomor WhatsApp customer tidak valid!');
+    showToast('ÔÜá´©Å', 'Nomor WhatsApp customer tidak valid!');
     return;
   }
   const tpl = document.getElementById('blastMessageTemplate')?.value || BLAST_PRESETS.sap;
@@ -6343,23 +6353,23 @@ async function sendSingleBlastWA(id) {
     c.blastStatus = 'sent';
     c.sentAt = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     c.errorMsg = null;
-    showToast('✓', `Pesan ke ${c.nama} berhasil terkirim di latar belakang!`);
+    showToast('Ô£ô', `Pesan ke ${c.nama} berhasil terkirim di latar belakang!`);
   } catch(err) {
     console.error('Blast single error:', err);
     c.blastStatus = 'failed';
     c.errorMsg = err.message || 'Gagal terkirim';
-    showToast('⚠️', `Gagal mengirim ke ${c.nama}: ${err.message}`);
+    showToast('ÔÜá´©Å', `Gagal mengirim ke ${c.nama}: ${err.message}`);
   }
 
   renderBlastTable();
   updateBlastStats();
 }
 
-// ─── OTOMATIS BLAST ENGINE (BACKGROUND DIRECT DISPATCH) ───────
+// ÔöÇÔöÇÔöÇ OTOMATIS BLAST ENGINE (BACKGROUND DIRECT DISPATCH) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function startAutoBlast() {
   const pendingItems = blastCustomerList.filter(c => c.selected && c.blastStatus === 'pending');
   if (!pendingItems.length) {
-    showToast('⚠️', 'Tidak ada kontak customer siap kirim yang dipilih!');
+    showToast('ÔÜá´©Å', 'Tidak ada kontak customer siap kirim yang dipilih!');
     return;
   }
 
@@ -6378,7 +6388,7 @@ function updateBlastControls() {
     if (btnStart) btnStart.style.display = 'none';
     if (btnPause) {
       btnPause.style.display = 'inline-flex';
-      if (btnPauseText) btnPauseText.textContent = autoBlastPaused ? '▶ Lanjutkan Blast' : '⏸ Jeda Blast';
+      if (btnPauseText) btnPauseText.textContent = autoBlastPaused ? 'ÔûÂ Lanjutkan Blast' : 'ÔÅ© Jeda Blast';
     }
   } else {
     if (btnStart) {
@@ -6416,7 +6426,7 @@ async function processNextAutoBlastItem() {
     autoBlastRunning = false;
     updateBlastControls();
     updateBlastStats();
-    showToast('🎉', 'Selesai! Seluruh pesan WhatsApp otomatis terkirim di latar belakang.');
+    showToast('­ƒÄë', 'Selesai! Seluruh pesan WhatsApp otomatis terkirim di latar belakang.');
     return;
   }
 
@@ -6480,13 +6490,13 @@ function resetBlastQueue() {
   updateBlastControls();
   renderBlastTable();
   updateBlastStats();
-  showToast('✓', 'Status antrean blast berhasil di-reset!');
+  showToast('Ô£ô', 'Status antrean blast berhasil di-reset!');
 }
 
-// ─── FILE MANAGER & PRINT ────────────────────────────────────
+// ÔöÇÔöÇÔöÇ FILE MANAGER & PRINT ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function printManifest() {
   loadData();
-  if(!data.length) { showToast('⚠️', 'Tidak ada data resi untuk dicetak'); return; }
+  if(!data.length) { showToast('ÔÜá´©Å', 'Tidak ada data resi untuk dicetak'); return; }
   const win = window.open('', '_blank');
   const rows = data.map((r, i) => `
     <tr>
@@ -6501,11 +6511,11 @@ function printManifest() {
   `).join('');
 
   win.document.write(`
-    <html><head><title>ExpediLog — Sistem Pendataan Barang</title>
+    <html><head><title>ExpediLog ÔÇö Sistem Pendataan Barang</title>
     <style>body{font-family:sans-serif;padding:24px;color:#333;}table{width:100%;border-collapse:collapse;margin-top:16px;font-size:12px;}</style>
     </head><body>
       <h2 style="margin:0;">MANIFEST PENGIRIMAN EKSPEDISI</h2>
-      <p style="margin:4px 0 16px;font-size:12px;color:#666;">Tanggal Cetak: ${new Date().toLocaleString('id-ID')} · Total Resi: ${data.length}</p>
+      <p style="margin:4px 0 16px;font-size:12px;color:#666;">Tanggal Cetak: ${new Date().toLocaleString('id-ID')} ┬À Total Resi: ${data.length}</p>
       <table>
         <thead>
           <tr style="background:#eee;">
@@ -6527,7 +6537,7 @@ function printManifest() {
   setTimeout(() => win.print(), 350);
 }
 
-// ─── TEAM NOTEPAD (MULTI-NOTE SYSTEM & MODAL CRUD) ───────────
+// ÔöÇÔöÇÔöÇ TEAM NOTEPAD (MULTI-NOTE SYSTEM & MODAL CRUD) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 const NOTES_KEY_V2 = 'ekspedisi_team_notes_v2';
 
 const DEFAULT_TEAM_NOTES = [
@@ -6778,7 +6788,7 @@ function handleSaveNote(e) {
   const curAuthor = SafeStorage.getItem('ekspedisi_auth') || SafeStorage.getItem('ekspedisi_auth_remember') || 'Admin';
 
   if (!title || !content) {
-    showToast('⚠️', 'Mohon isi judul dan rincian catatan');
+    showToast('ÔÜá´©Å', 'Mohon isi judul dan rincian catatan');
     return;
   }
 
@@ -6796,7 +6806,7 @@ function handleSaveNote(e) {
         author: notes[idx].author || curAuthor,
         updatedAt: Date.now()
       };
-      showToast('✅', 'Catatan tim berhasil diperbarui!');
+      showToast('Ô£à', 'Catatan tim berhasil diperbarui!');
     }
   } else {
     // Create new note
@@ -6810,7 +6820,7 @@ function handleSaveNote(e) {
       updatedAt: Date.now()
     };
     notes.unshift(newNote);
-    showToast('✅', 'Catatan baru berhasil ditambahkan!');
+    showToast('Ô£à', 'Catatan baru berhasil ditambahkan!');
   }
 
   saveTeamNotesToStorage(notes);
@@ -6848,7 +6858,7 @@ function confirmDeleteNote() {
   closeDeleteNoteModal();
   closeNoteModal();
   renderNotes();
-  showToast('🗑️', 'Catatan tim telah berhasil dihapus');
+  showToast('­ƒùæ´©Å', 'Catatan tim telah berhasil dihapus');
 }
 
 function handleDeleteCurrentNote() {
@@ -6863,7 +6873,7 @@ function deleteNoteDirectly(e, noteId) {
   openDeleteNoteModal(noteId);
 }
 
-// ─── PORTAL TERPADU SISTEM CRUD ENGINE ───────────────────────
+// ÔöÇÔöÇÔöÇ PORTAL TERPADU SISTEM CRUD ENGINE ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 const DEFAULT_PORTAL_SYSTEMS = [
   {
     id: 'SYS-01',
@@ -7138,7 +7148,7 @@ function handleSavePortalSystem(e) {
   const description = document.getElementById('portalDescInput')?.value.trim();
 
   if (!name || !url) {
-    showToast('⚠️', 'Mohon isi nama sistem dan tautan URL');
+    showToast('ÔÜá´©Å', 'Mohon isi nama sistem dan tautan URL');
     return;
   }
 
@@ -7160,7 +7170,7 @@ function handleSavePortalSystem(e) {
         description,
         updatedAt: Date.now()
       };
-      showToast('✅', `Sistem "${name}" berhasil diperbarui!`);
+      showToast('Ô£à', `Sistem "${name}" berhasil diperbarui!`);
     }
   } else {
     const newSys = {
@@ -7173,7 +7183,7 @@ function handleSavePortalSystem(e) {
       updatedAt: Date.now()
     };
     systems.unshift(newSys);
-    showToast('✅', `Sistem baru "${name}" berhasil ditambahkan!`);
+    showToast('Ô£à', `Sistem baru "${name}" berhasil ditambahkan!`);
   }
 
   savePortalSystemsToStorage(systems);
@@ -7213,7 +7223,7 @@ function confirmDeletePortalSystem() {
   closeDeletePortalModal();
   closePortalModal();
   renderPortalPage();
-  showToast('🗑️', `Sistem "${name}" berhasil dihapus dari portal`);
+  showToast('­ƒùæ´©Å', `Sistem "${name}" berhasil dihapus dari portal`);
 }
 
 function handleDeleteCurrentPortalFromModal() {
@@ -7226,9 +7236,9 @@ function handleDeletePortalSystem(id) {
   openDeletePortalModal(id);
 }
 
-// ════════════════════════════════════════════════════════════════
-// ─── CLOUD DRIVE & FILE MANAGER ENGINE (GOOGLE DRIVE STYLE) ────
-// ════════════════════════════════════════════════════════════════
+// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+// ÔöÇÔöÇÔöÇ CLOUD DRIVE & FILE MANAGER ENGINE (GOOGLE DRIVE STYLE) ÔöÇÔöÇÔöÇÔöÇ
+// ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
 const KEY_DRIVE_FILES = 'ekspedisi_cloud_drive_files_v2';
 const DRIVE_STORAGE_QUOTA_BYTES = 50 * 1024 * 1024; // 50 MB simulated quota
 let currentDriveCategory = 'all';
@@ -7244,7 +7254,7 @@ const INITIAL_DRIVE_FILES = [
     uploadedAt: Date.now() - 3600000 * 2,
     uploadedBy: 'Budi Santoso (Kurir)',
     description: 'Foto bukti serah terima paket ke penerima dengan tanda tangan basah di resi fisik.',
-    dataUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="100%" height="100%" fill="%23ecfdf5"/><rect x="40" y="40" width="520" height="320" rx="16" fill="%23ffffff" stroke="%2310b981" stroke-width="3"/><circle cx="120" cy="140" r="45" fill="%23d1fae5"/><path d="M120 120 L120 160 M100 140 L140 140" stroke="%2310b981" stroke-width="5" stroke-linecap="round"/><text x="190" y="130" font-family="sans-serif" font-weight="bold" font-size="20" fill="%230f172a">BUKTI SERAH TERIMA PAKET (POD)</text><text x="190" y="160" font-family="sans-serif" font-size="14" fill="%2364748b">No. Resi: EXP982103490 — Diterima oleh Satpam Cluster</text><line x1="70" y1="210" x2="530" y2="210" stroke="%23e2e8f0" stroke-width="2"/><text x="70" y="250" font-family="sans-serif" font-size="13" fill="%23475569">Status Kiriman: Delivered (Terkirim Sukses)</text><text x="70" y="280" font-family="sans-serif" font-size="13" fill="%23475569">Waktu Dokumentasi: 11 September 2026, 14:15 WIB</text><text x="70" y="310" font-family="sans-serif" font-size="13" fill="%2310b981" font-weight="bold">✓ Terverifikasi Sistem ExpediLog</text></svg>'
+    dataUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="100%" height="100%" fill="%23ecfdf5"/><rect x="40" y="40" width="520" height="320" rx="16" fill="%23ffffff" stroke="%2310b981" stroke-width="3"/><circle cx="120" cy="140" r="45" fill="%23d1fae5"/><path d="M120 120 L120 160 M100 140 L140 140" stroke="%2310b981" stroke-width="5" stroke-linecap="round"/><text x="190" y="130" font-family="sans-serif" font-weight="bold" font-size="20" fill="%230f172a">BUKTI SERAH TERIMA PAKET (POD)</text><text x="190" y="160" font-family="sans-serif" font-size="14" fill="%2364748b">No. Resi: EXP982103490 ÔÇö Diterima oleh Satpam Cluster</text><line x1="70" y1="210" x2="530" y2="210" stroke="%23e2e8f0" stroke-width="2"/><text x="70" y="250" font-family="sans-serif" font-size="13" fill="%23475569">Status Kiriman: Delivered (Terkirim Sukses)</text><text x="70" y="280" font-family="sans-serif" font-size="13" fill="%23475569">Waktu Dokumentasi: 11 September 2026, 14:15 WIB</text><text x="70" y="310" font-family="sans-serif" font-size="13" fill="%2310b981" font-weight="bold">Ô£ô Terverifikasi Sistem ExpediLog</text></svg>'
   },
   {
     id: 'df-002',
@@ -7277,7 +7287,7 @@ const INITIAL_DRIVE_FILES = [
     uploadedAt: Date.now() - 3600000 * 48,
     uploadedBy: 'Eko Prasetyo (Kurir)',
     description: 'Dokumentasi kerusakan kardus luar paket sparepart sebelum proses retur ke pihak shipper.',
-    dataUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="100%" height="100%" fill="%23fef2f2"/><rect x="40" y="40" width="520" height="320" rx="16" fill="%23ffffff" stroke="%23ef4444" stroke-width="3"/><circle cx="120" cy="140" r="45" fill="%23fee2e2"/><path d="M105 125 L135 155 M135 125 L105 155" stroke="%23ef4444" stroke-width="5" stroke-linecap="round"/><text x="190" y="130" font-family="sans-serif" font-weight="bold" font-size="20" fill="%230f172a">DOKUMENTASI KLAIM BARANG RUSAK</text><text x="190" y="160" font-family="sans-serif" font-size="14" fill="%2364748b">Paket Retur: EXP982103494 — Kemasan Rusak Saat Transit</text><line x1="70" y1="210" x2="530" y2="210" stroke="%23e2e8f0" stroke-width="2"/><text x="70" y="250" font-family="sans-serif" font-size="13" fill="%23dc2626" font-weight="bold">Status Investigasi: Return Approved</text><text x="70" y="280" font-family="sans-serif" font-size="13" fill="%23475569">Pengirim: PT Sinar Abadi — Kurir Pelapor: Eko Prasetyo</text><text x="70" y="310" font-family="sans-serif" font-size="13" fill="%2364748b">Dokumen pendukung untuk form klaim ganti rugi asuransi barang.</text></svg>'
+    dataUrl: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="100%" height="100%" fill="%23fef2f2"/><rect x="40" y="40" width="520" height="320" rx="16" fill="%23ffffff" stroke="%23ef4444" stroke-width="3"/><circle cx="120" cy="140" r="45" fill="%23fee2e2"/><path d="M105 125 L135 155 M135 125 L105 155" stroke="%23ef4444" stroke-width="5" stroke-linecap="round"/><text x="190" y="130" font-family="sans-serif" font-weight="bold" font-size="20" fill="%230f172a">DOKUMENTASI KLAIM BARANG RUSAK</text><text x="190" y="160" font-family="sans-serif" font-size="14" fill="%2364748b">Paket Retur: EXP982103494 ÔÇö Kemasan Rusak Saat Transit</text><line x1="70" y1="210" x2="530" y2="210" stroke="%23e2e8f0" stroke-width="2"/><text x="70" y="250" font-family="sans-serif" font-size="13" fill="%23dc2626" font-weight="bold">Status Investigasi: Return Approved</text><text x="70" y="280" font-family="sans-serif" font-size="13" fill="%23475569">Pengirim: PT Sinar Abadi ÔÇö Kurir Pelapor: Eko Prasetyo</text><text x="70" y="310" font-family="sans-serif" font-size="13" fill="%2364748b">Dokumen pendukung untuk form klaim ganti rugi asuransi barang.</text></svg>'
   },
   {
     id: 'df-005',
@@ -7316,7 +7326,7 @@ function saveDriveFiles(files) {
     SafeStorage.setItem(KEY_DRIVE_FILES, JSON.stringify(files));
   } catch (e) {
     console.error('Error saving drive files:', e);
-    showToast('⚠️', 'Penyimpanan lokal penuh, tidak dapat menyimpan file baru');
+    showToast('ÔÜá´©Å', 'Penyimpanan lokal penuh, tidak dapat menyimpan file baru');
   }
 }
 
@@ -7365,10 +7375,10 @@ function renderDriveCategoryPills(files) {
 
   const cats = [
     { id: 'all', label: 'Semua Berkas', count: counts.all },
-    { id: 'image', label: '🖼️ Gambar & Bukti POD', count: counts.image },
-    { id: 'document', label: '📄 Dokumen & PDF', count: counts.document },
-    { id: 'sheet', label: '📊 Spreadsheet / Excel', count: counts.sheet },
-    { id: 'archive', label: '📦 Arsip & Backup', count: counts.archive }
+    { id: 'image', label: '­ƒû╝´©Å Gambar & Bukti POD', count: counts.image },
+    { id: 'document', label: '­ƒôä Dokumen & PDF', count: counts.document },
+    { id: 'sheet', label: '­ƒôè Spreadsheet / Excel', count: counts.sheet },
+    { id: 'archive', label: '­ƒôª Arsip & Backup', count: counts.archive }
   ];
 
   container.innerHTML = cats.map(c => `
@@ -7498,7 +7508,7 @@ function renderDriveGrid(files, container) {
                 </div>
                 <div style="font-size:11.5px;color:var(--muted-foreground);display:flex;align-items:center;gap:6px;margin-bottom:10px;">
                   <span style="font-weight:700;color:#0f172a;">${formatDriveBytes(f.sizeBytes)}</span>
-                  <span>•</span>
+                  <span>ÔÇó</span>
                   <span>${dateStr}</span>
                 </div>
                 ${f.description ? `
@@ -7509,7 +7519,7 @@ function renderDriveGrid(files, container) {
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid #f1f5f9;">
                 <span style="font-size:11px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px;" title="${f.uploadedBy || 'User'}">
-                  👤 ${f.uploadedBy || 'User'}
+                  ­ƒæñ ${f.uploadedBy || 'User'}
                 </span>
                 <div style="display:flex;align-items:center;gap:4px;">
                   <button type="button" class="btn btn-ghost" onclick="openFilePreview('${f.id}')" style="padding:4px 8px;font-size:11px;border-radius:8px;" title="Pratinjau Berkas">
@@ -7594,7 +7604,7 @@ function renderDriveList(files, container) {
   `;
 }
 
-// ─── FILE UPLOAD HANDLERS ────────────────────────────────────
+// ÔöÇÔöÇÔöÇ FILE UPLOAD HANDLERS ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function handleDriveDragOver(e) {
   e.preventDefault();
   e.stopPropagation();
@@ -7661,7 +7671,7 @@ function processUploadedDriveFiles(fileList) {
         if (completed === totalCount) {
           saveDriveFiles(currentFiles);
           renderFileManager();
-          showToast('✅', `Berhasil mengunggah ${totalCount} berkas ke Cloud Drive!`);
+          showToast('Ô£à', `Berhasil mengunggah ${totalCount} berkas ke Cloud Drive!`);
         }
       };
       reader.onerror = function() {
@@ -7670,7 +7680,7 @@ function processUploadedDriveFiles(fileList) {
         if (completed === totalCount) {
           saveDriveFiles(currentFiles);
           renderFileManager();
-          showToast('✅', `Berhasil mengunggah ${totalCount} berkas ke Cloud Drive!`);
+          showToast('Ô£à', `Berhasil mengunggah ${totalCount} berkas ke Cloud Drive!`);
         }
       };
       reader.readAsDataURL(rawFile);
@@ -7680,13 +7690,13 @@ function processUploadedDriveFiles(fileList) {
       if (completed === totalCount) {
         saveDriveFiles(currentFiles);
         renderFileManager();
-        showToast('✅', `Berhasil mengunggah ${totalCount} berkas ke Cloud Drive!`);
+        showToast('Ô£à', `Berhasil mengunggah ${totalCount} berkas ke Cloud Drive!`);
       }
     }
   });
 }
 
-// ─── FILE PREVIEW & DOWNLOAD ─────────────────────────────────
+// ÔöÇÔöÇÔöÇ FILE PREVIEW & DOWNLOAD ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function openFilePreview(id) {
   const files = getDriveFiles();
   const file = files.find(f => f.id === id);
@@ -7703,8 +7713,8 @@ function openFilePreview(id) {
   if (!modal || !titleEl || !bodyEl) return;
 
   titleEl.textContent = file.name;
-  if (subEl) subEl.textContent = `Diunggah oleh ${file.uploadedBy || 'User'} • ${new Date(file.uploadedAt).toLocaleString('id-ID')}`;
-  if (metaEl) metaEl.textContent = `Ukuran: ${formatDriveBytes(file.sizeBytes)} • Tipe: ${file.ext.toUpperCase()}`;
+  if (subEl) subEl.textContent = `Diunggah oleh ${file.uploadedBy || 'User'} ÔÇó ${new Date(file.uploadedAt).toLocaleString('id-ID')}`;
+  if (metaEl) metaEl.textContent = `Ukuran: ${formatDriveBytes(file.sizeBytes)} ÔÇó Tipe: ${file.ext.toUpperCase()}`;
   if (iconBox) iconBox.innerHTML = getDriveIconSVG(file.category, file.ext);
 
   if (file.category === 'image' && file.dataUrl) {
@@ -7757,7 +7767,7 @@ function downloadDriveFile(id) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    showToast('⬇️', `Mengunduh berkas "${file.name}"`);
+    showToast('Ô¼ç´©Å', `Mengunduh berkas "${file.name}"`);
   } else {
     // Generate simulated file Blob content for files without full dataURL
     const content = `Dokumen: ${file.name}\nUkuran: ${formatDriveBytes(file.sizeBytes)}\nDiunggah Oleh: ${file.uploadedBy}\nTanggal: ${new Date(file.uploadedAt).toLocaleString('id-ID')}\nKeterangan: ${file.description}\n\n[Dihasilkan oleh Sistem ExpediLog Cloud Drive]`;
@@ -7769,11 +7779,11 @@ function downloadDriveFile(id) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(a.href);
-    showToast('⬇️', `Mengunduh berkas "${file.name}"`);
+    showToast('Ô¼ç´©Å', `Mengunduh berkas "${file.name}"`);
   }
 }
 
-// ─── FILE DELETION (CUSTOM MODAL) ────────────────────────────
+// ÔöÇÔöÇÔöÇ FILE DELETION (CUSTOM MODAL) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function openDeleteFileModal(id) {
   const files = getDriveFiles();
   const file = files.find(f => f.id === id);
@@ -7806,10 +7816,10 @@ function confirmDeleteFile() {
   closeDeleteFileModal();
   closeFilePreview();
   renderFileManager();
-  showToast('🗑️', `Berkas "${name}" berhasil dihapus`);
+  showToast('­ƒùæ´©Å', `Berkas "${name}" berhasil dihapus`);
 }
 
-// ─── BACKUP & RESTORE ────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ BACKUP & RESTORE ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function downloadBackupJSON() {
   loadData();
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -7819,7 +7829,7 @@ function downloadBackupJSON() {
   });
   a.click();
   URL.revokeObjectURL(a.href);
-  showToast('💾', 'Cadangan database berhasil diunduh');
+  showToast('­ƒÆ¥', 'Cadangan database berhasil diunduh');
 }
 
 function handleRestoreJSON(e) {
@@ -7834,12 +7844,12 @@ function handleRestoreJSON(e) {
         saveData();
         refreshDashboard();
         renderTable();
-        showToast('✅', `Berhasil memulihkan ${data.length} resi dari cadangan!`);
+        showToast('Ô£à', `Berhasil memulihkan ${data.length} resi dari cadangan!`);
       } else {
-        showToast('⚠️', 'Format file JSON tidak sesuai');
+        showToast('ÔÜá´©Å', 'Format file JSON tidak sesuai');
       }
     } catch(err) {
-      showToast('⚠️', 'Gagal membaca file JSON');
+      showToast('ÔÜá´©Å', 'Gagal membaca file JSON');
     }
   };
   reader.readAsText(file);
@@ -7851,7 +7861,7 @@ function resetToSampleData() {
     saveData();
     refreshDashboard();
     renderTable();
-    showToast('🔄', 'Data sampel berhasil dimuat ulang!');
+    showToast('­ƒöä', 'Data sampel berhasil dimuat ulang!');
   }
 }
 
@@ -7861,11 +7871,11 @@ function clearAllData() {
     saveData();
     refreshDashboard();
     renderTable();
-    showToast('🗑️', 'Seluruh database resi telah dikosongkan.');
+    showToast('­ƒùæ´©Å', 'Seluruh database resi telah dikosongkan.');
   }
 }
 
-// ─── GREETING & DATE ─────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ GREETING & DATE ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function initGreeting() {
   const h = new Date().getHours();
   let g = 'Selamat Malam,';
@@ -7881,7 +7891,7 @@ function initGreeting() {
   updateTopbarSearchPlaceholder('dashboard');
 }
 
-// ─── DASHBOARD ───────────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ DASHBOARD ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function refreshDashboard() {
   try { updateStats(); } catch(e) { console.warn('updateStats error', e); }
   try { renderPerfBars(); } catch(e) { console.warn('renderPerfBars error', e); }
@@ -7970,7 +7980,7 @@ function updateStats() {
   const sTotal = document.getElementById('sTotal');
   rollNumber(sTotal, total, false);
   const sTotalTrend = document.getElementById('sTotalTrend');
-  if (sTotalTrend) sTotalTrend.textContent = `↑ ${total}`;
+  if (sTotalTrend) sTotalTrend.textContent = `Ôåæ ${total}`;
 
   // 2. Return (Card 2)
   const returnCount = data.filter(r => {
@@ -7989,7 +7999,7 @@ function updateStats() {
   const cardReturn = document.getElementById('cardReturn');
 
   // Condition: jika persentase return lebih dari 10% total jumlah awb maka akan berwarna merah dan sebaliknya
-  // User: hilangkan tulisan (Aman ≤10%) cukup tampilkan persentasinya saja
+  // User: hilangkan tulisan (Aman Ôëñ10%) cukup tampilkan persentasinya saja
   if (returnPct > 10) {
     if (sReturn) sReturn.style.color = '#ef4444';
     if (sReturnTrendWrap) {
@@ -7999,7 +8009,7 @@ function updateStats() {
       sReturnTrendWrap.style.borderRadius = '6px';
       sReturnTrendWrap.style.border = '1px solid #fca5a5';
     }
-    if (sReturnTrendArrow) sReturnTrendArrow.textContent = '▲';
+    if (sReturnTrendArrow) sReturnTrendArrow.textContent = 'Ôû▓';
     if (sReturnTrend) sReturnTrend.textContent = `${returnPctFormatted}%`;
     if (cardReturn) cardReturn.style.borderColor = '#fca5a5';
   } else {
@@ -8011,7 +8021,7 @@ function updateStats() {
       sReturnTrendWrap.style.borderRadius = '6px';
       sReturnTrendWrap.style.border = '1px solid #a7f3d0';
     }
-    if (sReturnTrendArrow) sReturnTrendArrow.textContent = '▼';
+    if (sReturnTrendArrow) sReturnTrendArrow.textContent = 'Ôû╝';
     if (sReturnTrend) sReturnTrend.textContent = `${returnPctFormatted}%`;
     if (cardReturn) cardReturn.style.borderColor = '#e2e8f0';
   }
@@ -8070,7 +8080,7 @@ function updateStats() {
   if (sTerkirimTrend) sTerkirimTrend.textContent = `${suksesPct}%`;
 }
 
-// ─── CARD 3: DISTRIBUSI STATUS ────────────────────────────────
+// ÔöÇÔöÇÔöÇ CARD 3: DISTRIBUSI STATUS ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function renderPerfBars() {
   const targetStatuses = [
     'Delivered',
@@ -8139,7 +8149,7 @@ function renderPerfBars() {
   }
 }
 
-// ─── CARD 5: CLIENT RETURN TERTINGGI ─────────────────────────
+// ÔöÇÔöÇÔöÇ CARD 5: CLIENT RETURN TERTINGGI ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function renderTopReturnClients() {
   const el = document.getElementById('topReturnClientsPanel');
   if (!el) return;
@@ -8208,7 +8218,7 @@ function renderTopReturnClients() {
           </div>
           <div style="font-size:11.5px;color:var(--muted-foreground);display:flex;align-items:center;gap:6px;margin-top:2px;">
             <span style="color:#ef4444;font-weight:700;">${c.returns} Return</span>
-            <span>•</span>
+            <span>ÔÇó</span>
             <span>Rasio ${rate}% (${c.total} paket)</span>
           </div>
         </div>
@@ -8225,14 +8235,14 @@ function renderTopReturnClients() {
 
 function contactClientWA(phone, clientName, returnCount) {
   if (!phone) {
-    showToast('⚠️', 'Nomor telepon client tidak tersedia');
+    showToast('ÔÜá´©Å', 'Nomor telepon client tidak tersedia');
     return;
   }
-  const text = `Halo Kak/Bapak/Ibu dari *${clientName}*,\n\nKami dari tim operasional *ExpediLog* ingin mengonfirmasi dan berkoordinasi terkait *${returnCount} paket return* kiriman Anda.\n\nApakah ada instruksi khusus untuk tindak lanjut pengantaran ulang atau pengembalian langsung ke gudang Anda?\n\nTerima kasih atas kerja samanya! 🙏`;
+  const text = `Halo Kak/Bapak/Ibu dari *${clientName}*,\n\nKami dari tim operasional *ExpediLog* ingin mengonfirmasi dan berkoordinasi terkait *${returnCount} paket return* kiriman Anda.\n\nApakah ada instruksi khusus untuk tindak lanjut pengantaran ulang atau pengembalian langsung ke gudang Anda?\n\nTerima kasih atas kerja samanya! ­ƒÖÅ`;
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
 }
 
-// ─── CARD 6: KURIR RETURN TERTINGGI ──────────────────────────
+// ÔöÇÔöÇÔöÇ CARD 6: KURIR RETURN TERTINGGI ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 const KNOWN_COURIERS = [
   { name: 'Budi Santoso', avatar: 'BS', color: '#6366f1' },
   { name: 'Eko Prasetyo', avatar: 'EP', color: '#14b8a6' },
@@ -8326,7 +8336,7 @@ function renderTopReturnCouriers() {
   });
 }
 
-// ─── NOTIFIKASI SISTEM ───────────────────────────────────────
+// ÔöÇÔöÇÔöÇ NOTIFIKASI SISTEM ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function renderNotif() {
   const recent = [...data].sort((a,b)=>b.createdAt-a.createdAt).slice(0,5);
   const icons = {
@@ -8359,7 +8369,7 @@ function renderNotif() {
       <div class="notif-icon" style="background:${iconBg[r.status]||'var(--accent)'};display:flex;align-items:center;justify-content:center;">${icons[r.status]||defaultSvg}</div>
       <div class="notif-content" style="flex:1;">
         <div class="notif-title">${r.nomorResi}</div>
-        <div class="notif-desc">${r.status} · ${r.penerima.nama}</div>
+        <div class="notif-desc">${r.status} ┬À ${r.penerima.nama}</div>
       </div>
       <div class="notif-time">${ago}</div>
     </div>`;
@@ -8374,7 +8384,7 @@ function timeSince(ts) {
   return Math.floor(s/86400)+'hr lalu';
 }
 
-// ─── CARD 2: GRAFIK PENGIRIMAN (MINGGU / BULAN / TAHUN) ──────
+// ÔöÇÔöÇÔöÇ CARD 2: GRAFIK PENGIRIMAN (MINGGU / BULAN / TAHUN) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 let chartTimeframe = 'bulan';
 
 function setChartTimeframe(mode) {
@@ -8669,7 +8679,7 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 
-// ─── TABLE DAFTAR RESI ────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ TABLE DAFTAR RESI ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function setPageDaftar(p) {
   pageDaftar = p;
   renderTable();
@@ -8729,7 +8739,7 @@ function confirmBatchDelete() {
     renderOutstanding();
     renderTable();
     closeBatchDeleteModal();
-    showToast('🗑️', `${count} resi outstanding berhasil dihapus!`);
+    showToast('­ƒùæ´©Å', `${count} resi outstanding berhasil dihapus!`);
   } else {
     const count = selectedDaftar.size;
     data = data.filter(r => !selectedDaftar.has(r.id));
@@ -8740,7 +8750,7 @@ function confirmBatchDelete() {
     renderOutstanding();
     renderClientPage();
     closeBatchDeleteModal();
-    showToast('🗑️', `${count} resi terpilih berhasil dihapus!`);
+    showToast('­ƒùæ´©Å', `${count} resi terpilih berhasil dihapus!`);
   }
 }
 
@@ -8748,7 +8758,7 @@ function batchDeleteDaftar() {
   openBatchDeleteModal('daftar');
 }
 
-// ─── FITUR SCAN MASAL AWB ────────────────────────────────────
+// ÔöÇÔöÇÔöÇ FITUR SCAN MASAL AWB ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function openBulkScanModal() {
   const m = document.getElementById('bulkScanModal');
   if (!m) return;
@@ -8816,7 +8826,7 @@ function updateBulkScanSummary() {
 function processBulkScanChecklist() {
   const tokens = parseBulkScanAwbs();
   if (tokens.length === 0) {
-    showToast('⚠️', 'Silakan masukkan atau scan minimal satu nomor AWB.');
+    showToast('ÔÜá´©Å', 'Silakan masukkan atau scan minimal satu nomor AWB.');
     return;
   }
 
@@ -8845,9 +8855,9 @@ function processBulkScanChecklist() {
   renderTable();
 
   if (added > 0) {
-    showToast('✅', `Berhasil mencentang ${added} resi dari ${tokens.length} AWB yang diinput!`);
+    showToast('Ô£à', `Berhasil mencentang ${added} resi dari ${tokens.length} AWB yang diinput!`);
   } else {
-    showToast('⚠️', 'Tidak ada nomor AWB yang cocok di dalam database.');
+    showToast('ÔÜá´©Å', 'Tidak ada nomor AWB yang cocok di dalam database.');
   }
 }
 
@@ -8991,7 +9001,7 @@ function renderTable() {
   renderPaginationHelper(pageDaftar, totalPages, totalItems, 'mainTablePagination', 'setPageDaftar', 'jumpInputDaftar');
 }
 
-// ─── FORM MODAL ──────────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ FORM MODAL ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function openModal(id=null){
   document.getElementById('deleteModal').classList.add('hidden');
   document.getElementById('detailModal').classList.add('hidden');
@@ -9051,15 +9061,15 @@ function saveResi(e){
     const oldSt=data[idx].status;
     data[idx]={...data[idx],...base};
     if(oldSt!==st){data[idx].riwayat=data[idx].riwayat||[];data[idx].riwayat.push({waktu:now,status:st,keterangan:'Diperbarui via form'});}
-    showToast('✅','Resi berhasil diperbarui!');
+    showToast('Ô£à','Resi berhasil diperbarui!');
   } else {
     data.unshift({id:genId(),...base,createdAt:now,riwayat:[{waktu:now,status:st,keterangan:'Resi dibuat'}]});
-    showToast('✅','Resi berhasil ditambahkan!');
+    showToast('Ô£à','Resi berhasil ditambahkan!');
   }
   saveData(); closeModal(); refreshDashboard(); renderTable(); renderOutstanding(); renderClientPage();
 }
 
-// ─── DETAIL MODAL ─────────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ DETAIL MODAL ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function openDetailModal(id){
   document.getElementById('formModal').classList.add('hidden');
   document.getElementById('deleteModal').classList.add('hidden');
@@ -9067,7 +9077,7 @@ function openDetailModal(id){
   currentDetailId=id;
   loadData();
   const r=data.find(x=>x.id===id);
-  if(!r){ showToast('⚠️','Data resi tidak ditemukan'); return; }
+  if(!r){ showToast('ÔÜá´©Å','Data resi tidak ditemukan'); return; }
   document.getElementById('newStatus').value='';
   document.getElementById('newStatusNote').value='';
   const riwayat=[...(r.riwayat||[])].reverse();
@@ -9075,7 +9085,7 @@ function openDetailModal(id){
     <div style="margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
       <div>
         <div style="font-family:monospace;font-size:18px;font-weight:800;color:#059669;">${r.nomorResi}</div>
-        <div style="font-size:12px;color:var(--muted-foreground);margin-top:2px;">Tgl: ${fmtDate(r.tanggalKirim)} · ${r.layanan} · Kurir: <b>${r.kurir || '-'}</b></div>
+        <div style="font-size:12px;color:var(--muted-foreground);margin-top:2px;">Tgl: ${fmtDate(r.tanggalKirim)} ┬À ${r.layanan} ┬À Kurir: <b>${r.kurir || '-'}</b></div>
       </div>${badge(r.status)}
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
@@ -9138,7 +9148,7 @@ function closeDetailModal(){document.getElementById('detailModal').classList.add
 function updateStatus(){
   if(!currentDetailId)return;
   const ns=document.getElementById('newStatus').value;
-  if(!ns){showToast('⚠️','Pilih status baru terlebih dahulu');return;}
+  if(!ns){showToast('ÔÜá´©Å','Pilih status baru terlebih dahulu');return;}
   const note=document.getElementById('newStatusNote').value.trim();
   const idx=data.findIndex(x=>x.id===currentDetailId);if(idx<0)return;
   data[idx].status=ns;
@@ -9147,10 +9157,10 @@ function updateStatus(){
   data[idx].riwayat.push({waktu:Date.now(),status:ns,keterangan:note});
   saveData(); refreshDashboard(); renderTable(); renderOutstanding(); renderClientPage();
   openDetailModal(currentDetailId);
-  showToast('✅',`Status diubah ke "${ns}"`);
+  showToast('Ô£à',`Status diubah ke "${ns}"`);
 }
 
-// ─── DELETE ──────────────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ DELETE ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function openDeleteModal(resiId){
   document.getElementById('formModal').classList.add('hidden');
   document.getElementById('detailModal').classList.add('hidden');
@@ -9183,10 +9193,10 @@ function confirmDelete(){
   renderTable();
   renderOutstanding();
   renderClientPage();
-  showToast('🗑️','Resi berhasil dihapus');
+  showToast('­ƒùæ´©Å','Resi berhasil dihapus');
 }
 
-// ─── CSV IMPORT & EXPORT ENGINE ──────────────────────────────
+// ÔöÇÔöÇÔöÇ CSV IMPORT & EXPORT ENGINE ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function downloadTemplateCSV() {
   const headers = [
     'No Resi',
@@ -9244,7 +9254,7 @@ function downloadTemplateCSV() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast('📥', 'Template CSV berhasil diunduh!');
+  showToast('­ƒôÑ', 'Template CSV berhasil diunduh!');
 }
 
 function handleImportCSV(e) {
@@ -9257,7 +9267,7 @@ function handleImportCSV(e) {
       const text = evt.target.result;
       const lines = text.split(/\r\n|\n/).filter(line => line.trim().length > 0);
       if (lines.length < 2) {
-        showToast('⚠️', 'File CSV kosong atau hanya berisi judul kolom');
+        showToast('ÔÜá´©Å', 'File CSV kosong atau hanya berisi judul kolom');
         return;
       }
 
@@ -9396,7 +9406,7 @@ function handleImportCSV(e) {
             existing.riwayat.push({
               waktu: now,
               status: newStatus,
-              keterangan: `Diperbarui via Impor CSV (${curStatus} → ${newStatus})`
+              keterangan: `Diperbarui via Impor CSV (${curStatus} ÔåÆ ${newStatus})`
             });
             ensureShipmentFields(existing);
             updatedCount++;
@@ -9453,33 +9463,33 @@ function handleImportCSV(e) {
 
       // Clear feedback notifications
       if (newCount > 0 && updatedCount > 0 && duplicateCount > 0) {
-        showToast('📦', `Impor selesai: ${newCount} baru, ${updatedCount} diperbarui, ${duplicateCount} duplikat diabaikan.`);
+        showToast('­ƒôª', `Impor selesai: ${newCount} baru, ${updatedCount} diperbarui, ${duplicateCount} duplikat diabaikan.`);
       } else if (newCount > 0 && updatedCount > 0) {
-        showToast('✅', `Impor berhasil: ${newCount} data baru ditambahkan & ${updatedCount} data berhasil diperbarui.`);
+        showToast('Ô£à', `Impor berhasil: ${newCount} data baru ditambahkan & ${updatedCount} data berhasil diperbarui.`);
       } else if (newCount > 0 && duplicateCount > 0) {
-        showToast('✅', `Impor berhasil: ${newCount} data baru ditambahkan (${duplicateCount} duplikat diabaikan).`);
+        showToast('Ô£à', `Impor berhasil: ${newCount} data baru ditambahkan (${duplicateCount} duplikat diabaikan).`);
       } else if (updatedCount > 0 && duplicateCount > 0) {
-        showToast('🔄', `Pembaruan selesai: ${updatedCount} data diperbarui (${duplicateCount} duplikat diabaikan).`);
+        showToast('­ƒöä', `Pembaruan selesai: ${updatedCount} data diperbarui (${duplicateCount} duplikat diabaikan).`);
       } else if (updatedCount > 0) {
-        showToast('🔄', `Berhasil memperbarui ${updatedCount} data resi!`);
+        showToast('­ƒöä', `Berhasil memperbarui ${updatedCount} data resi!`);
       } else if (newCount > 0) {
-        showToast('✅', `Berhasil mengimpor ${newCount} data resi baru!`);
+        showToast('Ô£à', `Berhasil mengimpor ${newCount} data resi baru!`);
       } else if (duplicateCount > 0) {
-        showToast('⚠️', `Semua data (${duplicateCount} resi) sama persis dengan yang sudah ada (duplikat diabaikan).`);
+        showToast('ÔÜá´©Å', `Semua data (${duplicateCount} resi) sama persis dengan yang sudah ada (duplikat diabaikan).`);
       } else {
-        showToast('ℹ️', 'Tidak ada data resi yang diproses.');
+        showToast('Ôä╣´©Å', 'Tidak ada data resi yang diproses.');
       }
 
       e.target.value = '';
     } catch(err) {
       console.error('Import CSV error:', err);
-      showToast('⚠️', 'Gagal memproses file CSV: ' + err.message);
+      showToast('ÔÜá´©Å', 'Gagal memproses file CSV: ' + err.message);
     }
   };
   reader.readAsText(file);
 }
 
-// ─── FITUR SCAN CEPAT AWB (LIGHTNING SCANNER) ────────────────
+// ÔöÇÔöÇÔöÇ FITUR SCAN CEPAT AWB (LIGHTNING SCANNER) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function checkSlaEvAlert(evVal) {
   if (!evVal) return false;
   const s = String(evVal).trim().toLowerCase();
@@ -9547,9 +9557,9 @@ function executeQuickScan() {
     input.value = '';
 
     // 3. Notifikasi toast
-    showToast('⚡', `AWB ${found.nomorResi || found.id} discan & langsung dicentang di tabel!`);
+    showToast('ÔÜí', `AWB ${found.nomorResi || found.id} discan & langsung dicentang di tabel!`);
   } else {
-    showToast('⚠️', `No. AWB "${val}" tidak ditemukan dalam sistem!`);
+    showToast('ÔÜá´©Å', `No. AWB "${val}" tidak ditemukan dalam sistem!`);
     input.select();
   }
 }
@@ -9622,7 +9632,7 @@ function openQuickScanResultModal(r) {
 
   modal.classList.remove('hidden');
 
-  // ── 3-SECOND AUTO-CLOSE TIMER WITH PROGRESS BAR ANIMATION ──
+  // ÔöÇÔöÇ 3-SECOND AUTO-CLOSE TIMER WITH PROGRESS BAR ANIMATION ÔöÇÔöÇ
   if (quickScanTimer) { clearTimeout(quickScanTimer); quickScanTimer = null; }
   if (quickScanCountdownInterval) { clearInterval(quickScanCountdownInterval); quickScanCountdownInterval = null; }
 
@@ -9681,16 +9691,16 @@ function closeQuickScanResultModal() {
 }
 
 function exportCSV(){
-  if(!data.length){showToast('⚠️','Tidak ada data untuk diekspor');return;}
+  if(!data.length){showToast('ÔÜá´©Å','Tidak ada data untuk diekspor');return;}
   const h=['ID','No Resi','Tanggal Kirim','Layanan','Status','Kurir','SLA RTN','SLA EV','DRS KE','Nama Pengirim','Telp Pengirim','Alamat Pengirim','Nama Penerima','Telp Penerima','Alamat Penerima','Deskripsi','Berat','Satuan','Biaya','Keterangan'];
   const rows=data.map(r=>[r.id,r.nomorResi,r.tanggalKirim,r.layanan,r.status,r.kurir||'',r.slaRtn||'',r.slaEv||'',r.drsKe||1,(r.pengirim&&r.pengirim.nama)||r.namaClient||'',(r.pengirim&&r.pengirim.telepon)||'',(r.pengirim&&r.pengirim.alamat)||'',(r.penerima&&r.penerima.nama)||'',(r.penerima&&r.penerima.telepon)||'',(r.penerima&&r.penerima.alamat)||'',(r.barang&&r.barang.deskripsi)||'',(r.barang&&r.barang.berat)||1,(r.barang&&r.barang.satuan)||'kg',r.biaya||0,r.keterangan||''].map(v=>`"${String(v).replace(/"/g,'""')}"`));
   const csv=[h.join(','),...rows.map(r=>r.join(','))].join('\n');
   const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv'})),download:`ekspedisi_${new Date().toISOString().split('T')[0]}.csv`});
   a.click();URL.revokeObjectURL(a.href);
-  showToast('📥','File CSV berhasil diunduh');
+  showToast('­ƒôÑ','File CSV berhasil diunduh');
 }
 
-// ─── UTILS ───────────────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ UTILS ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function fmtDate(d){if(!d)return'-';return new Date(d+'T00:00:00').toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});}
 function fmtDT(ts){if(!ts)return'-';return new Date(ts).toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
 function fmtRp(n){return'Rp '+Number(n).toLocaleString('id-ID');}
@@ -9701,13 +9711,13 @@ function showToast(icon, msg) {
   if (iconEl) {
     if (typeof icon === 'string' && icon.trim().startsWith('<svg')) {
       iconEl.innerHTML = icon;
-    } else if (icon === '🗑️' || icon === 'delete' || icon === 'trash') {
+    } else if (icon === '­ƒùæ´©Å' || icon === 'delete' || icon === 'trash') {
       iconEl.innerHTML = `<svg width="18" height="18" fill="none" stroke="#ef4444" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
-    } else if (icon === '📋' || icon === 'copy') {
+    } else if (icon === '­ƒôï' || icon === 'copy') {
       iconEl.innerHTML = `<svg width="18" height="18" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
-    } else if (icon === '⚠️' || icon === 'warn' || icon === 'error') {
+    } else if (icon === 'ÔÜá´©Å' || icon === 'warn' || icon === 'error') {
       iconEl.innerHTML = `<svg width="18" height="18" fill="none" stroke="#f59e0b" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
-    } else if (icon === '💾' || icon === 'save') {
+    } else if (icon === '­ƒÆ¥' || icon === 'save') {
       iconEl.innerHTML = `<svg width="18" height="18" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>`;
     } else {
       iconEl.innerHTML = `<svg width="18" height="18" fill="none" stroke="#10b981" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>`;
@@ -9745,7 +9755,7 @@ document.addEventListener('keydown', e => {
 // Resize charts
 window.addEventListener('resize', () => { drawLineChart(false); });
 
-// ─── SIDEBAR MINIMIZE TOGGLE ─────────────────────────────────
+// ÔöÇÔöÇÔöÇ SIDEBAR MINIMIZE TOGGLE ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 function toggleSidebar() {
   const sb = document.getElementById('sidebar');
   const main = document.getElementById('main');
@@ -9776,7 +9786,7 @@ function initSidebarState() {
   }
 }
 
-// ─── AUTH & LOGIN CURTAIN SYSTEM ─────────────────────────────
+// ÔöÇÔöÇÔöÇ AUTH & LOGIN CURTAIN SYSTEM ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 const SUPER_ADMIN_DEFAULT_PASS = 'Pratama_123';
 const SUPER_ADMIN = { user: 'Pratama' };
 
@@ -9836,7 +9846,7 @@ function handleChangePasswordSubmit(e) {
       errEl.textContent = msg;
       errEl.style.display = 'flex';
     }
-    showToast('âš ï¸', msg);
+    showToast('├ó┼í┬á├»┬©┬Å', msg);
   };
 
   const activePass = getSuperAdminPass();
@@ -9868,7 +9878,7 @@ function handleChangePasswordSubmit(e) {
   setSuperAdminPass(newInput);
   if (errEl) errEl.style.display = 'none';
   closeChangePasswordModal();
-  showToast('ðŸ”', 'Password Super Admin berhasil diperbarui!');
+  showToast('├░┼©ÔÇØ┬É', 'Password Super Admin berhasil diperbarui!');
 }
 
 
@@ -9905,7 +9915,7 @@ function handleLoginSubmit(e) {
   if (isUserValid && isPassValid) {
     if (errMsg) errMsg.style.display = 'none';
     if (btn) {
-      btn.innerHTML = '<span>✓ Berhasil Masuk...</span>';
+      btn.innerHTML = '<span>Ô£ô Berhasil Masuk...</span>';
       btn.style.background = '#047857';
     }
 
@@ -9952,7 +9962,7 @@ function handleLoginSubmit(e) {
         overlay.style.setProperty('opacity', '0', 'important');
         overlay.style.setProperty('z-index', '-9999', 'important');
       }
-      try { showToast('👋', 'Selamat datang kembali, Super Admin Pratama!'); } catch(e) {}
+      try { showToast('­ƒæï', 'Selamat datang kembali, Super Admin Pratama!'); } catch(e) {}
     }, 450);
 
     return false;
@@ -10006,7 +10016,7 @@ function handleLogout() {
   const userMenu = document.getElementById('userDropdownMenu');
   if (userMenu) userMenu.classList.add('hidden');
   
-  showToast('🔒', 'Anda telah keluar dari sistem.');
+  showToast('­ƒöÆ', 'Anda telah keluar dari sistem.');
 }
 
 function togglePasswordVisibility() {
@@ -10029,7 +10039,7 @@ function autoFillSuperAdmin() {
   if (u) u.value = 'Pratama';
   if (p) p.value = getSuperAdminPass();
   if (e) e.style.display = 'none';
-  showToast('🔑', 'Kredensial Super Admin berhasil diisi otomatis!');
+  showToast('­ƒöæ', 'Kredensial Super Admin berhasil diisi otomatis!');
 }
 
 function showForgotPassword(e) {
@@ -10073,7 +10083,7 @@ function checkLoginSession() {
   }
 }
 
-// ─── INIT ────────────────────────────────────────────────────
+// ÔöÇÔöÇÔöÇ INIT ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 loadData();
 getPortalSystems();
 initGreeting();
