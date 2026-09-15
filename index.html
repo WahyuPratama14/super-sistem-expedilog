@@ -3,6 +3,16 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('app_theme');
+        if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      } catch(e) {}
+    })();
+  </script>
+
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -279,6 +289,35 @@ body:not(.logged-in-user) #main {
   gap: 8px;
 }
 
+
+/* ─── DATA TABLE & TABLE PANEL DARK THEME GUARANTEE ────────── */
+[data-theme="dark"] .table-panel {
+  background: #151e2e !important;
+  background-color: #151e2e !important;
+  border-color: #243044 !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] .data-table th {
+  background: #1e293b !important;
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+  border-bottom-color: #334155 !important;
+  border-color: #334155 !important;
+}
+[data-theme="dark"] .data-table td {
+  border-bottom-color: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+[data-theme="dark"] .data-table tr:hover td {
+  background-color: rgba(255,255,255,0.04) !important;
+}
+
+.page-header-card.header-card-red {
+  border-color: #ef4444 !important;
+}
+[data-theme="dark"] .page-header-card.header-card-red {
+  border-color: #ef4444 !important;
+}
 </style>
 
 
@@ -299,7 +338,92 @@ body:not(.logged-in-user) #main {
   --border:#e2e8f0;
   --muted-foreground:#64748b;
   --accent:#f1f5f9;
+} 
+
+/* ── LIGHT / NIGHT MODE THEME TOKENS ── */
+[data-theme="dark"] {
+  --background: #0b0f19;
+  --foreground: #f1f5f9;
+  --card: #151e2e;
+  --border: #243044;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
 }
+[data-theme="dark"] body {
+  background-color: #0b0f19 !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] #sidebar {
+  background-color: #0f172a !important;
+  border-right-color: #1e293b !important;
+}
+[data-theme="dark"] #topbar {
+  background-color: #151e2e !important;
+  border-bottom-color: #243044 !important;
+}
+[data-theme="dark"] .page-header-card,
+[data-theme="dark"] .panel,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .modern-table-container,
+[data-theme="dark"] .quick-scan-wrapper,
+[data-theme="dark"] .modal-content,
+[data-theme="dark"] .user-chip,
+[data-theme="dark"] .chart-card {
+  background-color: #151e2e !important;
+  border-color: #243044 !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] .modern-table th {
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+  border-bottom-color: #243044 !important;
+}
+[data-theme="dark"] .modern-table td {
+  border-bottom-color: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+[data-theme="dark"] .modern-table tr:hover td {
+  background-color: rgba(255,255,255,0.04) !important;
+}
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] .modern-filter-bar {
+  background-color: #151e2e !important;
+  border-color: #243044 !important;
+}
+[data-theme="dark"] .modern-select-trigger {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] .modern-dropdown-menu {
+  background-color: #151e2e !important;
+  border-color: #334155 !important;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6) !important;
+}
+[data-theme="dark"] .modern-dropdown-item {
+  color: #e2e8f0 !important;
+}
+[data-theme="dark"] .modern-dropdown-item:hover,
+[data-theme="dark"] .modern-dropdown-item.active {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+}
+[data-theme="dark"] .badge-gray {
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+}
+[data-theme="dark"] .topbar-search-input {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{background-color:#f8fafc;color:#0f172a;}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--background);color:var(--foreground);display:flex;min-height:100vh;}
@@ -2171,6 +2295,228 @@ button:hover,
   .curtain-opening .curtain-left{transform:translateY(-150%);}
   .curtain-opening .curtain-right{transform:translateY(150%);}
 }
+
+/* ─── SIDEBAR ACCORDION SUBMENU STYLES ─────────────────────── */
+.nav-accordion {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.nav-parent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  position: relative;
+}
+.nav-parent .nav-chevron {
+  transition: transform 0.25s ease;
+  margin-left: auto;
+  opacity: 0.7;
+}
+.nav-accordion.open .nav-chevron {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+.nav-accordion.open .nav-parent {
+  color: var(--foreground);
+}
+.nav-submenu-list {
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+  padding: 4px 0 6px 0;
+  margin-left: 10px;
+  border-left: 2px solid rgba(16, 185, 129, 0.2);
+}
+.nav-accordion.open .nav-submenu-list {
+  display: flex !important;
+}
+.nav-subitem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px 8px 16px;
+  border-radius: 8px;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: left;
+}
+.nav-subitem:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--foreground);
+}
+.nav-subitem.active {
+  color: #10b981 !important;
+  font-weight: 600 !important;
+  background: rgba(16, 185, 129, 0.1) !important;
+}
+.nav-sub-bullet {
+  font-size: 16px;
+  line-height: 1;
+  color: currentColor;
+  opacity: 0.6;
+}
+.nav-subitem.active .nav-sub-bullet {
+  color: #10b981;
+  opacity: 1;
+}
+.nav-subbadge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.06);
+  color: var(--muted-foreground);
+}
+.nav-subitem.active .nav-subbadge {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+#sidebar.minimized .nav-chevron {
+  display: none !important;
+}
+#sidebar.minimized .nav-submenu-list {
+  display: none !important;
+}
+
+/* ─── STATUS PLAIN TEXT (NO BUTTON / BADGE) ──────────────────── */
+.status-plain-text {
+  display: inline-block;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+}
+
+/* ─── BLACK / DARK MODE COMPREHENSIVE FIXES ─────────────────── */
+[data-theme="dark"] .nav-submenu-list {
+  border-left-color: rgba(16, 185, 129, 0.3) !important;
+}
+[data-theme="dark"] .nav-subitem {
+  color: #94a3b8 !important;
+}
+[data-theme="dark"] .nav-subitem:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] .nav-subitem.active {
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+[data-theme="dark"] .nav-subbadge {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #94a3b8 !important;
+}
+[data-theme="dark"] .nav-subitem.active .nav-subbadge {
+  background: rgba(16, 185, 129, 0.25) !important;
+  color: #10b981 !important;
+}
+
+/* Dashboard Stat Cards */
+[data-theme="dark"] .stat-card-ref {
+  background: #151e2e !important;
+  background-color: #151e2e !important;
+  border-color: #243044 !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] .stat-card-ref .stat-card-title,
+[data-theme="dark"] .stat-card-ref .text-muted-foreground,
+[data-theme="dark"] .stat-card-ref p,
+[data-theme="dark"] .stat-card-ref span {
+  color: #94a3b8 !important;
+}
+[data-theme="dark"] .stat-card-ref .stat-card-value {
+  color: #f1f5f9 !important;
+}
+
+/* Table Headers and Footers */
+[data-theme="dark"] .modern-table thead,
+[data-theme="dark"] .modern-table thead tr,
+[data-theme="dark"] .modern-table thead th,
+[data-theme="dark"] .modern-table th {
+  background: #1e293b !important;
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+  border-bottom-color: #334155 !important;
+  border-color: #334155 !important;
+}
+[data-theme="dark"] .table-footer-bar,
+[data-theme="dark"] .footer-pagination,
+[data-theme="dark"] .table-footer {
+  background: #151e2e !important;
+  background-color: #151e2e !important;
+  border-top-color: #243044 !important;
+  color: #94a3b8 !important;
+}
+[data-theme="dark"] .table-footer-bar span,
+[data-theme="dark"] .table-footer-bar select {
+  color: #94a3b8 !important;
+}
+[data-theme="dark"] .page-btn {
+  background: #1e293b !important;
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] .page-btn:hover:not(:disabled) {
+  background: #334155 !important;
+  color: #ffffff !important;
+}
+[data-theme="dark"] .page-btn:disabled {
+  opacity: 0.35 !important;
+  background: #151e2e !important;
+}
+[data-theme="dark"] .page-btn.active {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+/* Popovers, Action Icons, and Extra White Boxes */
+[data-theme="dark"] .filter-popover-modal,
+[data-theme="dark"] .filter-popover,
+[data-theme="dark"] .quick-scan-box,
+[data-theme="dark"] .drive-file-card,
+[data-theme="dark"] .drive-cat-pill,
+[data-theme="dark"] .btn-action-icon {
+  background: #1e293b !important;
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] .popover-segment-btn.active {
+  background: #334155 !important;
+  color: #f1f5f9 !important;
+}
+[data-theme="dark"] .drop-icon-box {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+[data-theme="dark"] .chart-filter-btn {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  color: #94a3b8 !important;
+}
+[data-theme="dark"] .chart-filter-btn.active {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
 </style>
 </head>
 <body>
@@ -2359,6 +2705,19 @@ button:hover,
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
       <div class="notif-dot"></div>
     </div>
+    
+      <!-- CLOUD SYNC BUTTON -->
+      <button type="button" id="topbarCloudSyncBtn" onclick="triggerManualCloudSync()" title="Sinkronisasi Data Multi-Device Cloud" style="height:36px;padding:0 12px;border-radius:10px;border:1px solid rgba(16,185,129,0.3);background:rgba(16,185,129,0.08);color:#10b981;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0;">
+        <svg id="cloudSyncIcon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+        <span class="cloud-sync-label">Sync Cloud</span>
+      </button>
+
+      <!-- LIGHT / NIGHT MODE TOGGLE BUTTON -->
+      <button type="button" id="themeToggleBtn" onclick="toggleTheme()" title="Ganti Mode Terang / Gelap (Night Mode)" style="width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--foreground);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0;">
+        <svg id="themeIconSun" width="17" height="17" fill="none" stroke="#f59e0b" stroke-width="2" viewBox="0 0 24 24" style="display:none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg id="themeIconMoon" width="17" height="17" fill="none" stroke="#6366f1" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+
     <div class="user-chip" onclick="toggleUserDropdown(event)" style="position:relative;">
       <div class="user-avatar" id="topbarAvatar" style="background:linear-gradient(135deg, #10b981, #059669);">P</div>
       <div>
@@ -2400,16 +2759,33 @@ button:hover,
       <span class="nav-text">Dashboard</span>
     </button>
 
-    <!-- 2. Tabel Data -->
-    <button class="nav-item" onclick="showPage('daftar',this)" title="Manajemen Resi">
-      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-        <rect x="3" y="4" width="18" height="3" rx="1.5"/>
-        <rect x="3" y="9" width="18" height="3" rx="1.5"/>
-        <rect x="3" y="14" width="18" height="3" rx="1.5"/>
-        <rect x="3" y="19" width="18" height="3" rx="1.5"/>
-      </svg>
-      <span class="nav-text">Manajemen Resi</span>
-    </button>
+    <!-- 2. Manajemen Resi (Accordion Submenu) -->
+    <div class="nav-accordion open" id="navAccordionManajemen">
+      <button class="nav-item nav-parent" id="navParentManajemen" onclick="toggleManajemenAccordion(this)" title="Manajemen Resi">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="3" rx="1.5"/>
+          <rect x="3" y="9" width="18" height="3" rx="1.5"/>
+          <rect x="3" y="14" width="18" height="3" rx="1.5"/>
+          <rect x="3" y="19" width="18" height="3" rx="1.5"/>
+        </svg>
+        <span class="nav-text" style="flex:1;">Manajemen Resi</span>
+        <svg class="nav-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+      <div class="nav-submenu-list" id="navSubmenuManajemen">
+        <button class="nav-subitem active" id="navSubitemDaftar" onclick="selectManajemenSubMenu('daftar', this)" title="Daftar Data Resi">
+          <span class="nav-sub-bullet">•</span>
+          <span class="nav-subtext">Daftar Data Resi</span>
+          <span class="nav-subbadge" id="sidebarBadgeDaftar">0</span>
+        </button>
+        <button class="nav-subitem" id="navSubitemTakeout" onclick="selectManajemenSubMenu('takeout', this)" title="Data Takeout AWB Return">
+          <span class="nav-sub-bullet">•</span>
+          <span class="nav-subtext">Data Takeout AWB Return</span>
+          <span class="nav-subbadge" id="sidebarBadgeTakeout">0</span>
+        </button>
+      </div>
+    </div>
 
     <!-- 3. Outstanding -->
     <button class="nav-item" onclick="showPage('outstanding',this)" title="Outstanding">
@@ -2575,7 +2951,7 @@ button:hover,
           <div class="stat-value-ref" id="sTerkirim">0%</div>
           <div class="stat-label-ref">Terkirim</div>
           <div class="stat-trend-bottom stat-trend-up">
-            <span class="trend-arrow">&#9650;</span>
+            <span class="trend-arrow">▲</span>
             <span id="sTerkirimTrend">0%</span>
           </div>
         </div>
@@ -2587,20 +2963,19 @@ button:hover,
         <div class="panel">
           <div class="panel-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
             <div>
-              <div class="panel-title">Grafik Pengiriman (Sukses vs Return)</div>
-              <div class="panel-sub" id="chartFilterSub">Tren status Sukses (Hijau) vs Return (Merah) real-time</div>
+              <div class="panel-title">Grafik Pengiriman (Delivered vs Return)</div>
+              <div class="panel-sub" id="chartFilterSub">Tren status Delivered (Hijau) vs Return (Merah) real-time</div>
             </div>
             <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
               <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:5px 12px;border-radius:10px;border:1px solid #e2e8f0;">
                 <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#10b981;">
-                  <span style="width:9px;height:9px;border-radius:50%;background:#10b981;display:inline-block;"></span> Sukses
+                  <span style="width:9px;height:9px;border-radius:50%;background:#10b981;display:inline-block;"></span> Delivered
                 </span>
                 <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#ef4444;">
                   <span style="width:9px;height:9px;border-radius:50%;background:#ef4444;display:inline-block;"></span> Return
                 </span>
               </div>
               <div class="chart-filter-group">
-                <button type="button" class="chart-filter-pill" id="filterHari" onclick="setChartTimeframe('hari')">Hari</button>
                 <button type="button" class="chart-filter-pill" id="filterMinggu" onclick="setChartTimeframe('minggu')">Minggu</button>
                 <button type="button" class="chart-filter-pill active" id="filterBulan" onclick="setChartTimeframe('bulan')">Bulan</button>
                 <button type="button" class="chart-filter-pill" id="filterTahun" onclick="setChartTimeframe('tahun')">Tahun</button>
@@ -2659,11 +3034,11 @@ button:hover,
         <div>
           <div class="panel-title" style="font-size:18px;display:flex;align-items:center;gap:8px;">
             <svg width="20" height="20" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            <span>Manajemen Resi Pengiriman</span>
+            <span id="pageDaftarTitle">Tabel Data Resi Pengiriman</span>
           </div>
           <div class="panel-sub" id="tableCount">0 resi ditemukan</div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div id="headerActionsDaftar" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <!-- ⚡ FITUR SCAN CEPAT AWB (ICON ONLY & AUTO-CHECKLIST) -->
           <div id="quickScanWrapper" class="quick-scan-wrapper">
             <button type="button" id="quickScanTriggerBtn" class="quick-scan-trigger-btn" onclick="toggleQuickScan(true)" title="Scan Cepat AWB (Cek SLA RTN, SLA EV, DRS & Auto-Checklist)">
@@ -2687,7 +3062,7 @@ button:hover,
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
             <span>Import Data</span>
           </button>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="exportCSV()" title="Ekspor Data ke CSV">
+          <button type="button" class="btn btn-ghost btn-sm" onclick="exportManajemenResiExcel()" title="Ekspor Data SLA EV 10+ ke Excel">
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
             <span>Export CSV</span>
           </button>
@@ -2696,9 +3071,17 @@ button:hover,
             <span>Tambah Resi</span>
           </button>
         </div>
+        <div id="headerActionsTakeout" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-ghost btn-sm" onclick="exportTakeoutReturnExcel()" title="Ekspor Data Takeout ke Excel" style="border:1px solid var(--border);display:inline-flex;align-items:center;gap:6px;font-weight:600;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Ekspor Excel</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Filters Bar with Single Modern Popover (Tabs: Status & SLA RTN) -->
+      <!-- SUB-TAB 1: DAFTAR RESI AKTIF -->
+      <div id="subtabContentDaftar">
+<!-- Filters Bar with Single Modern Popover (Tabs: Status & SLA RTN) -->
       <div class="modern-filter-bar">
         <div class="filter-popover-anchor" id="popoverAnchor_combined">
           <button type="button" class="btn-popover-trigger" id="trigger_combinedFilter" onclick="toggleCombinedFilterPopover(event)">
@@ -2741,28 +3124,18 @@ button:hover,
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           <span>Reset Filter</span>
         </button>
-
-        <!-- Batch Actions Pojok Kanan Atas (HANYA MUNCUL JIKA ADA AWB YANG DICENTANG) -->
-        <div id="topBatchActionsDaftar" class="top-batch-actions-bar" style="display:none;margin-left:auto;align-items:center;gap:8px;">
-          <button type="button" class="btn btn-primary btn-sm" id="btnBatchStatusDaftar" onclick="openBatchStatusModal()" style="display:inline-flex;align-items:center;gap:6px;background:#10b981;border-color:#10b981;color:#ffffff;border-radius:10px;padding:7px 16px;font-weight:700;font-size:12.5px;box-shadow:0 2px 8px rgba(16,185,129,.25);cursor:pointer;" title="Ubah status untuk semua resi yang dipilih">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            <span id="btnBatchStatusLabel">Ubah Status Masal</span>
-          </button>
-          <button type="button" class="btn btn-ghost btn-sm" id="btnResetChecklistDaftar" onclick="resetChecklistDaftar()" style="display:inline-flex;align-items:center;gap:6px;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;border-radius:10px;padding:7px 12px;font-weight:600;font-size:12.5px;cursor:pointer;" title="Batalkan semua centang checklist">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            <span>Reset Checklist</span>
-          </button>
-        </div>
       </div>
 
       <div class="table-panel">
         <div style="overflow-x:auto;">
-          <table class="data-table">
+          <table class="data-table" id="mainTable">
             <thead>
               <tr>
-                <th class="col-check no-select"><input type="checkbox" class="table-check" id="checkAllDaftarHeader" onchange="toggleSelectAllDaftar(this.checked)" title="Pilih Semua"/></th>
-                <th class="col-no no-select">NO</th>
-                <th class="col-awb-header no-select" style="min-width:190px;white-space:nowrap;">
+                <th class="col-check no-select" style="width:36px;text-align:center;">
+                  <input type="checkbox" class="table-check" id="checkAllDaftarHeader" onchange="toggleSelectAllDaftar(this.checked)" title="Pilih Semua"/>
+                </th>
+                <th class="col-no no-select" style="width:40px;text-align:center;">#</th>
+                <th class="col-awb-header no-select" style="min-width:180px;">
                   <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
                     <span>NO AWB</span>
                     <button type="button" class="btn-copy-col-header" onclick="copyAllVisibleAwbs('main')" title="Salin semua No AWB di halaman ini ke clipboard">
@@ -2771,17 +3144,17 @@ button:hover,
                     </button>
                   </div>
                 </th>
-                <th class="col-client-header no-select">NAMA CLIENT</th>
-                <th class="no-select">SLA RTN</th>
-                <th class="no-select">SLA EV</th>
-                <th class="no-select">DRS KE</th>
-                <th class="no-select">STATUS</th>
-                <th class="no-select">KURIR</th>
+                <th class="col-client-header no-select" style="min-width:220px;">NAMA CLIENT</th>
+                <th class="no-select" style="text-align:center;width:85px;">SLA RTN</th>
+                <th class="no-select" style="text-align:center;width:85px;">SLA EV</th>
+                <th class="no-select" style="text-align:center;width:75px;">DRS KE</th>
+                <th class="no-select" style="text-align:center;width:125px;">STATUS</th>
+                <th class="no-select" style="min-width:180px;">KURIR</th>
                 <th class="no-select" style="text-align:center;width:95px;">AKSI</th>
               </tr>
             </thead>
             <tbody id="mainTableBody">
-              <tr><td colspan="10" style="text-align:center;padding:40px;color:var(--muted-foreground);">Memuat data resi...</td></tr>
+              <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted-foreground);">Memuat data resi...</td></tr>
             </tbody>
           </table>
         </div>
@@ -2792,6 +3165,10 @@ button:hover,
               <input type="checkbox" class="table-check" id="checkAllDaftarBottom" onchange="toggleSelectAllDaftar(this.checked)"/>
               <span>Pilih Semua</span>
             </label>
+            <button type="button" class="btn-batch-status" id="btnBatchStatusDaftar" onclick="openBatchStatusModal()" disabled title="Ubah status untuk semua resi yang dipilih">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              <span>Ubah Status</span>
+            </button>
             <button type="button" class="btn-batch-del" id="btnBatchDeleteDaftar" onclick="batchDeleteDaftar()" disabled>
               <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
               <span>Hapus Terpilih</span>
@@ -2800,6 +3177,36 @@ button:hover,
           <div class="footer-pagination" id="mainTablePagination"></div>
         </div>
       </div>
+      </div><!-- /subtabContentDaftar -->
+
+      <!-- SUB-TAB 2: DATA TAKEOUT AWB RETURN -->
+      <div id="subtabContentTakeout" style="display:none;">
+        
+        <div class="table-panel">
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width:40px;text-align:center;">#</th>
+                  <th>NO AWB</th>
+                  <th>NAMA CLIENT</th>
+                  <th>NAMA KURIR</th>
+                  <th style="text-align:center;">DRS KE</th>
+                  <th style="text-align:center;">SLA RTN</th>
+                  <th style="text-align:center;">SLA EV</th>
+                  <th style="text-align:center;">STATUS</th>
+                  <th>TANGGAL KIRIM</th>
+                  <th style="text-align:center;">AKSI</th>
+                </tr>
+              </thead>
+              <tbody id="takeoutReturnTableBody">
+                <tr><td colspan="10" style="text-align:center;padding:30px;color:var(--muted-foreground);">Memuat data takeout...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /page-daftar -->
 
     <!-- ══ PAGE: OUTSTANDING ══ -->
@@ -3030,16 +3437,24 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
               <div style="display:flex;align-items:center;gap:6px;">
                 <span style="font-size:11.5px;font-weight:700;color:var(--foreground);">Jeda Antar Pesan:</span>
-                <select id="blastIntervalSelect" style="font-size:11.5px;padding:3px 8px;border-radius:8px;border:1px solid #cbd5e1;">
-                  <option value="2">2 Detik (Cepat)</option>
-                  <option value="3" selected>3 Detik (Disarankan)</option>
-                  <option value="4">4 Detik (Aman)</option>
-                  <option value="5">5 Detik (Sangat Aman)</option>
+                <select id="blastIntervalSelect" style="font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid #cbd5e1;font-weight:700;color:var(--foreground);background:var(--card);">
+                  <option value="15-30" selected>🛡️ 15 - 30 Detik Acak (Anti-Banned / Disarankan)</option>
+                  <option value="10-20">⚡ 10 - 20 Detik Acak (Standar Aman)</option>
+                  <option value="20-45">🔒 20 - 45 Detik Acak (Proteksi Ekstra Nomor Baru)</option>
+                  <option value="5-10">🚀 5 - 10 Detik Acak (Mode Cepat)</option>
                 </select>
               </div>
               <div id="blastCountdownText" style="font-size:11.5px;font-weight:700;color:#10b981;"></div>
             </div>
 
+            
+            <!-- ANTI-BANNED SMART PROTECTION CHECKBOX -->
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.2);margin-bottom:10px;">
+              <input type="checkbox" id="blastAntiBanSpintax" checked style="width:16px;height:16px;accent-color:#10b981;cursor:pointer;" />
+              <label for="blastAntiBanSpintax" style="font-size:12px;font-weight:600;color:var(--foreground);cursor:pointer;">
+                Aktifkan Proteksi Anti-Banned (Variasi Teks Acak & Micro-Ref Hash agar pesan tidak dianggap spam oleh WhatsApp)
+              </label>
+            </div>
             <!-- Progress Bar -->
             <div style="height:6px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-bottom:10px;">
               <div id="blastProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#10b981,#059669);transition:width .3s ease;"></div>
@@ -3324,6 +3739,63 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
           </div>
         </div>
       </div>
+    
+      <!-- ROW 2: PENGATURAN JAM TAKEOUT & CLOUD SYNC -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;">
+        <!-- PANEL: JAM TAKEOUT RETURN -->
+        <div class="panel">
+          <div class="panel-title" style="margin-bottom:6px;display:flex;align-items:center;gap:8px;">
+            <svg width="18" height="18" fill="none" stroke="#ef4444" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Pengaturan Jam Takeout AWB Return</span>
+          </div>
+          <div class="panel-sub" style="margin-bottom:16px;">Tentukan jam cut-off harian untuk menyembunyikan paket Delivery Return dari tab Daftar Data Resi ke tab Data Takeout AWB Return.</div>
+          <div style="display:flex;align-items:center;gap:12px;background:var(--accent);padding:14px;border-radius:12px;border:1px solid var(--border);">
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);margin-bottom:4px;">JAM CUT-OFF HARIAN</label>
+              <input type="time" id="settingTakeoutTime" value="08:00" style="padding:8px 12px;font-size:15px;font-weight:700;border-radius:8px;border:1px solid var(--border);width:130px;" />
+            </div>
+            <div style="flex:1;">
+              <button type="button" class="btn btn-primary" onclick="saveReturnTakeoutTime()" style="width:100%;justify-content:center;height:40px;">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline></svg>
+                <span>Simpan Jam Cut-Off</span>
+              </button>
+            </div>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted-foreground);margin-top:10px;">
+            Default jam cut-off: <strong>08:00</strong>. Anda dapat merubahnya sewaktu-waktu sesuai jadwal operasional tim gudang.
+          </div>
+        </div>
+
+        <!-- PANEL: MULTI-DEVICE CLOUD SYNC -->
+        <div class="panel">
+          <div class="panel-title" style="margin-bottom:6px;display:flex;align-items:center;gap:8px;">
+            <svg width="18" height="18" fill="none" stroke="#10b981" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+            <span>Sinkronisasi Multi-Device (Cloud Sync)</span>
+          </div>
+          <div class="panel-sub" style="margin-bottom:12px;">Sambungkan ke Google Apps Script Web App agar data otomatis tersinkronisasi saat dibuka di laptop, HP, atau browser lain.</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);margin-bottom:4px;">URL GOOGLE APPS SCRIPT WEB APP</label>
+              <input type="url" id="cloudSyncUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="width:100%;padding:8px 12px;font-size:12px;border-radius:8px;border:1px solid var(--border);" />
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="saveAndTestCloudSync()" style="flex:1;justify-content:center;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+                <span>Uji & Hubungkan Cloud</span>
+              </button>
+              <button type="button" class="btn btn-ghost btn-sm" onclick="pullDataFromCloud()" style="justify-content:center;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                <span>Tarik Data</span>
+              </button>
+            </div>
+            <div id="cloudSyncStatusBadge" style="font-size:11.5px;padding:6px 10px;border-radius:6px;background:var(--accent);color:var(--muted-foreground);display:flex;align-items:center;gap:6px;">
+              <span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block;"></span>
+              <span id="cloudSyncStatusText">Mode Offline Standalone (Data tersimpan di browser ini)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /page-pengaturan -->
 
   </div><!-- /content -->
@@ -4212,9 +4684,17 @@ function loadData() {
     data = [];
   }
 }
-function saveData() { 
+function saveData() {
   try {
     SafeStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if (typeof updateSubtabBadges === 'function') updateSubtabBadges();
+    // Auto-sync ke Cloud jika tersambung
+    if (typeof getCloudSyncUrl === 'function') {
+      const cloudUrl = getCloudSyncUrl();
+      if (cloudUrl && typeof pushDataToCloud === 'function') {
+        pushDataToCloud(false);
+      }
+    }
   } catch(e) {
     console.warn('saveData warning:', e);
   }
@@ -4353,12 +4833,29 @@ const LAYANAN_COLORS = {
   'Kargo':'#f97316','Ekonomi':'#22c55e'
 };
 function badge(s) {
-  if (!s) return '<span class="badge badge-gray">-</span>';
-  if (String(s).toLowerCase().includes('ditolak')) {
-    return '<span class="badge badge-red" style="background:rgba(239,68,68,0.14);color:#ef4444;border:1px solid rgba(239,68,68,0.28);font-weight:700;">Ditolak</span>';
+  if (!s || s === '-') return '<span class="status-plain-text" style="color:var(--muted-foreground);font-weight:700;">-</span>';
+  const str = String(s).trim();
+  const upper = str.toUpperCase();
+  const low = str.toLowerCase();
+
+  let color = 'var(--muted-foreground)';
+  if (low.includes('delivered') || low.includes('terkirim') || low.includes('sukses')) {
+    color = '#10b981'; // Emerald Green
+  } else if (low.includes('ditolak') || low.includes('tolak') || low.includes('return') || low.includes('retur') || low.includes('rts') || low.includes('gagal')) {
+    color = '#ef4444'; // Red
+  } else if (low.includes('hold') || low.includes('pending')) {
+    color = '#f59e0b'; // Amber / Orange
+  } else if (low.includes('delivery') || low.includes('antar') || low.includes('jalan') || low.includes('transit')) {
+    color = '#0284c7'; // Sky Blue
+  } else if (low.includes('manifest')) {
+    color = '#8b5cf6'; // Purple
+  } else {
+    const c = STATUS_CFG[s];
+    if (c && c.color) color = c.color;
+    else color = '#64748b';
   }
-  const c = STATUS_CFG[s] || { color: 'var(--muted-foreground)', bg: 'var(--accent)', cls: 'badge-gray' };
-  return `<span class="badge ${c.cls}">${s}</span>`;
+
+  return '<span class="status-plain-text" style="color:' + color + ';">' + upper + '</span>';
 }
 function badgeL(l){return `<span class="badge badge-gray">${l}</span>`;}
 
@@ -4374,7 +4871,10 @@ function showPage(id, btn) {
     }
 
     // 2. Reset active classes on all nav items
-    var navs = document.querySelectorAll('.nav-item');
+    var navs = document.querySelectorAll('.nav-item, .nav-subitem');
+    var parentResi = document.getElementById('navParentManajemen');
+    if (id !== 'daftar' && parentResi) parentResi.classList.remove('active');
+
     for (var j = 0; j < navs.length; j++) {
       navs[j].classList.remove('active');
     }
@@ -4434,7 +4934,7 @@ function updateTopbarSearchPlaceholder(pageId) {
   if (!inp) return;
   const placeholders = {
     'dashboard': 'Cari di seluruh sistem...',
-    'daftar': 'Cari No AWB, kurir, pengirim, penerima di Manajemen Resi...',
+    'daftar': (typeof activeManajemenSubTab !== 'undefined' && activeManajemenSubTab === 'takeout') ? 'Cari No AWB, kurir, client di Data Takeout Return...' : 'Cari No AWB, kurir, pengirim, penerima di Manajemen Resi...',
     'outstanding': 'Cari paket outstanding (AWB, kurir, pengirim)...',
     'client': 'Cari nama client, telepon, alamat...',
     'notepad': 'Cari catatan tim, topik, atau penulis...',
@@ -6123,6 +6623,33 @@ function updateBlastPreviewText() {
   }
 }
 
+
+// ─── SPINTAX & ANTI-BANNED HELPERS ────────────────────────────
+function parseSpintax(text) {
+  if (!text) return '';
+  return text.replace(/\{([^{}]+)\}/g, function(match, choices) {
+    const parts = choices.split('|');
+    return parts[Math.floor(Math.random() * parts.length)].trim();
+  });
+}
+
+function getRandomDynamicGreeting() {
+  const greetings = ['Halo kak', 'Hai kak', 'Selamat pagi/siang kak', 'Salam hangat kak', 'Halo pelanggan setia'];
+  return greetings[Math.floor(Math.random() * greetings.length)];
+}
+
+function getRandomDynamicClosing() {
+  const closings = [
+    'Terima kasih banyak ya kak! 🙏',
+    'Terima kasih atas perhatian dan kerja samanya. ✨',
+    'Semoga harinya menyenangkan! 🌟',
+    'Salam hangat, Tim SAP Express Pratama.'
+  ];
+  return closings[Math.floor(Math.random() * closings.length)];
+}
+
+let autoBlastBatchCounter = 0;
+
 function buildBlastMessage(templateStr, customer) {
   let res = templateStr;
   let codVal = '-';
@@ -6734,10 +7261,34 @@ async function processNextAutoBlastItem() {
   updateBlastStats();
 
   // Countdown timer jeda
-  const delaySec = parseInt(document.getElementById('blastIntervalSelect')?.value || '3', 10);
+  // Hitung delay acak anti-banned
+  const intervalVal = document.getElementById('blastIntervalSelect')?.value || '15-30';
+  let minSec = 15, maxSec = 30;
+  if (intervalVal.includes('-')) {
+    const p = intervalVal.split('-').map(Number);
+    minSec = p[0] || 15;
+    maxSec = p[1] || 30;
+  } else {
+    minSec = maxSec = parseInt(intervalVal, 10) || 15;
+  }
+  let delaySec = Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
+
+  // Batch cooldown: setiap 5 pesan terkirim, jeda 60 detik
+  autoBlastBatchCounter++;
+  let isCooldown = false;
+  if (autoBlastBatchCounter >= 5) {
+    autoBlastBatchCounter = 0;
+    delaySec = 60;
+    isCooldown = true;
+  }
+
   let remaining = delaySec;
   const countEl = document.getElementById('blastCountdownText');
-  if (countEl) countEl.textContent = `Pesan berikutnya dalam ${remaining}s...`;
+  if (countEl) {
+    countEl.textContent = isCooldown 
+      ? `🛡️ Cooldown Anti-Banned: istirahat 60s sebelum batch berikutnya...`
+      : `Pesan berikutnya dalam ${remaining}s (jeda acak anti-banned)...`;
+  }
 
   if (autoBlastTicker) clearInterval(autoBlastTicker);
   autoBlastTicker = setInterval(() => {
@@ -7170,15 +7721,21 @@ let selectedPortalCategory = 'all';
 function getPortalSystems() {
   try {
     const raw = SafeStorage.getItem('ekspedisi_portal_systems');
-    if (raw) {
+    if (raw !== null && raw !== undefined) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed)) return parsed; // Mengembalikan array kosong jika user menghapus semua
     }
   } catch(e) {
     console.warn('Gagal membaca portal systems:', e);
   }
-  SafeStorage.setItem('ekspedisi_portal_systems', JSON.stringify(DEFAULT_PORTAL_SYSTEMS));
-  return DEFAULT_PORTAL_SYSTEMS;
+  // Mode Clean Data: inisialisasi default array kosong, tidak memunculkan data dummy lagi
+  const hasInit = SafeStorage.getItem('ekspedisi_portal_initialized');
+  if (hasInit) {
+    return [];
+  }
+  SafeStorage.setItem('ekspedisi_portal_initialized', 'true');
+  SafeStorage.setItem('ekspedisi_portal_systems', JSON.stringify([]));
+  return [];
 }
 
 function savePortalSystemsToStorage(systems) {
@@ -8915,17 +9472,34 @@ function roundRect(ctx, x, y, w, h, r) {
 // ─── TAKEOUT DELIVERY RETURN / RETURN PADA JAM 8 PAGI ─────────
 // Paket Return yang terjadi sebelum/pada jam 08:00 pagi di-takeout dari tabel Manajemen Resi,
 // namun TETAP tersimpan di database data sehingga grafik & statistik return tetap 100% akurat.
+// ─── PENGATURAN JAM TAKEOUT AWB RETURN DINAMIS ────────────────
+function getReturnTakeoutTime() {
+  return SafeStorage.getItem('return_takeout_time') || '08:00';
+}
+
+function saveReturnTakeoutTime() {
+  const el = document.getElementById('settingTakeoutTime');
+  const val = (el && el.value.trim()) || '08:00';
+  SafeStorage.setItem('return_takeout_time', val);
+  showToast('⏰', `Jam cut-off takeout AWB Return berhasil diatur ke jam ${val}`);
+  renderTable();
+  if (typeof renderTakeoutReturnTable === 'function') renderTakeoutReturnTable();
+  updateSubtabBadges();
+}
+
 function isTakenOutReturn(r) {
   if (!r || !isReturnStatus(r.status)) return false;
 
   const now = new Date();
-  // Cutoff jam 8:00 pagi hari ini
-  const today8am = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0, 0);
-  // Jika saat ini >= jam 8 pagi, batas adalah jam 8 pagi hari ini.
-  // Jika saat ini < jam 8 pagi, batas adalah jam 8 pagi kemarin.
-  const cutoffTime = now.getTime() >= today8am.getTime() 
-    ? today8am.getTime() 
-    : today8am.getTime() - 86400000;
+  const takeoutCfg = getReturnTakeoutTime();
+  const parts = String(takeoutCfg).split(':');
+  const targetHour = parseInt(parts[0], 10) || 8;
+  const targetMin = parseInt(parts[1], 10) || 0;
+
+  const todayCutoff = new Date(now.getFullYear(), now.getMonth(), now.getDate(), targetHour, targetMin, 0, 0);
+  const cutoffTime = now.getTime() >= todayCutoff.getTime()
+    ? todayCutoff.getTime()
+    : todayCutoff.getTime() - 86400000;
 
   let returnTime = 0;
   if (r.returnTimestamp) {
@@ -8940,9 +9514,8 @@ function isTakenOutReturn(r) {
     }
   }
 
-  // Fallback ke tanggalKirim jika tidak ada timestamp jam
   if (!returnTime && r.tanggalKirim) {
-    const std = normalizeDateStr(r.tanggalKirim);
+    const std = typeof normalizeDateStr === 'function' ? normalizeDateStr(r.tanggalKirim) : r.tanggalKirim;
     if (std) {
       const dt = new Date(std + 'T07:59:59');
       if (!isNaN(dt.getTime())) returnTime = dt.getTime();
@@ -8954,6 +9527,533 @@ function isTakenOutReturn(r) {
 
   return returnTime > 0 && returnTime <= cutoffTime;
 }
+
+
+// ─── SUB-MENU MANAJEMEN RESI LOGIC ────────────────────────────
+
+// ─── SIDEBAR ACCORDION LOGIC FOR MANAJEMEN RESI ───────────────
+function toggleManajemenAccordion(btn) {
+  const acc = document.getElementById('navAccordionManajemen');
+  if (!acc) return;
+  const wasOpen = acc.classList.contains('open');
+  if (wasOpen) {
+    acc.classList.remove('open');
+  } else {
+    acc.classList.add('open');
+    // Jika sedang di halaman lain, otomatis buka Manajemen Resi subtab aktif
+    const activePg = SafeStorage.getItem('ekspedisi_active_page') || 'dashboard';
+    if (activePg !== 'daftar') {
+      selectManajemenSubMenu(activeManajemenSubTab || 'daftar');
+    }
+  }
+}
+
+function selectManajemenSubMenu(tab, btn) {
+  const acc = document.getElementById('navAccordionManajemen');
+  if (acc) acc.classList.add('open');
+
+  const parentBtn = document.getElementById('navParentManajemen');
+  if (parentBtn) parentBtn.classList.add('active');
+
+  const subDaftar = document.getElementById('navSubitemDaftar');
+  const subTakeout = document.getElementById('navSubitemTakeout');
+  if (tab === 'takeout') {
+    if (subDaftar) subDaftar.classList.remove('active');
+    if (subTakeout) subTakeout.classList.add('active');
+  } else {
+    if (subDaftar) subDaftar.classList.add('active');
+    if (subTakeout) subTakeout.classList.remove('active');
+  }
+
+  showPage('daftar');
+  if (typeof switchManajemenSubTab === 'function') {
+    switchManajemenSubTab(tab);
+  }
+  updateSidebarResiBadges();
+}
+
+function updateSidebarResiBadges() {
+  try {
+    if (typeof data === 'undefined' || !Array.isArray(data)) return;
+    const activeCount = data.filter(r => !isTakenOutReturn(r)).length;
+    const takeoutCount = data.filter(r => isTakenOutReturn(r)).length;
+    const bDaftar = document.getElementById('sidebarBadgeDaftar');
+    const bTakeout = document.getElementById('sidebarBadgeTakeout');
+    if (bDaftar) bDaftar.textContent = activeCount;
+    if (bTakeout) bTakeout.textContent = takeoutCount;
+  } catch(e) {}
+}
+
+let activeManajemenSubTab = 'daftar';
+
+function switchManajemenSubTab(tab) {
+  // Sync sidebar subitem active state
+  const _sbDaftar = document.getElementById('navSubitemDaftar');
+  const _sbTakeout = document.getElementById('navSubitemTakeout');
+  const _sbParent = document.getElementById('navParentManajemen');
+  if (_sbParent) _sbParent.classList.add('active');
+  if (tab === 'takeout') {
+    if (_sbDaftar) _sbDaftar.classList.remove('active');
+    if (_sbTakeout) _sbTakeout.classList.add('active');
+  } else {
+    if (_sbDaftar) _sbDaftar.classList.add('active');
+    if (_sbTakeout) _sbTakeout.classList.remove('active');
+  }
+  if (typeof updateSidebarResiBadges === 'function') updateSidebarResiBadges();
+
+  activeManajemenSubTab = tab;
+  const btnDaftar = document.getElementById('subtabBtnDaftar');
+  const btnTakeout = document.getElementById('subtabBtnTakeout');
+  const contentDaftar = document.getElementById('subtabContentDaftar');
+  const contentTakeout = document.getElementById('subtabContentTakeout');
+
+  const pageTitle = document.getElementById('pageDaftarTitle');
+  const hActionsDaftar = document.getElementById('headerActionsDaftar');
+  const hActionsTakeout = document.getElementById('headerActionsTakeout');
+
+  if (tab === 'takeout') {
+    if (pageTitle) pageTitle.textContent = 'Data Takeout AWB Return';
+    if (hActionsDaftar) hActionsDaftar.style.display = 'none';
+    if (hActionsTakeout) hActionsTakeout.style.display = 'flex';
+    const _headerCard = document.querySelector('#page-daftar .page-header-card');
+    if (_headerCard) {
+      _headerCard.classList.add('header-card-red');
+      _headerCard.style.borderColor = '#ef4444';
+    }
+    const _pageIcon = document.getElementById('pageDaftarIcon');
+    if (_pageIcon) _pageIcon.setAttribute('stroke', '#ef4444');
+    if (btnDaftar) {
+      btnDaftar.classList.remove('active');
+      btnDaftar.style.background = 'transparent';
+      btnDaftar.style.color = 'var(--muted-foreground)';
+    }
+    if (btnTakeout) {
+      btnTakeout.classList.add('active');
+      btnTakeout.style.background = 'var(--accent)';
+      btnTakeout.style.color = 'var(--foreground)';
+    }
+    if (contentDaftar) contentDaftar.style.display = 'none';
+    if (contentTakeout) contentTakeout.style.display = 'block';
+    try { updateTopbarSearchPlaceholder('daftar'); } catch(e) {}
+    renderTakeoutReturnTable();
+  } else {
+    if (pageTitle) pageTitle.textContent = 'Manajemen Resi Pengiriman';
+    if (hActionsDaftar) hActionsDaftar.style.display = 'flex';
+    if (hActionsTakeout) hActionsTakeout.style.display = 'none';
+    const _headerCard = document.querySelector('#page-daftar .page-header-card');
+    if (_headerCard) {
+      _headerCard.classList.remove('header-card-red');
+      _headerCard.style.borderColor = '#10b981';
+    }
+    const _pageIcon = document.getElementById('pageDaftarIcon');
+    if (_pageIcon) _pageIcon.setAttribute('stroke', '#10b981');
+    if (btnDaftar) {
+      btnDaftar.classList.add('active');
+      btnDaftar.style.background = 'var(--accent)';
+      btnDaftar.style.color = 'var(--foreground)';
+    }
+    if (btnTakeout) {
+      btnTakeout.classList.remove('active');
+      btnTakeout.style.background = 'transparent';
+      btnTakeout.style.color = 'var(--muted-foreground)';
+    }
+    if (contentDaftar) contentDaftar.style.display = 'block';
+    if (contentTakeout) contentTakeout.style.display = 'none';
+    try { updateTopbarSearchPlaceholder('daftar'); } catch(e) {}
+    renderTable();
+  }
+  updateSubtabBadges();
+}
+
+function updateSubtabBadges() {
+  if (typeof updateSidebarResiBadges === "function") updateSidebarResiBadges();
+  const activeCount = data.filter(r => !isTakenOutReturn(r)).length;
+  const takeoutCount = data.filter(r => isTakenOutReturn(r)).length;
+
+  const bDaftar = document.getElementById('subtabBadgeDaftar');
+  const bTakeout = document.getElementById('subtabBadgeTakeout');
+  if (bDaftar) bDaftar.textContent = activeCount;
+  if (bTakeout) bTakeout.textContent = takeoutCount;
+}
+
+function renderTakeoutReturnTable() {
+  const tbody = document.getElementById('takeoutReturnTableBody');
+  if (!tbody) return;
+
+  const q = (document.getElementById('globalSearchInput')?.value || document.getElementById('searchTakeoutInput')?.value || '').toLowerCase().trim();
+  const takeoutItems = data.filter(r => {
+    if (!isTakenOutReturn(r)) return false;
+    if (!q) return true;
+    const awb = String(r.nomorResi || r.id || '').toLowerCase();
+    const cl = String(r.namaClient || (r.pengirim && r.pengirim.nama) || '').toLowerCase();
+    const kr = String(r.kurir || '').toLowerCase();
+    return awb.includes(q) || cl.includes(q) || kr.includes(q);
+  });
+
+  const _tCount = document.getElementById('tableCount');
+  if (_tCount && typeof activeManajemenSubTab !== 'undefined' && activeManajemenSubTab === 'takeout') {
+    _tCount.textContent = takeoutItems.length + ' resi takeout ditemukan';
+  }
+  if (!takeoutItems.length) {
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:36px;color:var(--muted-foreground);">Tidak ada data AWB return yang di-takeout.</td></tr>';
+    updateSubtabBadges();
+    return;
+  }
+
+  tbody.innerHTML = takeoutItems.map((r, idx) => {
+    const awb = r.nomorResi || r.id || '-';
+    const client = r.namaClient || (r.pengirim && r.pengirim.nama) || '-';
+    const kurir = r.kurir || '-';
+    const drs = r.drsKe || '-';
+    const slaRtn = r.slaRtn || '-';
+    const slaEv = r.slaEv || '-';
+    const tgl = r.tanggalKirim ? formatDate(r.tanggalKirim) : '-';
+
+    return `
+      <tr>
+        <td style="text-align:center;color:var(--muted-foreground);font-size:12px;">${idx + 1}</td>
+        <td>
+          <div style="font-family:monospace;font-weight:700;color:var(--foreground);">${awb}</div>
+        </td>
+        <td class="col-client-cell no-select">${client}</td>
+        <td>${kurir}</td>
+        <td style="text-align:center;">${drs}</td>
+        <td style="text-align:center;"><span class="badge badge-gray">${slaRtn}</span></td>
+        <td style="text-align:center;"><span class="badge badge-gray">${slaEv}</span></td>
+        <td style="text-align:center;">${badge(r.status)}</td>
+        <td style="font-size:12px;color:var(--muted-foreground);">${tgl}</td>
+        <td style="text-align:center;">
+          <div style="display:inline-flex;align-items:center;gap:4px;">
+            <button type="button" class="btn btn-ghost btn-sm" onclick="showDetail('${r.id}')" title="Lihat Detail Paket">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="restoreTakeoutItem('${r.id}')" title="Kembalikan ke Daftar Resi Aktif" style="color:#10b981;">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  updateSubtabBadges();
+}
+
+function restoreTakeoutItem(id) {
+  const item = data.find(r => r.id === id);
+  if (!item) return;
+  // Perbarui timestamp return agar melewati cutoff atau reset timestamp
+  item.returnTimestamp = Date.now() + 86400000;
+  saveData();
+  showToast('✅', `Paket ${item.nomorResi || item.id} berhasil dikembalikan ke Daftar Resi Aktif!`);
+  renderTakeoutReturnTable();
+  renderTable();
+  updateSubtabBadges();
+}
+
+function exportTakeoutReturnExcel() {
+  const takeoutItems = data.filter(r => isTakenOutReturn(r));
+  if (!takeoutItems.length) {
+    showToast('⚠️', 'Tidak ada data takeout untuk diekspor!');
+    return;
+  }
+  const rows = takeoutItems.map(r => ({
+    'No AWB': r.nomorResi || r.id,
+    'Nama Client': r.namaClient || (r.pengirim && r.pengirim.nama) || '-',
+    'Kurir': r.kurir || '-',
+    'DRS Ke': r.drsKe || '-',
+    'SLA RTN': r.slaRtn || '-',
+    'SLA EV': r.slaEv || '-',
+    'Status': r.status || '-',
+    'Tanggal Kirim': r.tanggalKirim || '-'
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Takeout Return');
+  const today = new Date().toISOString().split('T')[0];
+  XLSX.writeFile(wb, `Data_Takeout_AWB_Return_${today}.xlsx`);
+  showToast('✓', `Berhasil mengekspor ${takeoutItems.length} data takeout ke Excel!`);
+}
+
+// ─── THEME TOGGLE (LIGHT / NIGHT MODE) ────────────────────────
+function initTheme() {
+  const savedTheme = SafeStorage.getItem('app_theme') || 'light';
+  applyTheme(savedTheme, false);
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  applyTheme(isDark ? 'light' : 'dark', true);
+}
+
+function applyTheme(t, notify) {
+  const sun = document.getElementById('themeIconSun');
+  const moon = document.getElementById('themeIconMoon');
+
+  if (t === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.body.classList.add('dark-mode');
+    if (sun) sun.style.display = 'block';
+    if (moon) moon.style.display = 'none';
+    if (notify) showToast('🌙', 'Night Mode (Mode Gelap) aktif');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    document.body.classList.remove('dark-mode');
+    if (sun) sun.style.display = 'none';
+    if (moon) moon.style.display = 'block';
+    if (notify) showToast('☀️', 'Light Mode (Mode Terang) aktif');
+  }
+  SafeStorage.setItem('app_theme', t);
+}
+
+// ─── MULTI-DEVICE CLOUD SYNC ENGINE (ROBUST CORS & JSONP) ────
+function getCloudSyncUrl() {
+  return SafeStorage.getItem('cloud_sync_url') || '';
+}
+
+function updateCloudSyncStatusUI() {
+  const url = getCloudSyncUrl();
+  const inputEl = document.getElementById('cloudSyncUrlInput');
+  const badgeEl = document.getElementById('cloudSyncStatusBadge');
+  const textEl = document.getElementById('cloudSyncStatusText');
+
+  if (inputEl) inputEl.value = url;
+  if (url) {
+    if (badgeEl) {
+      badgeEl.style.background = 'rgba(16,185,129,0.12)';
+      badgeEl.style.color = '#047857';
+    }
+    if (textEl) textEl.textContent = '🟢 Tersambung ke Cloud Google Apps Script (Sinkronisasi Aktif)';
+  } else {
+    if (badgeEl) {
+      badgeEl.style.background = 'var(--accent)';
+      badgeEl.style.color = 'var(--muted-foreground)';
+    }
+    if (textEl) textEl.textContent = 'Mode Offline Standalone (Data tersimpan di browser ini)';
+  }
+}
+
+// Helper JSONP untuk menembus batasan CORS browser secara 100%
+function fetchJsonp(url, timeoutMs = 12000) {
+  return new Promise((resolve, reject) => {
+    const callbackName = 'gas_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+    const script = document.createElement('script');
+    let timedOut = false;
+
+    const timer = setTimeout(() => {
+      timedOut = true;
+      cleanup();
+      reject(new Error('Koneksi timeout. Pastikan Web App disetel ke "Anyone" (Siapa saja) saat Deploy.'));
+    }, timeoutMs);
+
+    function cleanup() {
+      if (timer) clearTimeout(timer);
+      if (script.parentNode) script.parentNode.removeChild(script);
+      delete window[callbackName];
+    }
+
+    window[callbackName] = function(data) {
+      if (timedOut) return;
+      cleanup();
+      resolve(data);
+    };
+
+    script.onerror = function() {
+      if (timedOut) return;
+      cleanup();
+      reject(new Error('Gagal memuat skrip cloud. Pastikan URL benar berakhiran /exec dan izin disetel ke "Anyone".'));
+    };
+
+    const separator = url.includes('?') ? '&' : '?';
+    script.src = `${url}${separator}callback=${callbackName}`;
+    document.body.appendChild(script);
+  });
+}
+
+// Request wrapper pintar: coba fetch langsung, jika NetworkError/CORS coba JSONP
+async function callCloudApi(endpointUrl, params = {}) {
+  const queryParts = [];
+  for (const k in params) {
+    queryParts.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+  }
+  const queryStr = queryParts.join('&');
+  const fullUrl = queryStr ? (endpointUrl + (endpointUrl.includes('?') ? '&' : '?') + queryStr) : endpointUrl;
+
+  try {
+    const res = await fetch(fullUrl, { method: 'GET', redirect: 'follow' });
+    if (!res.ok) throw new Error(`HTTP Status ${res.status}`);
+    const data = await res.json();
+    return data;
+  } catch(fetchErr) {
+    console.warn('Direct fetch failed, trying JSONP fallback...', fetchErr);
+    // Fallback otomatis ke JSONP
+    return await fetchJsonp(fullUrl);
+  }
+}
+
+async function saveAndTestCloudSync() {
+  const input = document.getElementById('cloudSyncUrlInput');
+  let url = input ? input.value.trim() : '';
+
+  if (!url) {
+    SafeStorage.removeItem('cloud_sync_url');
+    updateCloudSyncStatusUI();
+    showToast('ℹ️', 'URL Cloud dikosongkan. Sistem beroperasi dalam mode penyimpanan lokal.');
+    return;
+  }
+
+  // 1. Validasi URL: Cegah link editor atau dev URL
+  if (url.includes('/edit') || url.includes('/d/')) {
+    alert('⚠️ PERHATIAN: URL yang Anda masukkan adalah URL Editor Google Apps Script, BUKAN Web App URL.\n\nCara mendapatkan Web App URL yang benar:\n1. Di editor Apps Script, klik tombol biru "Deploy" (pojok kanan atas).\n2. Pilih "New deployment" (atau "Manage deployments").\n3. Pastikan jenisnya "Web app".\n4. Salin link yang berakhiran "/exec".');
+    return;
+  }
+
+  if (url.endsWith('/dev')) {
+    alert('⚠️ PERHATIAN: URL berakhiran /dev adalah link mode pengembang.\n\nHarap gunakan URL produksi yang berakhiran "/exec" dari menu Deploy > New deployment.');
+    return;
+  }
+
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    alert('⚠️ Format URL tidak valid. URL harus diawali dengan https://');
+    return;
+  }
+
+  showToast('⏳', 'Menguji koneksi ke Google Apps Script Cloud...');
+
+  try {
+    const json = await callCloudApi(url, { action: 'ping' });
+    if (json && json.success) {
+      SafeStorage.setItem('cloud_sync_url', url);
+      updateCloudSyncStatusUI();
+      showToast('✅', 'Berhasil terhubung ke Cloud Google Sheets! Melakukan sinkronisasi data...');
+      await pullDataFromCloud(false);
+      await pushDataToCloud(false);
+    } else {
+      throw new Error(json.message || 'Respon cloud tidak valid');
+    }
+  } catch(err) {
+    console.error('Cloud test error:', err);
+    showCloudHelpModal(err.message);
+  }
+}
+
+function showCloudHelpModal(errMsg) {
+  const existing = document.getElementById('cloudHelpModal');
+  if (existing) existing.remove();
+
+  const modalHtml = `
+    <div id="cloudHelpModal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;max-width:520px;width:100%;box-shadow:0 20px 40px rgba(0,0,0,0.3);overflow:hidden;animation:slideDown .25s ease;">
+        <div style="padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(239,68,68,0.06);">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:22px;">⚠️</span>
+            <div style="font-weight:700;font-size:16px;color:#ef4444;">Gagal Terhubung ke Cloud Apps Script</div>
+          </div>
+          <button onclick="document.getElementById('cloudHelpModal').remove()" style="background:none;border:none;font-size:22px;color:var(--muted-foreground);cursor:pointer;">&times;</button>
+        </div>
+        <div style="padding:20px 24px;font-size:13.5px;color:var(--foreground);line-height:1.6;">
+          <div style="background:rgba(239,68,68,0.08);border-left:4px solid #ef4444;padding:10px 14px;border-radius:6px;margin-bottom:16px;font-family:monospace;font-size:12px;color:#ef4444;">
+            Detail: ${errMsg || 'NetworkError when attempting to fetch resource'}
+          </div>
+          <div style="font-weight:700;margin-bottom:8px;">Lakukan 3 Langkah Perbaikan Ini di Google Apps Script:</div>
+          <ol style="padding-left:20px;margin-bottom:16px;display:flex;flex-direction:column;gap:8px;">
+            <li>
+              <strong>Pastikan opsi "Who has access" adalah "Anyone":</strong><br/>
+              Buka Apps Script > klik <strong>Deploy</strong> > <strong>Manage deployments</strong> > klik ikon pensil ✏️ (Edit) > pastikan pilihan <strong>"Who has access"</strong> diatur ke <strong>"Anyone"</strong> <em>(Siapa saja)</em>, bukan "Only myself".
+            </li>
+            <li>
+              <strong>Pastikan URL berakhiran <code>/exec</code>:</strong><br/>
+              Jangan salin URL dari tab browser (yang berakhiran <code>/edit</code>), melainkan salin link <strong>Web app URL</strong> yang berakhiran <code>/exec</code>.
+            </li>
+            <li>
+              <strong>Deploy Versi Baru:</strong><br/>
+              Setelah menyimpan kode di Apps Script, pilih <strong>Version: New version</strong> lalu klik <strong>Deploy</strong>.
+            </li>
+          </ol>
+          <button type="button" class="btn btn-primary" onclick="document.getElementById('cloudHelpModal').remove()" style="width:100%;justify-content:center;height:42px;font-size:14px;font-weight:700;">
+            Saya Mengerti, Saya Akan Periksa Pengaturan Deploy
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+async function triggerManualCloudSync() {
+  const url = getCloudSyncUrl();
+  if (!url) {
+    showPage('pengaturan', document.querySelector('.nav-item[onclick*="pengaturan"]'));
+    showToast('ℹ️', 'Masukkan URL Google Apps Script Web App terlebih dahulu untuk menghubungkan cloud.');
+    return;
+  }
+  showToast('🔄', 'Menyinkronkan data dengan Cloud...');
+  await pullDataFromCloud(true);
+}
+
+async function pullDataFromCloud(showNotice) {
+  const url = getCloudSyncUrl();
+  if (!url) return;
+
+  try {
+    const json = await callCloudApi(url, { action: 'getData' });
+
+    if (json && json.success) {
+      if (Array.isArray(json.resiList) && json.resiList.length > 0) {
+        data = json.resiList;
+        data.forEach(r => ensureShipmentFields(r));
+        saveDataLocally();
+        refreshDashboard();
+        renderTable();
+        if (typeof renderTakeoutReturnTable === 'function') renderTakeoutReturnTable();
+        if (typeof updateSubtabBadges === 'function') updateSubtabBadges();
+      }
+      if (Array.isArray(json.notesList)) {
+        SafeStorage.setItem('ekspedisi_team_notes_v2', JSON.stringify(json.notesList));
+        if (typeof loadTeamNotes === 'function') loadTeamNotes();
+      }
+      if (Array.isArray(json.portalList)) {
+        SafeStorage.setItem('ekspedisi_portal_systems', JSON.stringify(json.portalList));
+        if (typeof renderPortalPage === 'function') renderPortalPage();
+      }
+      if (showNotice) showToast('✅', 'Data terbaru berhasil dimuat dari Cloud!');
+    }
+  } catch(err) {
+    console.warn('Pull cloud data error:', err);
+    if (showNotice) showToast('⚠️', 'Gagal memuat data dari cloud: ' + err.message);
+  }
+}
+
+async function pushDataToCloud(showNotice) {
+  const url = getCloudSyncUrl();
+  if (!url) return;
+
+  try {
+    const payload = {
+      action: 'syncAll',
+      resiList: data,
+      notesList: typeof getTeamNotesFromStorage === 'function' ? getTeamNotesFromStorage() : [],
+      settings: { ADMIN_PASSWORD: getSuperAdminPass() }
+    };
+    // Menggunakan mode no-cors atau text/plain agar tidak memicu OPTIONS preflight yang diblokir Apps Script
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    if (showNotice) showToast('☁️', 'Perubahan berhasil disimpan ke Cloud!');
+  } catch(err) {
+    console.warn('Push cloud data error:', err);
+  }
+}
+
+function saveDataLocally() {
+  SafeStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+// Hook saveData agar otomatis push ke cloud jika cloud aktif
+const originalSaveData = typeof saveData === 'function' ? saveData : null;
 
 // ─── TABLE DAFTAR RESI ────────────────────────────────────────
 function setPageDaftar(p) {
@@ -10262,7 +11362,173 @@ function closeQuickScanResultModal() {
   }
 }
 
-function exportCSV(){
+
+// ─── EKSPOR EXCEL MANAJEMEN RESI (SLA EV 10+ BERGAYA OUTSTANDING) ───
+function exportManajemenResiExcel() {
+  loadData();
+
+  // 1. Ambil data dengan SLA EV 10 ke atas
+  const qualified = data.filter(r => {
+    const rawEv = r.slaEv || '';
+    const num = typeof getNumericSlaEv === 'function' ? getNumericSlaEv(rawEv) : parseFloat(String(rawEv).replace(/[^\d.]/g, ''));
+    return !isNaN(num) && num >= 10;
+  });
+
+  if (!qualified.length) {
+    showToast('⚠️', 'Tidak ada data resi dengan SLA EV 10 ke atas untuk diekspor!');
+    return;
+  }
+
+  // 2. Kelompokkan per grup SLA EV (diurutkan menurun: 15, 14, 13, 12, 11, 10...)
+  const groups = {};
+  qualified.forEach(r => {
+    const rawEv = r.slaEv || '';
+    const num = typeof getNumericSlaEv === 'function' ? getNumericSlaEv(rawEv) : parseFloat(String(rawEv).replace(/[^\d.]/g, ''));
+    const key = isNaN(num) ? 'Lainnya' : String(num);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push({
+      awb: r.nomorResi || r.id || '-',
+      status: r.status || '-'
+    });
+  });
+
+  const sortedKeys = Object.keys(groups).sort((a, b) => {
+    const na = parseFloat(a);
+    const nb = parseFloat(b);
+    if (isNaN(na)) return 1;
+    if (isNaN(nb)) return -1;
+    return nb - na;
+  });
+
+  const today = new Date().toISOString().split('T')[0];
+  const filename = `Laporan_SLA_EV_10_Keatas_${today}.xlsx`;
+
+  // 3. Ekspor format visual presisi menggunakan ExcelJS (selaras dengan Halaman Outstanding)
+  if (typeof ExcelJS !== 'undefined') {
+    try {
+      const wb = new ExcelJS.Workbook();
+      wb.creator = 'ExpediLog';
+      wb.lastModifiedBy = 'ExpediLog';
+      wb.created = new Date();
+      wb.modified = new Date();
+
+      const ws = wb.addWorksheet('SLA EV 10 Keatas', {
+        views: [{ showGridLines: true }]
+      });
+
+      ws.getColumn(1).width = 4;
+      ws.getRow(1).height = 15;
+      ws.getRow(2).height = 28;
+      ws.getRow(3).height = 22;
+
+      const maxGroupCount = Math.max(...sortedKeys.map(k => groups[k].length));
+      const totalDataRows = Math.max(maxGroupCount, 15);
+      const lastRow = 3 + totalDataRows;
+
+      for (let r = 4; r <= lastRow; r++) {
+        ws.getRow(r).height = 20;
+      }
+
+      sortedKeys.forEach((k, gIdx) => {
+        const startCol = 2 + gIdx * 3;
+        const col1 = startCol;
+        const col2 = startCol + 1;
+        const spacerCol = startCol + 2;
+
+        ws.getColumn(col1).width = 23;
+        ws.getColumn(col2).width = 25;
+        if (gIdx < sortedKeys.length - 1) {
+          ws.getColumn(spacerCol).width = 4;
+        }
+
+        // Header SLA EV (Merge 2 kolom, Oranye Tua, Bold Hitam)
+        ws.mergeCells(2, col1, 2, col2);
+        const cellTop = ws.getCell(2, col1);
+        cellTop.value = `SLA EV ${k}`;
+        cellTop.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE26B00' } };
+        cellTop.font = { name: 'Calibri', size: 11, bold: true, color: { argb: 'FF000000' } };
+        cellTop.alignment = { horizontal: 'center', vertical: 'middle' };
+        ws.getCell(2, col2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE26B00' } };
+
+        // Subheader (No AWB & Status, Peach)
+        const cellAwb = ws.getCell(3, col1);
+        cellAwb.value = 'No AWB';
+        cellAwb.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF9CB9C' } };
+        cellAwb.font = { name: 'Calibri', size: 10, bold: true, color: { argb: 'FF000000' } };
+        cellAwb.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+
+        const cellStat = ws.getCell(3, col2);
+        cellStat.value = 'Status';
+        cellStat.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF9CB9C' } };
+        cellStat.font = { name: 'Calibri', size: 10, bold: true, color: { argb: 'FF000000' } };
+        cellStat.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+
+        // Zebra striping data
+        for (let r = 0; r < totalDataRows; r++) {
+          const rowIdx = 4 + r;
+          const item = groups[k][r];
+          const awbVal = item ? (item.awb || '') : '';
+          const statusVal = item ? (item.status || '') : '';
+
+          const isEven = (rowIdx % 2 === 0);
+          const zebraColor = isEven ? 'FFFFFFFF' : 'FFF2F2F2';
+
+          const cAwb = ws.getCell(rowIdx, col1);
+          cAwb.value = awbVal;
+          cAwb.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: zebraColor } };
+          cAwb.font = { name: 'Calibri', size: 9.5 };
+          cAwb.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+
+          const cStat = ws.getCell(rowIdx, col2);
+          cStat.value = statusVal;
+          cStat.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: zebraColor } };
+          cStat.font = { name: 'Calibri', size: 9.5 };
+          cStat.alignment = { horizontal: 'left', vertical: 'middle', indent: 1 };
+
+          const thinBorder = {
+            top: { style: 'thin', color: { argb: 'FFD9D9D9' } },
+            left: { style: 'thin', color: { argb: 'FFD9D9D9' } },
+            bottom: { style: 'thin', color: { argb: 'FFD9D9D9' } },
+            right: { style: 'thin', color: { argb: 'FFD9D9D9' } }
+          };
+          cAwb.border = thinBorder;
+          cStat.border = thinBorder;
+        }
+      });
+
+      wb.xlsx.writeBuffer().then(buf => {
+        const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 500);
+        showToast('✓', `Berhasil mengekspor ${qualified.length} paket SLA EV 10+ sesuai format Excel!`);
+      });
+      return;
+    } catch(err) {
+      console.warn('ExcelJS error:', err);
+    }
+  }
+
+  // Fallback ke XLSX SheetJS
+  const flatRows = qualified.map(r => ({
+    'No AWB': r.nomorResi || r.id,
+    'SLA EV': r.slaEv,
+    'Status': r.status,
+    'Nama Kurir': r.kurir || '-',
+    'Nama Client': r.namaClient || '-'
+  }));
+  const ws = XLSX.utils.json_to_sheet(flatRows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'SLA EV 10 Keatas');
+  XLSX.writeFile(wb, filename);
+  showToast('✓', `Berhasil mengekspor ${qualified.length} paket SLA EV 10+!`);
+}
+
+function exportCSV() {
   if(!data.length){showToast('⚠️','Tidak ada data untuk diekspor');return;}
   const h=['ID','No Resi','Tanggal Kirim','Layanan','Status','Kurir','SLA RTN','SLA EV','DRS KE','Nama Pengirim','Telp Pengirim','Alamat Pengirim','Nama Penerima','Telp Penerima','Alamat Penerima','Deskripsi','Berat','Satuan','Biaya','Keterangan'];
   const rows=data.map(r=>[r.id,r.nomorResi,r.tanggalKirim,r.layanan,r.status,r.kurir||'',r.slaRtn||'',r.slaEv||'',r.drsKe||1,(r.pengirim&&r.pengirim.nama)||r.namaClient||'',(r.pengirim&&r.pengirim.telepon)||'',(r.pengirim&&r.pengirim.alamat)||'',(r.penerima&&r.penerima.nama)||'',(r.penerima&&r.penerima.telepon)||'',(r.penerima&&r.penerima.alamat)||'',(r.barang&&r.barang.deskripsi)||'',(r.barang&&r.barang.berat)||1,(r.barang&&r.barang.satuan)||'kg',r.biaya||0,r.keterangan||''].map(v=>`"${String(v).replace(/"/g,'""')}"`));
@@ -10731,6 +11997,12 @@ initSidebarState();
 checkLoginSession();
 refreshDashboard();
 initAllModernSelects();
+if (typeof initTheme === 'function') initTheme();
+if (typeof updateSubtabBadges === 'function') updateSubtabBadges();
+if (typeof updateCloudSyncStatusUI === 'function') updateCloudSyncStatusUI();
+if (typeof getCloudSyncUrl === 'function' && getCloudSyncUrl()) {
+  pullDataFromCloud(false);
+}
 </script>
 
 <!-- ========================================================== -->
