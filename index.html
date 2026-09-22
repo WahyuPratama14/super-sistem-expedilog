@@ -10232,8 +10232,20 @@ window.supabaseRealtimeChannel = null;
 let supabaseDebounceTimer = null;
 let supabaseUIRefreshTimer = null;
 
+function cleanSupabaseUrl(rawUrl) {
+  if (!rawUrl) return '';
+  let u = rawUrl.trim();
+  try {
+    const parsed = new URL(u);
+    return `${parsed.protocol}//${parsed.host}`;
+  } catch (e) {
+    return u.replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
+  }
+}
+
 function getSupabaseConfig() {
-  const url = (SafeStorage.getItem(SUPABASE_URL_KEY) || '').trim();
+  let url = (SafeStorage.getItem(SUPABASE_URL_KEY) || '').trim();
+  url = cleanSupabaseUrl(url);
   const key = (SafeStorage.getItem(SUPABASE_ANON_KEY) || '').trim();
   return {
     url,
@@ -10404,8 +10416,9 @@ async function saveAndTestSupabase() {
   const urlEl = document.getElementById('supabaseUrlInput');
   const keyEl = document.getElementById('supabaseKeyInput');
 
-  let url = (urlEl?.value || '').trim();
+  let url = cleanSupabaseUrl((urlEl?.value || '').trim());
   let key = (keyEl?.value || '').trim();
+  if (urlEl) urlEl.value = url;
 
   if (!url || !key) {
     alert('⚠️ Harap masukkan Supabase Project URL dan Anon Key lengkap!');
