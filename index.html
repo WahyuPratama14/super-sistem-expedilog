@@ -3834,11 +3834,11 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
             <div>
               <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);margin-bottom:5px;">SUPABASE PROJECT URL</label>
-              <input type="url" id="supabaseUrlInput" placeholder="https://xyzproject.supabase.co" style="width:100%;padding:9px 12px;font-size:12.5px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);" />
+              <input type="url" id="supabaseUrlInput" value="https://zroypgtmflnhmqfvwpvc.supabase.co" placeholder="https://xyzproject.supabase.co" style="width:100%;padding:9px 12px;font-size:12.5px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);" />
             </div>
             <div>
               <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);margin-bottom:5px;">SUPABASE ANON PUBLIC KEY (API Key)</label>
-              <input type="password" id="supabaseKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="width:100%;padding:9px 12px;font-size:12.5px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);" />
+              <input type="password" id="supabaseKeyInput" value="sb_publishable_ka3jW5xBuc-L5LMD6lLoVw_IOuKhl8S" placeholder="sb_publishable_..." style="width:100%;padding:9px 12px;font-size:12.5px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);" />
             </div>
           </div>
 
@@ -10227,6 +10227,8 @@ const originalSaveData = typeof saveData === 'function' ? saveData : null;
 // ══════════════ MODUL DATABASE CLOUD SUPABASE (POSTGRESQL) ══════════════
 const SUPABASE_URL_KEY = 'expedilog_supabase_url';
 const SUPABASE_ANON_KEY = 'expedilog_supabase_key';
+const DEFAULT_SUPABASE_URL = 'https://zroypgtmflnhmqfvwpvc.supabase.co';
+const DEFAULT_SUPABASE_KEY = 'sb_publishable_ka3jW5xBuc-L5LMD6lLoVw_IOuKhl8S';
 window.supabaseClient = null;
 window.supabaseRealtimeChannel = null;
 let supabaseDebounceTimer = null;
@@ -10244,9 +10246,9 @@ function cleanSupabaseUrl(rawUrl) {
 }
 
 function getSupabaseConfig() {
-  let url = (SafeStorage.getItem(SUPABASE_URL_KEY) || '').trim();
+  let url = (SafeStorage.getItem(SUPABASE_URL_KEY) || DEFAULT_SUPABASE_URL || '').trim();
   url = cleanSupabaseUrl(url);
-  const key = (SafeStorage.getItem(SUPABASE_ANON_KEY) || '').trim();
+  const key = (SafeStorage.getItem(SUPABASE_ANON_KEY) || DEFAULT_SUPABASE_KEY || '').trim();
   return {
     url,
     key,
@@ -10287,8 +10289,8 @@ function updateSupabaseStatusUI(isConnected, latencyMs, errorMsg) {
   const badge = document.getElementById('supabaseStatusBadge');
   const latencyBadge = document.getElementById('supabaseLatencyBadge');
 
-  if (urlInput && !urlInput.value && cfg.url) urlInput.value = cfg.url;
-  if (keyInput && !keyInput.value && cfg.key) keyInput.value = cfg.key;
+  if (urlInput && (!urlInput.value || urlInput.value.includes('/rest/v1'))) urlInput.value = cfg.url || DEFAULT_SUPABASE_URL;
+  if (keyInput && !keyInput.value) keyInput.value = cfg.key || DEFAULT_SUPABASE_KEY;
 
   if (isConnected === true) {
     if (dot) dot.style.background = '#10b981';
