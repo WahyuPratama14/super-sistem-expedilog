@@ -5604,6 +5604,15 @@ function handleBatchStatusSubmit(e) {
   });
 
   saveData();
+
+  // Otomatis unchecklist seluruh data terpilih setelah status berhasil diubah
+  selectedDaftar.clear();
+  const chHeader = document.getElementById('checkAllDaftarHeader');
+  if (chHeader) chHeader.checked = false;
+  const chBottom = document.getElementById('checkAllDaftarBottom');
+  if (chBottom) chBottom.checked = false;
+  if (typeof updateDaftarBatchActionsUI === 'function') updateDaftarBatchActionsUI();
+
   closeBatchStatusModal();
   refreshDashboard();
   renderTable();
@@ -12161,6 +12170,16 @@ function updateStatus(){
   ensureShipmentFields(data[idx]);
   data[idx].riwayat=data[idx].riwayat||[];
   data[idx].riwayat.push({waktu:Date.now(),status:ns,keterangan:note});
+
+  if (typeof selectedDaftar !== 'undefined' && selectedDaftar.has(currentDetailId)) {
+    selectedDaftar.delete(currentDetailId);
+    if (typeof updateDaftarBatchActionsUI === 'function') updateDaftarBatchActionsUI();
+  }
+  if (typeof selectedOutstanding !== 'undefined' && selectedOutstanding.has(currentDetailId)) {
+    selectedOutstanding.delete(currentDetailId);
+    if (typeof updateOutstandingBatchActionsUI === 'function') updateOutstandingBatchActionsUI();
+  }
+
   saveData(); refreshDashboard(); renderTable(); renderOutstanding(); renderClientPage();
   openDetailModal(currentDetailId);
   showToast('✅',`Status diubah ke "${ns}"`);
