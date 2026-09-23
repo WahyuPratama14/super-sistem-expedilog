@@ -1005,6 +1005,39 @@ canvas{display:block;}
   box-shadow:0 2px 6px rgba(239,68,68,.3);
 }
 .btn-batch-del:disabled{background:#94a3b8;border-color:#94a3b8;opacity:.45;cursor:not-allowed;box-shadow:none;}
+.btn-batch-reset{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 12px;
+  border-radius:8px;
+  border:1px solid #cbd5e1;
+  background:#f1f5f9;
+  color:#475569;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .18s ease;
+}
+.btn-batch-reset:hover:not(:disabled){
+  background:#e2e8f0;
+  border-color:#94a3b8;
+  color:#0f172a;
+}
+.btn-batch-reset:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+[data-theme="dark"] .btn-batch-reset, .dark .btn-batch-reset{
+  background:#1e293b;
+  border-color:#334155;
+  color:#94a3b8;
+}
+[data-theme="dark"] .btn-batch-reset:hover:not(:disabled), .dark .btn-batch-reset:hover:not(:disabled){
+  background:#334155;
+  border-color:#475569;
+  color:#f8fafc;
+}
 .footer-pagination{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#64748b;}
 .dark .footer-pagination{color:#94a3b8;}
 .page-btn{
@@ -3124,6 +3157,22 @@ button:hover,
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           <span>Reset Filter</span>
         </button>
+
+        <!-- Top Right Batch Actions for Daftar Data Resi -->
+        <div id="topBatchActionsDaftar" style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+          <button type="button" class="btn-batch-reset" id="btnResetChecklistDaftar" onclick="resetChecklistDaftar()" disabled title="Batalkan semua centang checklist">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span id="btnResetChecklistLabel">Reset Checklist</span>
+          </button>
+          <button type="button" class="btn-batch-status" id="btnBatchStatusDaftar" onclick="openBatchStatusModal()" disabled title="Ubah status untuk semua resi yang dipilih">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            <span id="btnBatchStatusLabel">Ubah Status Masal</span>
+          </button>
+          <button type="button" class="btn-batch-del" id="btnBatchDeleteDaftar" onclick="batchDeleteDaftar()" disabled title="Hapus resi yang dicentang">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span id="btnBatchDeleteLabel">Hapus Data</span>
+          </button>
+        </div>
       </div>
 
       <div class="table-panel">
@@ -3165,14 +3214,6 @@ button:hover,
               <input type="checkbox" class="table-check" id="checkAllDaftarBottom" onchange="toggleSelectAllDaftar(this.checked)"/>
               <span>Pilih Semua</span>
             </label>
-            <button type="button" class="btn-batch-status" id="btnBatchStatusDaftar" onclick="openBatchStatusModal()" disabled title="Ubah status untuk semua resi yang dipilih">
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              <span>Ubah Status</span>
-            </button>
-            <button type="button" class="btn-batch-del" id="btnBatchDeleteDaftar" onclick="batchDeleteDaftar()" disabled>
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-              <span>Hapus Terpilih</span>
-            </button>
           </div>
           <div class="footer-pagination" id="mainTablePagination"></div>
         </div>
@@ -3181,7 +3222,16 @@ button:hover,
 
       <!-- SUB-TAB 2: DATA TAKEOUT AWB RETURN -->
       <div id="subtabContentTakeout" style="display:none;">
-        
+        <div class="modern-filter-bar" style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div style="position:relative;min-width:240px;">
+              <input type="text" id="searchTakeoutInput" placeholder="Cari No AWB / Kurir / Client..." oninput="renderTakeoutReturnTable()" style="width:100%;padding:7px 12px 7px 32px;font-size:12.5px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);outline:none;"/>
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted-foreground);pointer-events:none;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </div>
+            <span id="takeoutTableBadgeCount" style="font-size:12px;font-weight:700;color:var(--muted-foreground);background:var(--accent);padding:4px 10px;border-radius:20px;border:1px solid var(--border);">0 paket</span>
+          </div>
+        </div>
+
         <div class="table-panel">
           <div style="overflow-x:auto;">
             <table class="data-table">
@@ -3203,6 +3253,12 @@ button:hover,
                 <tr><td colspan="10" style="text-align:center;padding:30px;color:var(--muted-foreground);">Memuat data takeout...</td></tr>
               </tbody>
             </table>
+          </div>
+          <div class="table-footer-bar" id="takeoutTableFooter">
+            <div class="footer-batch-group no-select" style="font-size:12.5px;color:var(--muted-foreground);" id="takeoutTableCountInfo">
+              Menampilkan paket return yang telah di-takeout
+            </div>
+            <div class="footer-pagination" id="takeoutTablePagination"></div>
           </div>
         </div>
       </div>
@@ -3228,10 +3284,20 @@ button:hover,
         </div>
       </div>
 
-      <!-- Dynamic SLA RTN Buttons -->
-      <div style="margin-bottom:16px;">
-        <div class="sla-btn-filter-group" id="outstandingSlaBtnGroup">
+      <!-- Dynamic SLA RTN Buttons & Top Batch Actions -->
+      <div style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div class="sla-btn-filter-group" id="outstandingSlaBtnGroup" style="margin-bottom:0;">
           <!-- Populated dynamically based on SLA RTN >= 5 present in data -->
+        </div>
+        <div id="topBatchActionsOutstanding" style="display:inline-flex;align-items:center;gap:8px;margin-left:auto;">
+          <button type="button" class="btn-batch-reset" id="btnResetChecklistOutstanding" onclick="resetChecklistOutstanding()" disabled title="Batalkan semua checklist outstanding">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span id="btnResetChecklistOutstandingLabel">Reset Checklist</span>
+          </button>
+          <button type="button" class="btn-batch-del" id="btnBatchDeleteOutstanding" onclick="batchDeleteOutstanding()" disabled title="Hapus resi outstanding terpilih">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span id="btnBatchDeleteOutstandingLabel">Hapus Data</span>
+          </button>
         </div>
       </div>
 
@@ -3272,10 +3338,6 @@ button:hover,
               <input type="checkbox" class="table-check" id="checkAllOutstandingBottom" onchange="toggleSelectAllOutstanding(this.checked)"/>
               <span>Pilih Semua</span>
             </label>
-            <button type="button" class="btn-batch-del" id="btnBatchDeleteOutstanding" onclick="batchDeleteOutstanding()" disabled>
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-              <span>Hapus Terpilih</span>
-            </button>
           </div>
           <div class="footer-pagination" id="outstandingTablePagination"></div>
         </div>
@@ -5896,6 +5958,7 @@ function toggleSelectAllOutstanding(checked) {
   const fKur = document.getElementById('filterOutstandingKurir')?.value || '';
 
   const outList = data.filter(r => {
+    if (typeof isTakenOutReturn === 'function' && isTakenOutReturn(r)) return false;
     const isDelivered = r.status === 'Delivered' || r.status === 'Terkirim';
     const hasSla = (r.slaRtn && r.slaRtn !== '-' && r.slaRtn !== 'Selesai') || (r.status && (r.status.includes('Hold') || r.status.includes('Return')));
     return !isDelivered && hasSla;
@@ -5935,6 +5998,7 @@ function renderOutstanding() {
 
   // 1. Filter qualified packages: non-delivered & SLA RTN >= 5
   const qualifiedOutstanding = data.filter(r => {
+    if (typeof isTakenOutReturn === 'function' && isTakenOutReturn(r)) return false;
     const isDelivered = r.status === 'Delivered' || r.status === 'Terkirim';
     if (isDelivered) return false;
     const num = getNumericSlaRtn(r.slaRtn);
@@ -6070,10 +6134,8 @@ function renderOutstanding() {
   if (checkHeader) checkHeader.checked = allCurrentSelected;
   if (checkBottom) checkBottom.checked = allCurrentSelected;
 
-  const btnBatch = document.getElementById('btnBatchDeleteOutstanding');
-  if (btnBatch) {
-    btnBatch.disabled = selectedOutstanding.size === 0;
-    btnBatch.textContent = selectedOutstanding.size > 0 ? `Hapus Terpilih (${selectedOutstanding.size})` : 'Hapus Terpilih';
+  if (typeof updateOutstandingBatchActionsUI === 'function') {
+    updateOutstandingBatchActionsUI();
   }
 
   renderPaginationHelper(pageOutstanding, totalPages, totalItems, 'outstandingTablePagination', 'setPageOutstanding', 'jumpInputOutstanding');
@@ -6085,6 +6147,7 @@ async function exportOutstandingExcel() {
 
   // 1. Ambil data paket qualified outstanding (non-delivered & SLA RTN >= 5)
   const qualified = data.filter(r => {
+    if (typeof isTakenOutReturn === 'function' && isTakenOutReturn(r)) return false;
     const isDelivered = r.status === 'Delivered' || r.status === 'Terkirim';
     if (isDelivered) return false;
     const num = typeof getNumericSlaRtn === 'function' ? getNumericSlaRtn(r.slaRtn) : parseFloat(String(r.slaRtn).replace(/[^\d.]/g, ''));
@@ -9657,8 +9720,17 @@ function saveReturnTakeoutTime() {
 
 function isTakenOutReturn(r) {
   if (!r || !isReturnStatus(r.status)) return false;
+  if (r.restored) return false;
 
   const now = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+  // Cek tanggal kirim: jika sebelum hari ini, otomatis terhitung takeout (hari sebelumnya)
+  const sendDate = r.tanggalKirim ? (typeof normalizeDateStr === 'function' ? normalizeDateStr(r.tanggalKirim) : r.tanggalKirim) : '';
+  if (sendDate && sendDate < todayStr) {
+    return true;
+  }
+
   const takeoutCfg = getReturnTakeoutTime();
   const parts = String(takeoutCfg).split(':');
   const targetHour = parseInt(parts[0], 10) || 8;
@@ -9676,18 +9748,19 @@ function isTakenOutReturn(r) {
     for (let i = r.riwayatStatus.length - 1; i >= 0; i--) {
       const h = r.riwayatStatus[i];
       if (isReturnStatus(h.status)) {
-        const t = new Date(h.tanggal || h.waktu).getTime();
+        const rawDate = h.tanggal || h.waktu;
+        if (typeof rawDate === 'string' && rawDate.slice(0, 10) < todayStr) {
+          return true;
+        }
+        const t = new Date(rawDate).getTime();
         if (!isNaN(t) && t > 0) { returnTime = t; break; }
       }
     }
   }
 
-  if (!returnTime && r.tanggalKirim) {
-    const std = typeof normalizeDateStr === 'function' ? normalizeDateStr(r.tanggalKirim) : r.tanggalKirim;
-    if (std) {
-      const dt = new Date(std + 'T07:59:59');
-      if (!isNaN(dt.getTime())) returnTime = dt.getTime();
-    }
+  if (!returnTime && sendDate) {
+    const dt = new Date(sendDate + 'T07:59:59');
+    if (!isNaN(dt.getTime())) returnTime = dt.getTime();
   }
   if (!returnTime && r.createdAt) {
     returnTime = Number(r.createdAt);
@@ -9844,6 +9917,12 @@ function updateSubtabBadges() {
   if (bTakeout) bTakeout.textContent = takeoutCount;
 }
 
+let pageTakeout = 1;
+function setPageTakeout(p) {
+  pageTakeout = p;
+  renderTakeoutReturnTable();
+}
+
 function renderTakeoutReturnTable() {
   const tbody = document.getElementById('takeoutReturnTableBody');
   if (!tbody) return;
@@ -9858,30 +9937,55 @@ function renderTakeoutReturnTable() {
     return awb.includes(q) || cl.includes(q) || kr.includes(q);
   });
 
+  const badgeEl = document.getElementById('takeoutTableBadgeCount');
+  if (badgeEl) {
+    badgeEl.textContent = `${takeoutItems.length} paket`;
+  }
+
   const _tCount = document.getElementById('tableCount');
   if (_tCount && typeof activeManajemenSubTab !== 'undefined' && activeManajemenSubTab === 'takeout') {
     _tCount.textContent = takeoutItems.length + ' resi takeout ditemukan';
   }
+
+  const totalItems = takeoutItems.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+  if (pageTakeout > totalPages) pageTakeout = totalPages;
+
+  const countInfo = document.getElementById('takeoutTableCountInfo');
+  if (countInfo) {
+    countInfo.textContent = `Menampilkan ${totalItems} paket return yang telah di-takeout`;
+  }
+
   if (!takeoutItems.length) {
     tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:36px;color:var(--muted-foreground);">Tidak ada data AWB return yang di-takeout.</td></tr>';
+    renderPaginationHelper(pageTakeout, totalPages, totalItems, 'takeoutTablePagination', 'setPageTakeout', 'jumpInputTakeout');
     updateSubtabBadges();
     return;
   }
 
-  tbody.innerHTML = takeoutItems.map((r, idx) => {
+  const start = (pageTakeout - 1) * PAGE_SIZE;
+  const paged = takeoutItems.slice(start, start + PAGE_SIZE);
+
+  tbody.innerHTML = paged.map((r, idx) => {
+    const globalNo = String(start + idx + 1).padStart(2, '0');
     const awb = r.nomorResi || r.id || '-';
     const client = r.namaClient || (r.pengirim && r.pengirim.nama) || '-';
     const kurir = r.kurir || '-';
     const drs = r.drsKe || '-';
     const slaRtn = r.slaRtn || '-';
     const slaEv = r.slaEv || '-';
-    const tgl = r.tanggalKirim ? formatDate(r.tanggalKirim) : '-';
+    const tgl = r.tanggalKirim ? (typeof fmtDate === 'function' ? fmtDate(r.tanggalKirim) : r.tanggalKirim) : '-';
 
     return `
       <tr>
-        <td style="text-align:center;color:var(--muted-foreground);font-size:12px;">${idx + 1}</td>
+        <td style="text-align:center;color:var(--muted-foreground);font-size:12px;">${globalNo}</td>
         <td>
-          <div style="font-family:monospace;font-weight:700;color:var(--foreground);">${awb}</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;">
+            <span class="awb-text-selectable awb-link-click" onclick="openDetailModal('${r.id}')" title="Klik untuk lihat detail" style="font-family:monospace;font-weight:700;color:var(--foreground);">${awb}</span>
+            <button type="button" class="btn-copy-row-awb no-select" onclick="copySingleAwb(event, '${awb}')" title="Salin No AWB">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+          </div>
         </td>
         <td class="col-client-cell no-select">${client}</td>
         <td>${kurir}</td>
@@ -9892,7 +9996,7 @@ function renderTakeoutReturnTable() {
         <td style="font-size:12px;color:var(--muted-foreground);">${tgl}</td>
         <td style="text-align:center;">
           <div style="display:inline-flex;align-items:center;gap:4px;">
-            <button type="button" class="btn btn-ghost btn-sm" onclick="showDetail('${r.id}')" title="Lihat Detail Paket">
+            <button type="button" class="btn btn-ghost btn-sm" onclick="openDetailModal('${r.id}')" title="Lihat Detail Paket">
               <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             </button>
             <button type="button" class="btn btn-ghost btn-sm" onclick="restoreTakeoutItem('${r.id}')" title="Kembalikan ke Daftar Resi Aktif" style="color:#10b981;">
@@ -9904,13 +10008,14 @@ function renderTakeoutReturnTable() {
     `;
   }).join('');
 
+  renderPaginationHelper(pageTakeout, totalPages, totalItems, 'takeoutTablePagination', 'setPageTakeout', 'jumpInputTakeout');
   updateSubtabBadges();
 }
 
 function restoreTakeoutItem(id) {
   const item = data.find(r => r.id === id);
   if (!item) return;
-  // Perbarui timestamp return agar melewati cutoff atau reset timestamp
+  item.restored = true;
   item.returnTimestamp = Date.now() + 86400000;
   saveData();
   showToast('✅', `Paket ${item.nomorResi || item.id} berhasil dikembalikan ke Daftar Resi Aktif!`);
@@ -10804,36 +10909,62 @@ function resetChecklistDaftar() {
   if (chBottom) chBottom.checked = false;
   renderTable();
   updateDaftarBatchActionsUI();
-  showToast('🔄', 'Checklist berhasil di-reset');
+  showToast('🔄', 'Checklist berhasil di-reset (unchecklist)');
 }
 
 function updateDaftarBatchActionsUI() {
-  const topContainer = document.getElementById('topBatchActionsDaftar');
   const count = selectedDaftar.size;
-    const idsDaf = Array.from(selectedDaftar);
-    if (typeof deleteFromSupabase === 'function' && idsDaf.length) deleteFromSupabase(idsDaf);
+  const topContainer = document.getElementById('topBatchActionsDaftar');
   if (topContainer) {
-    if (count > 0) {
-      topContainer.style.removeProperty('display');
-      topContainer.style.setProperty('display', 'inline-flex', 'important');
-    } else {
-      topContainer.style.setProperty('display', 'none', 'important');
-    }
+    topContainer.style.setProperty('display', 'flex', 'important');
+  }
+
+  const btnReset = document.getElementById('btnResetChecklistDaftar');
+  if (btnReset) {
+    btnReset.disabled = count === 0;
+    const lblReset = document.getElementById('btnResetChecklistLabel');
+    if (lblReset) lblReset.textContent = count > 0 ? `Unchecklist (${count})` : 'Reset Checklist';
   }
 
   const btnBatchStatus = document.getElementById('btnBatchStatusDaftar');
   if (btnBatchStatus) {
     btnBatchStatus.disabled = count === 0;
-    btnBatchStatus.innerHTML = `
-      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-      <span id="btnBatchStatusLabel">${count > 0 ? `Ubah Status Masal (${count})` : 'Ubah Status Masal'}</span>
-    `;
+    const lblStatus = document.getElementById('btnBatchStatusLabel');
+    if (lblStatus) lblStatus.textContent = count > 0 ? `Ubah Status (${count})` : 'Ubah Status Masal';
   }
 
   const btnDel = document.getElementById('btnBatchDeleteDaftar');
   if (btnDel) {
     btnDel.disabled = count === 0;
-    btnDel.textContent = count > 0 ? `Hapus Terpilih (${count})` : 'Hapus Terpilih';
+    const lblDel = document.getElementById('btnBatchDeleteLabel');
+    if (lblDel) lblDel.textContent = count > 0 ? `Hapus Data (${count})` : 'Hapus Data';
+  }
+}
+
+function resetChecklistOutstanding() {
+  selectedOutstanding.clear();
+  const chHeader = document.getElementById('checkAllOutstandingHeader');
+  if (chHeader) chHeader.checked = false;
+  const chBottom = document.getElementById('checkAllOutstandingBottom');
+  if (chBottom) chBottom.checked = false;
+  renderOutstanding();
+  updateOutstandingBatchActionsUI();
+  showToast('🔄', 'Checklist Outstanding berhasil di-reset (unchecklist)');
+}
+
+function updateOutstandingBatchActionsUI() {
+  const count = selectedOutstanding.size;
+  const btnReset = document.getElementById('btnResetChecklistOutstanding');
+  if (btnReset) {
+    btnReset.disabled = count === 0;
+    const lblReset = document.getElementById('btnResetChecklistOutstandingLabel');
+    if (lblReset) lblReset.textContent = count > 0 ? `Unchecklist (${count})` : 'Reset Checklist';
+  }
+  const btnDel = document.getElementById('btnBatchDeleteOutstanding');
+  if (btnDel) {
+    btnDel.disabled = count === 0;
+    const lblDel = document.getElementById('btnBatchDeleteOutstandingLabel');
+    if (lblDel) lblDel.textContent = count > 0 ? `Hapus Data (${count})` : 'Hapus Data';
   }
 }
 
@@ -10845,7 +10976,7 @@ function toggleSelectAllDaftar(checked) {
 
   const filtered = data.filter(r => {
     // Takeout return paket pada jam 8 pagi (hanya dari tampilan tabel data)
-    if (isTakenOutReturn(r)) return false;
+    if (typeof isTakenOutReturn === 'function' && isTakenOutReturn(r)) return false;
 
     const mq = !q || r.nomorResi.toLowerCase().includes(q) || (r.kurir && r.kurir.toLowerCase().includes(q)) || r.pengirim.nama.toLowerCase().includes(q) || r.penerima.nama.toLowerCase().includes(q) || r.barang.deskripsi.toLowerCase().includes(q);
     return mq && (!fs || r.status === fs) && (!fSla || r.slaRtn === fSla) && (!fKur || r.kurir === fKur);
@@ -10899,6 +11030,8 @@ function confirmBatchDelete() {
     showToast('🗑️', `${count} resi outstanding berhasil dihapus!`);
   } else {
     const count = selectedDaftar.size;
+    const idsDaf = Array.from(selectedDaftar);
+    if (typeof deleteFromSupabase === 'function' && idsDaf.length) deleteFromSupabase(idsDaf);
     data = data.filter(r => !selectedDaftar.has(r.id));
     selectedDaftar.clear();
     saveData();
@@ -11025,6 +11158,9 @@ function renderTable() {
   const fKur = document.getElementById('filterKurir')?.value || '';
 
   const filtered = data.filter(r => {
+    // Sembunyikan data yang sudah ditakeout (status delivery return)
+    if (typeof isTakenOutReturn === 'function' && isTakenOutReturn(r)) return false;
+
     const mq = !q || r.nomorResi.toLowerCase().includes(q) || (r.kurir && r.kurir.toLowerCase().includes(q)) || ((r.pengirim?.nama || r.namaClient || '').toLowerCase().includes(q)) || (r.penerima?.nama && r.penerima.nama.toLowerCase().includes(q)) || (r.barang?.deskripsi && r.barang.deskripsi.toLowerCase().includes(q));
 
     // Modern Popover Status Filter
@@ -12109,8 +12245,9 @@ function closeQuickScanResultModal() {
 function exportManajemenResiExcel() {
   loadData();
 
-  // 1. Ambil data dengan SLA EV 10 ke atas
+  // 1. Ambil data dengan SLA EV 10 ke atas (tidak termasuk yang sudah ditakeout)
   const qualified = data.filter(r => {
+    if (typeof isTakenOutReturn === 'function' && isTakenOutReturn(r)) return false;
     const rawEv = r.slaEv || '';
     const num = typeof getNumericSlaEv === 'function' ? getNumericSlaEv(rawEv) : parseFloat(String(rawEv).replace(/[^\d.]/g, ''));
     return !isNaN(num) && num >= 10;
@@ -12288,6 +12425,11 @@ function fmtDate(d) {
   const dt = new Date(std + 'T12:00:00');
   if (isNaN(dt.getTime())) return String(d);
   return dt.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+if (typeof window !== 'undefined') {
+  window.fmtDate = fmtDate;
+  window.formatDate = fmtDate;
+  if (typeof openDetailModal === 'function') window.showDetail = openDetailModal;
 }
 function fmtDT(ts){if(!ts)return'-';return new Date(ts).toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
 function fmtRp(n){return'Rp '+Number(n).toLocaleString('id-ID');}
