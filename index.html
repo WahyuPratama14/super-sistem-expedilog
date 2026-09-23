@@ -4068,11 +4068,29 @@ alter table public.drive_files enable row level security;
 drop policy if exists "Akses Penuh ExpediLog Files" on public.drive_files;
 create policy "Akses Penuh ExpediLog Files" on public.drive_files for all using (true) with check (true);
 
--- 5. AKTIFKAN REPLIKASI REALTIME WEBSOCKET (SEMUA PERANGKAT SINKRON OTOMATIS)
-alter publication supabase_realtime add table public.resi;
-alter publication supabase_realtime add table public.team_notes;
-alter publication supabase_realtime add table public.portal_systems;
-alter publication supabase_realtime add table public.drive_files;</pre>
+-- 5. AKTIFKAN REPLIKASI REALTIME WEBSOCKET (AMAN DIJALANKAN BERKALI-KALI)
+do $$
+begin
+  begin
+    alter publication supabase_realtime add table public.resi;
+  exception when duplicate_object then null;
+  end;
+
+  begin
+    alter publication supabase_realtime add table public.team_notes;
+  exception when duplicate_object then null;
+  end;
+
+  begin
+    alter publication supabase_realtime add table public.portal_systems;
+  exception when duplicate_object then null;
+  end;
+
+  begin
+    alter publication supabase_realtime add table public.drive_files;
+  exception when duplicate_object then null;
+  end;
+end $$;</pre>
     </div>
 
     <div style="padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;background:var(--accent);">
