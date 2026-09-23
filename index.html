@@ -3924,7 +3924,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
             </button>
           </div>
           <div style="font-size:11.5px;color:var(--muted-foreground);margin-top:12px;line-height:1.5;">
-            💡 <strong>Panduan Singkat:</strong> Belum membuat tabel <code>resi</code> di Supabase? Klik tombol <strong>"📋 Skrip SQL Tabel Supabase"</strong> di atas, salin kodenya, dan jalankan 1 kali di <strong>SQL Editor</strong> dashboard Supabase Anda. Semua data lokal dan perubahan baru akan langsung tersinkronkan ke PostgreSQL!
+            💡 <strong>Panduan Singkat:</strong> Salin dan jalankan skrip SQL dengan klik tombol <strong>"📋 Skrip SQL Tabel Supabase"</strong> di atas. Skrip ini akan membuat tabel <code>resi</code>, <code>team_notes</code>, <code>portal_systems</code>, dan <code>drive_files</code> lengkap dengan replikasi Realtime sehingga seluruh perangkat tersinkronkan otomatis!
           </div>
         </div>
       </div>
@@ -3973,11 +3973,12 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
       </div>
 
       <pre id="supabaseSqlCodeBlock" style="margin:0;background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;font-size:12px;line-height:1.5;max-height:280px;overflow-y:auto;font-family:Consolas,Monaco,'Courier New',monospace;border:1px solid #334155;user-select:all;">-- ================================================================
--- TABEL RESI UNTUK EXPEDILOG SISTEM MANAJEMEN RESI
--- Jalankan skrip ini di SQL Editor dashboard Supabase Anda
+-- SKRIP DATABASE EXPEDILOG TERPADU (SUPABASE POSTGRESQL)
+-- Salin dan jalankan skrip ini 1x di menu SQL Editor dashboard Supabase Anda.
+-- Mencakup: Resi Pengiriman, Catatan Tim, Portal Terpadu, &amp; File Manager.
 -- ================================================================
 
--- 1. Buat Tabel Resi
+-- 1. TABEL RESI PENGIRIMAN
 create table if not exists public.resi (
   id text primary key,
   nomor_resi text not null,
@@ -3999,24 +4000,79 @@ create table if not exists public.resi (
   updated_at timestamptz default now()
 );
 
--- 2. Buat Indexing Agar Pencarian & Filter Cepat Kilat (&lt;50ms)
 create index if not exists idx_resi_nomor on public.resi (nomor_resi);
 create index if not exists idx_resi_status on public.resi (status);
 create index if not exists idx_resi_kurir on public.resi (kurir);
 create index if not exists idx_resi_client on public.resi (nama_client);
 create index if not exists idx_resi_created on public.resi (created_at desc);
 
--- 3. Aktifkan Row Level Security (RLS) & Kebijakan Akses Penuh untuk App
 alter table public.resi enable row level security;
+drop policy if exists "Akses Penuh ExpediLog Resi" on public.resi;
+create policy "Akses Penuh ExpediLog Resi" on public.resi for all using (true) with check (true);
 
-drop policy if exists "Akses Penuh ExpediLog" on public.resi;
-create policy "Akses Penuh ExpediLog" on public.resi
-  for all
-  using (true)
-  with check (true);
+-- 2. TABEL CATATAN OPERASIONAL TIM (NOTEPAD TIM)
+create table if not exists public.team_notes (
+  id text primary key,
+  title text not null default '',
+  content text default '',
+  author text default 'Tim Operasional',
+  urgency text default 'Biasa',
+  category text default 'Operasional',
+  tags jsonb default '[]'::jsonb,
+  created_at bigint default (extract(epoch from now()) * 1000)::bigint,
+  updated_at bigint default (extract(epoch from now()) * 1000)::bigint
+);
 
--- 4. Aktifkan Realtime WebSocket Replication
-alter publication supabase_realtime add table public.resi;</pre>
+create index if not exists idx_notes_updated on public.team_notes (updated_at desc);
+create index if not exists idx_notes_urgency on public.team_notes (urgency);
+
+alter table public.team_notes enable row level security;
+drop policy if exists "Akses Penuh ExpediLog Notes" on public.team_notes;
+create policy "Akses Penuh ExpediLog Notes" on public.team_notes for all using (true) with check (true);
+
+-- 3. TABEL PORTAL SISTEM TERPADU &amp; TAUTAN OPERASIONAL
+create table if not exists public.portal_systems (
+  id text primary key,
+  name text not null default '',
+  url text not null default '',
+  category text default 'Operasional',
+  color text default 'emerald',
+  description text default '',
+  updated_at bigint default (extract(epoch from now()) * 1000)::bigint
+);
+
+create index if not exists idx_portal_cat on public.portal_systems (category);
+create index if not exists idx_portal_updated on public.portal_systems (updated_at desc);
+
+alter table public.portal_systems enable row level security;
+drop policy if exists "Akses Penuh ExpediLog Portals" on public.portal_systems;
+create policy "Akses Penuh ExpediLog Portals" on public.portal_systems for all using (true) with check (true);
+
+-- 4. TABEL FILE MANAGER &amp; CLOUD DRIVE
+create table if not exists public.drive_files (
+  id text primary key,
+  name text not null default '',
+  category text default 'document',
+  ext text default '',
+  size_bytes bigint default 0,
+  uploaded_at bigint default (extract(epoch from now()) * 1000)::bigint,
+  uploaded_by text default 'Pratama (Super Admin)',
+  description text default '',
+  data_url text default ''
+);
+
+create index if not exists idx_files_cat on public.drive_files (category);
+create index if not exists idx_files_uploaded on public.drive_files (uploaded_at desc);
+
+alter table public.drive_files enable row level security;
+drop policy if exists "Akses Penuh ExpediLog Files" on public.drive_files;
+create policy "Akses Penuh ExpediLog Files" on public.drive_files for all using (true) with check (true);
+
+-- 5. AKTIFKAN REPLIKASI REALTIME WEBSOCKET (SEMUA PERANGKAT SINKRON OTOMATIS)
+alter publication supabase_realtime add table public.resi;
+alter publication supabase_realtime add table public.team_notes;
+alter publication supabase_realtime add table public.portal_systems;
+alter publication supabase_realtime add table public.drive_files;</pre>
     </div>
 
     <div style="padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;background:var(--accent);">
@@ -7809,6 +7865,7 @@ function handleSaveNote(e) {
   }
 
   let notes = getTeamNotes();
+  let savedNote = null;
   if (id) {
     // Edit existing note
     const idx = notes.findIndex(n => n.id === id);
@@ -7822,6 +7879,7 @@ function handleSaveNote(e) {
         author: notes[idx].author || curAuthor,
         updatedAt: Date.now()
       };
+      savedNote = notes[idx];
       showToast('✅', 'Catatan tim berhasil diperbarui!');
     }
   } else {
@@ -7836,10 +7894,14 @@ function handleSaveNote(e) {
       updatedAt: Date.now()
     };
     notes.unshift(newNote);
+    savedNote = newNote;
     showToast('✅', 'Catatan baru berhasil ditambahkan!');
   }
 
   saveTeamNotesToStorage(notes);
+  if (savedNote && typeof syncNoteToSupabase === 'function') {
+    syncNoteToSupabase(savedNote);
+  }
   closeNoteModal();
   renderNotes();
 }
@@ -7871,6 +7933,9 @@ function confirmDeleteNote() {
   let notes = getTeamNotes();
   notes = notes.filter(n => n.id !== id);
   saveTeamNotesToStorage(notes);
+  if (typeof deleteNoteFromSupabase === 'function') {
+    deleteNoteFromSupabase(id);
+  }
   closeDeleteNoteModal();
   closeNoteModal();
   renderNotes();
@@ -8179,7 +8244,7 @@ function handleSavePortalSystem(e) {
   }
 
   let systems = getPortalSystems();
-
+  let savedSys = null;
   if (id) {
     const idx = systems.findIndex(s => s.id === id);
     if (idx !== -1) {
@@ -8192,6 +8257,7 @@ function handleSavePortalSystem(e) {
         description,
         updatedAt: Date.now()
       };
+      savedSys = systems[idx];
       showToast('✅', `Sistem "${name}" berhasil diperbarui!`);
     }
   } else {
@@ -8205,10 +8271,14 @@ function handleSavePortalSystem(e) {
       updatedAt: Date.now()
     };
     systems.unshift(newSys);
+    savedSys = newSys;
     showToast('✅', `Sistem baru "${name}" berhasil ditambahkan!`);
   }
 
   savePortalSystemsToStorage(systems);
+  if (savedSys && typeof syncPortalToSupabase === 'function') {
+    syncPortalToSupabase(savedSys);
+  }
   closePortalModal();
   renderPortalPage();
 }
@@ -8242,6 +8312,9 @@ function confirmDeletePortalSystem() {
 
   const updated = systems.filter(s => s.id !== id);
   savePortalSystemsToStorage(updated);
+  if (typeof deletePortalFromSupabase === 'function') {
+    deletePortalFromSupabase(id);
+  }
   closeDeletePortalModal();
   closePortalModal();
   renderPortalPage();
@@ -8599,8 +8672,18 @@ function processUploadedDriveFiles(fileList) {
   if (!filesArray.length) return;
 
   const currentFiles = getDriveFiles();
+  const newlyAdded = [];
   let completed = 0;
   const totalCount = filesArray.length;
+
+  const onAllUploaded = () => {
+    saveDriveFiles(currentFiles);
+    renderFileManager();
+    showToast('✅', `Berhasil mengunggah ${totalCount} berkas ke Cloud Drive!`);
+    newlyAdded.forEach(f => {
+      if (typeof syncFileToSupabase === 'function') syncFileToSupabase(f);
+    });
+  };
 
   filesArray.forEach(rawFile => {
     const { category, ext } = detectDriveCategory(rawFile.name);
@@ -8624,31 +8707,22 @@ function processUploadedDriveFiles(fileList) {
       reader.onload = function(evt) {
         newRecord.dataUrl = evt.target.result;
         currentFiles.unshift(newRecord);
+        newlyAdded.push(newRecord);
         completed++;
-        if (completed === totalCount) {
-          saveDriveFiles(currentFiles);
-          renderFileManager();
-          showToast('✅', `Berhasil mengunggah ${totalCount} berkas ke Cloud Drive!`);
-        }
+        if (completed === totalCount) onAllUploaded();
       };
       reader.onerror = function() {
         currentFiles.unshift(newRecord);
+        newlyAdded.push(newRecord);
         completed++;
-        if (completed === totalCount) {
-          saveDriveFiles(currentFiles);
-          renderFileManager();
-          showToast('✅', `Berhasil mengunggah ${totalCount} berkas ke Cloud Drive!`);
-        }
+        if (completed === totalCount) onAllUploaded();
       };
       reader.readAsDataURL(rawFile);
     } else {
       currentFiles.unshift(newRecord);
+      newlyAdded.push(newRecord);
       completed++;
-      if (completed === totalCount) {
-        saveDriveFiles(currentFiles);
-        renderFileManager();
-        showToast('✅', `Berhasil mengunggah ${totalCount} berkas ke Cloud Drive!`);
-      }
+      if (completed === totalCount) onAllUploaded();
     }
   });
 }
@@ -8770,6 +8844,9 @@ function confirmDeleteFile() {
 
   files = files.filter(f => f.id !== id);
   saveDriveFiles(files);
+  if (typeof deleteFileFromSupabase === 'function') {
+    deleteFileFromSupabase(id);
+  }
   closeDeleteFileModal();
   closeFilePreview();
   renderFileManager();
@@ -10496,6 +10573,93 @@ function mapSupabaseToResi(row) {
   };
 }
 
+// ─── MAPPERS FOR TEAM NOTES, PORTAL, & DRIVE FILES ────────────
+function mapNoteToSupabase(n) {
+  if (!n) return null;
+  return {
+    id: String(n.id || ('NOTE-' + Date.now())),
+    title: String(n.title || ''),
+    content: String(n.content || ''),
+    author: String(n.author || 'Tim Operasional'),
+    urgency: String(n.urgency || n.category || 'Biasa'),
+    category: String(n.category || n.urgency || 'Operasional'),
+    tags: Array.isArray(n.tags) ? n.tags : [],
+    created_at: Number(n.createdAt || n.updatedAt || Date.now()),
+    updated_at: Number(n.updatedAt || Date.now())
+  };
+}
+
+function mapSupabaseToNote(row) {
+  if (!row) return null;
+  return {
+    id: String(row.id),
+    title: row.title || '',
+    content: row.content || '',
+    author: row.author || 'Tim Operasional',
+    urgency: row.urgency || 'Biasa',
+    category: row.category || row.urgency || 'Biasa',
+    tags: Array.isArray(row.tags) ? row.tags : [],
+    createdAt: Number(row.created_at || row.updated_at || Date.now()),
+    updatedAt: Number(row.updated_at || Date.now())
+  };
+}
+
+function mapPortalToSupabase(s) {
+  if (!s) return null;
+  return {
+    id: String(s.id || ('SYS-' + Date.now())),
+    name: String(s.name || ''),
+    url: String(s.url || ''),
+    category: String(s.category || 'Operasional'),
+    color: String(s.color || 'emerald'),
+    description: String(s.description || ''),
+    updated_at: Number(s.updatedAt || Date.now())
+  };
+}
+
+function mapSupabaseToPortal(row) {
+  if (!row) return null;
+  return {
+    id: String(row.id),
+    name: row.name || '',
+    url: row.url || '',
+    category: row.category || 'Operasional',
+    color: row.color || 'emerald',
+    description: row.description || '',
+    updatedAt: Number(row.updated_at || Date.now())
+  };
+}
+
+function mapFileToSupabase(f) {
+  if (!f) return null;
+  return {
+    id: String(f.id || ('df-' + Date.now())),
+    name: String(f.name || ''),
+    category: String(f.category || 'document'),
+    ext: String(f.ext || ''),
+    size_bytes: Number(f.sizeBytes || 0),
+    uploaded_at: Number(f.uploadedAt || Date.now()),
+    uploaded_by: String(f.uploadedBy || 'Pratama (Super Admin)'),
+    description: String(f.description || ''),
+    data_url: String(f.dataUrl || '')
+  };
+}
+
+function mapSupabaseToFile(row) {
+  if (!row) return null;
+  return {
+    id: String(row.id),
+    name: row.name || '',
+    category: row.category || 'document',
+    ext: row.ext || '',
+    sizeBytes: Number(row.size_bytes || 0),
+    uploadedAt: Number(row.uploaded_at || Date.now()),
+    uploadedBy: row.uploaded_by || 'Pratama (Super Admin)',
+    description: row.description || '',
+    dataUrl: row.data_url || ''
+  };
+}
+
 function chunkArray(array, size) {
   const chunks = [];
   if (!Array.isArray(array)) return chunks;
@@ -10623,31 +10787,53 @@ async function fetchDataFromSupabase(isManual = false) {
 
   try {
     const t0 = performance.now();
+    let resiLoaded = 0;
+
+    // 1. Fetch Resi
     const { data: rows, error } = await window.supabaseClient
       .from('resi')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(5000);
 
-    if (error) throw error;
+    if (error) {
+      if (error.code === '42P01' || error.message?.includes('relation "public.resi" does not exist')) {
+        if (isManual) {
+          showSupabaseSqlModal();
+          alert('⚠️ Tabel "resi" belum dibuat di Supabase!\n\nSkrip SQL telah disiapkan di layar.');
+        }
+        return;
+      }
+      throw error;
+    }
 
     const latency = Math.round(performance.now() - t0);
 
-    if (Array.isArray(rows) && rows.length > 0) {
-      const mapped = rows.map(mapSupabaseToResi);
-      mapped.forEach(r => ensureShipmentFields(r));
-      data = mapped;
-      SafeStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      debouncedSupabaseUIRefresh();
-      updateSupabaseStatusUI(true, latency);
-      if (isManual) {
-        showToast('🚀', 'Berhasil memuat ' + data.length + ' resi dari Supabase! (' + latency + 'ms)');
-      }
-    } else if (Array.isArray(rows) && rows.length === 0) {
-      if (isManual) {
-        showToast('ℹ️', 'Tabel resi di Supabase masih kosong.');
+    if (Array.isArray(rows)) {
+      if (rows.length > 0) {
+        const mapped = rows.map(mapSupabaseToResi);
+        mapped.forEach(r => ensureShipmentFields(r));
+        data = mapped;
+        SafeStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        debouncedSupabaseUIRefresh();
+        resiLoaded = data.length;
       }
       updateSupabaseStatusUI(true, latency);
+    }
+
+    // 2. Fetch Notes, Portals, and Files
+    await Promise.allSettled([
+      fetchNotesFromSupabase(),
+      fetchPortalsFromSupabase(),
+      fetchFilesFromSupabase()
+    ]);
+
+    if (isManual) {
+      const notesCount = typeof getTeamNotes === 'function' ? getTeamNotes().length : 0;
+      const portalCount = typeof getPortalSystems === 'function' ? getPortalSystems().length : 0;
+      const filesCount = typeof getDriveFiles === 'function' ? getDriveFiles().length : 0;
+      showToast('🚀', 'Berhasil memuat data dari Supabase! (' + latency + 'ms)');
+      alert('✅ Sinkronisasi Supabase Selesai!\n\nData yang aktif di sistem:\n• Resi: ' + resiLoaded + ' resi\n• Catatan Tim: ' + notesCount + ' catatan\n• Portal Terpadu: ' + portalCount + ' portal\n• File Manager: ' + filesCount + ' berkas\n\nLatensi: ' + latency + 'ms');
     }
   } catch(err) {
     console.error('[Supabase] Fetch error:', err);
@@ -10662,6 +10848,96 @@ async function fetchDataFromSupabase(isManual = false) {
   }
 }
 
+async function fetchNotesFromSupabase() {
+  if (!window.supabaseClient) return;
+  try {
+    const { data: rows, error } = await window.supabaseClient
+      .from('team_notes')
+      .select('*')
+      .order('updated_at', { ascending: false })
+      .limit(500);
+
+    if (error) {
+      if (error.code === '42P01' || error.message?.includes('does not exist')) {
+        console.warn('[Supabase] Tabel team_notes belum dibuat di Supabase.');
+        return;
+      }
+      throw error;
+    }
+
+    if (Array.isArray(rows) && rows.length > 0) {
+      const mapped = rows.map(mapSupabaseToNote);
+      saveTeamNotesToStorage(mapped);
+      if (document.getElementById('page-notepad')?.classList.contains('active')) {
+        renderNotes();
+      }
+      console.log('[Supabase] Loaded ' + mapped.length + ' team notes');
+    }
+  } catch(err) {
+    console.warn('[Supabase] fetchNotes error:', err);
+  }
+}
+
+async function fetchPortalsFromSupabase() {
+  if (!window.supabaseClient) return;
+  try {
+    const { data: rows, error } = await window.supabaseClient
+      .from('portal_systems')
+      .select('*')
+      .order('updated_at', { ascending: false })
+      .limit(500);
+
+    if (error) {
+      if (error.code === '42P01' || error.message?.includes('does not exist')) {
+        console.warn('[Supabase] Tabel portal_systems belum dibuat di Supabase.');
+        return;
+      }
+      throw error;
+    }
+
+    if (Array.isArray(rows) && rows.length > 0) {
+      const mapped = rows.map(mapSupabaseToPortal);
+      savePortalSystemsToStorage(mapped);
+      if (document.getElementById('page-portal')?.classList.contains('active')) {
+        renderPortalPage();
+      }
+      console.log('[Supabase] Loaded ' + mapped.length + ' portal systems');
+    }
+  } catch(err) {
+    console.warn('[Supabase] fetchPortals error:', err);
+  }
+}
+
+async function fetchFilesFromSupabase() {
+  if (!window.supabaseClient) return;
+  try {
+    const { data: rows, error } = await window.supabaseClient
+      .from('drive_files')
+      .select('*')
+      .order('uploaded_at', { ascending: false })
+      .limit(1000);
+
+    if (error) {
+      if (error.code === '42P01' || error.message?.includes('does not exist')) {
+        console.warn('[Supabase] Tabel drive_files belum dibuat di Supabase.');
+        return;
+      }
+      throw error;
+    }
+
+    if (Array.isArray(rows) && rows.length > 0) {
+      const mapped = rows.map(mapSupabaseToFile);
+      saveDriveFiles(mapped);
+      if (document.getElementById('page-files')?.classList.contains('active')) {
+        renderFileManager();
+      }
+      console.log('[Supabase] Loaded ' + mapped.length + ' drive files');
+    }
+  } catch(err) {
+    console.warn('[Supabase] fetchFiles error:', err);
+  }
+}
+
 async function uploadLocalDataToSupabase() {
   if (!window.supabaseClient) {
     const client = initSupabaseClient();
@@ -10672,38 +10948,119 @@ async function uploadLocalDataToSupabase() {
   }
 
   loadData();
-  if (!Array.isArray(data) || data.length === 0) {
-    alert('ℹ️ Tidak ada data resi lokal untuk diunggah.');
+  const localResi = Array.isArray(data) ? data : [];
+  const localNotes = typeof getTeamNotes === 'function' ? getTeamNotes() : [];
+  const localPortals = typeof getPortalSystems === 'function' ? getPortalSystems() : [];
+  const localFiles = typeof getDriveFiles === 'function' ? getDriveFiles() : [];
+
+  const totalResi = localResi.length;
+  const totalNotes = localNotes.length;
+  const totalPortals = localPortals.length;
+  const totalFiles = localFiles.length;
+  const grandTotal = totalResi + totalNotes + totalPortals + totalFiles;
+
+  if (grandTotal === 0) {
+    alert('ℹ️ Tidak ada data lokal (resi, catatan, portal, berkas) untuk diunggah.');
     return;
   }
 
-  const total = data.length;
-  if (!confirm('Apakah Anda yakin ingin mengunggah ' + total + ' data resi lokal ke Supabase PostgreSQL?')) {
+  const confirmMsg = 'Apakah Anda yakin ingin mengunggah seluruh data lokal ke Supabase PostgreSQL?\n\n' +
+    '• Data Resi: ' + totalResi + ' data\n' +
+    '• Catatan Tim: ' + totalNotes + ' catatan\n' +
+    '• Portal Terpadu: ' + totalPortals + ' portal\n' +
+    '• File Manager: ' + totalFiles + ' berkas\n\n' +
+    'Total: ' + grandTotal + ' data akan disinkronkan ke Supabase.';
+
+  if (!confirm(confirmMsg)) {
     return;
   }
 
-  showToast('⏳', 'Memulai migrasi ' + total + ' data resi ke Supabase...');
+  showToast('⏳', 'Memulai sinkronisasi ' + grandTotal + ' data lokal ke Supabase...');
 
   try {
-    const rows = data.map(mapResiToSupabase);
-    const chunks = chunkArray(rows, 50);
-    let uploaded = 0;
+    const missingTables = [];
 
-    for (let i = 0; i < chunks.length; i++) {
-      const batch = chunks[i];
-      const { error } = await window.supabaseClient.from('resi').upsert(batch, { onConflict: 'id' });
-      if (error) throw error;
-      uploaded += batch.length;
-      showToast('⏳', 'Mengunggah ke Supabase: ' + uploaded + '/' + total + ' (' + Math.round((uploaded / total) * 100) + '%)...');
+    // 1. Upload Resi
+    if (totalResi > 0) {
+      const rows = localResi.map(mapResiToSupabase);
+      const chunks = chunkArray(rows, 50);
+      let uploaded = 0;
+      for (let i = 0; i < chunks.length; i++) {
+        const batch = chunks[i];
+        const { error } = await window.supabaseClient.from('resi').upsert(batch, { onConflict: 'id' });
+        if (error) {
+          if (error.code === '42P01' || error.message?.includes('relation "public.resi" does not exist')) {
+            missingTables.push('resi');
+            break;
+          }
+          throw error;
+        }
+        uploaded += batch.length;
+        showToast('⏳', 'Mengunggah Resi: ' + uploaded + '/' + totalResi + '...');
+      }
     }
 
-    showToast('🚀', 'Sukses! Seluruh ' + total + ' data resi berhasil tersimpan di Supabase PostgreSQL.');
-    alert('🎉 Migrasi Berhasil!\n\nSebanyak ' + total + ' data resi berhasil diunggah ke cloud PostgreSQL Supabase.\nSistem kini siap beroperasi dengan kecepatan tinggi dan sinkronisasi real-time!');
+    // 2. Upload Notes
+    if (totalNotes > 0) {
+      const noteRows = localNotes.map(mapNoteToSupabase);
+      const chunks = chunkArray(noteRows, 50);
+      for (let i = 0; i < chunks.length; i++) {
+        const { error } = await window.supabaseClient.from('team_notes').upsert(chunks[i], { onConflict: 'id' });
+        if (error) {
+          if (error.code === '42P01' || error.message?.includes('does not exist')) {
+            missingTables.push('team_notes');
+            break;
+          }
+          throw error;
+        }
+      }
+    }
+
+    // 3. Upload Portals
+    if (totalPortals > 0) {
+      const portalRows = localPortals.map(mapPortalToSupabase);
+      const chunks = chunkArray(portalRows, 50);
+      for (let i = 0; i < chunks.length; i++) {
+        const { error } = await window.supabaseClient.from('portal_systems').upsert(chunks[i], { onConflict: 'id' });
+        if (error) {
+          if (error.code === '42P01' || error.message?.includes('does not exist')) {
+            missingTables.push('portal_systems');
+            break;
+          }
+          throw error;
+        }
+      }
+    }
+
+    // 4. Upload Files
+    if (totalFiles > 0) {
+      const fileRows = localFiles.map(mapFileToSupabase);
+      const chunks = chunkArray(fileRows, 20);
+      for (let i = 0; i < chunks.length; i++) {
+        const { error } = await window.supabaseClient.from('drive_files').upsert(chunks[i], { onConflict: 'id' });
+        if (error) {
+          if (error.code === '42P01' || error.message?.includes('does not exist')) {
+            missingTables.push('drive_files');
+            break;
+          }
+          throw error;
+        }
+      }
+    }
+
+    if (missingTables.length > 0) {
+      showSupabaseSqlModal();
+      alert('⚠️ Peringatan:\nTabel berikut belum dibuat di database Supabase Anda:\n' + missingTables.map(t => '• ' + t).join('\n') + '\n\nSilakan salin skrip SQL yang tampil di layar dan jalankan di SQL Editor dashboard Supabase Anda.');
+      return;
+    }
+
+    showToast('🚀', 'Sukses! Seluruh ' + grandTotal + ' data lokal berhasil tersimpan di Supabase PostgreSQL.');
+    alert('🎉 Migrasi Berhasil!\n\nSebanyak:\n• ' + totalResi + ' data Resi\n• ' + totalNotes + ' Catatan Tim\n• ' + totalPortals + ' Portal Terpadu\n• ' + totalFiles + ' Berkas File Manager\n\nBerhasil diunggah ke cloud PostgreSQL Supabase!\nSemua perangkat kini tersinkronisasi otomatis secara realtime.');
   } catch(err) {
     console.error('[Supabase] Upload error:', err);
-    if (err.message && err.message.includes('relation "public.resi" does not exist')) {
+    if (err.message && err.message.includes('does not exist')) {
       showSupabaseSqlModal();
-      alert('⚠️ Tabel "resi" belum dibuat di Supabase!\n\nSilakan salin skrip SQL yang muncul di layar dan jalankan di SQL Editor Supabase.');
+      alert('⚠️ Ada tabel yang belum dibuat di Supabase!\n\nSilakan salin skrip SQL yang muncul di layar dan jalankan di SQL Editor Supabase.');
     } else {
       alert('⚠️ Gagal mengunggah data ke Supabase:\n' + err.message);
     }
@@ -10766,6 +11123,98 @@ function syncToSupabaseDebounced(delay = 1200) {
   }, delay);
 }
 
+// ─── ENTITY SYNC & DELETE HELPERS ─────────────────────────────
+async function syncNoteToSupabase(note) {
+  if (!window.supabaseClient || !note) return;
+  try {
+    const row = mapNoteToSupabase(note);
+    const { error } = await window.supabaseClient.from('team_notes').upsert(row, { onConflict: 'id' });
+    if (error) {
+      if (error.code === '42P01' || error.message?.includes('does not exist')) {
+        console.warn('[Supabase] Tabel team_notes belum dibuat di Supabase.');
+      } else {
+        console.warn('[Supabase] syncNote error:', error);
+      }
+    } else {
+      console.log('[Supabase] Note ' + note.id + ' synced');
+    }
+  } catch(err) {
+    console.warn('[Supabase] syncNote exception:', err);
+  }
+}
+
+async function deleteNoteFromSupabase(id) {
+  if (!window.supabaseClient || !id) return;
+  try {
+    const { error } = await window.supabaseClient.from('team_notes').delete().eq('id', String(id));
+    if (error && error.code !== '42P01') console.warn('[Supabase] deleteNote error:', error);
+    else console.log('[Supabase] Note ' + id + ' deleted');
+  } catch(err) {
+    console.warn('[Supabase] deleteNote exception:', err);
+  }
+}
+
+async function syncPortalToSupabase(sys) {
+  if (!window.supabaseClient || !sys) return;
+  try {
+    const row = mapPortalToSupabase(sys);
+    const { error } = await window.supabaseClient.from('portal_systems').upsert(row, { onConflict: 'id' });
+    if (error) {
+      if (error.code === '42P01' || error.message?.includes('does not exist')) {
+        console.warn('[Supabase] Tabel portal_systems belum dibuat di Supabase.');
+      } else {
+        console.warn('[Supabase] syncPortal error:', error);
+      }
+    } else {
+      console.log('[Supabase] Portal ' + sys.id + ' synced');
+    }
+  } catch(err) {
+    console.warn('[Supabase] syncPortal exception:', err);
+  }
+}
+
+async function deletePortalFromSupabase(id) {
+  if (!window.supabaseClient || !id) return;
+  try {
+    const { error } = await window.supabaseClient.from('portal_systems').delete().eq('id', String(id));
+    if (error && error.code !== '42P01') console.warn('[Supabase] deletePortal error:', error);
+    else console.log('[Supabase] Portal ' + id + ' deleted');
+  } catch(err) {
+    console.warn('[Supabase] deletePortal exception:', err);
+  }
+}
+
+async function syncFileToSupabase(file) {
+  if (!window.supabaseClient || !file) return;
+  try {
+    const row = mapFileToSupabase(file);
+    const { error } = await window.supabaseClient.from('drive_files').upsert(row, { onConflict: 'id' });
+    if (error) {
+      if (error.code === '42P01' || error.message?.includes('does not exist')) {
+        console.warn('[Supabase] Tabel drive_files belum dibuat di Supabase.');
+      } else {
+        console.warn('[Supabase] syncFile error:', error);
+      }
+    } else {
+      console.log('[Supabase] File ' + file.id + ' synced');
+    }
+  } catch(err) {
+    console.warn('[Supabase] syncFile exception:', err);
+  }
+}
+
+async function deleteFileFromSupabase(id) {
+  if (!window.supabaseClient || !id) return;
+  try {
+    const { error } = await window.supabaseClient.from('drive_files').delete().eq('id', String(id));
+    if (error && error.code !== '42P01') console.warn('[Supabase] deleteFile error:', error);
+    else console.log('[Supabase] File ' + id + ' deleted');
+  } catch(err) {
+    console.warn('[Supabase] deleteFile exception:', err);
+  }
+}
+
+// ─── REALTIME WEBSOCKET REPLICATION ENGINE ───────────────────
 function setupSupabaseRealtime() {
   if (!window.supabaseClient) return;
   try {
@@ -10775,9 +11224,18 @@ function setupSupabaseRealtime() {
     }
 
     window.supabaseRealtimeChannel = window.supabaseClient
-      .channel('public:resi_channel')
+      .channel('public:expedilog_cloud_channel')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'resi' }, (payload) => {
         handleSupabaseRealtimeEvent(payload);
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'team_notes' }, (payload) => {
+        handleSupabaseNoteRealtimeEvent(payload);
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'portal_systems' }, (payload) => {
+        handleSupabasePortalRealtimeEvent(payload);
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'drive_files' }, (payload) => {
+        handleSupabaseFileRealtimeEvent(payload);
       })
       .subscribe((status) => {
         console.log('[Supabase Realtime] Channel status:', status);
@@ -10790,7 +11248,7 @@ function setupSupabaseRealtime() {
 function handleSupabaseRealtimeEvent(payload) {
   try {
     if (!payload || !payload.eventType) return;
-    console.log('[Supabase Realtime] Event:', payload.eventType, payload);
+    console.log('[Supabase Realtime Resi] Event:', payload.eventType, payload);
 
     if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
       const row = payload.new;
@@ -10818,6 +11276,111 @@ function handleSupabaseRealtimeEvent(payload) {
     }
   } catch(err) {
     console.error('[Supabase Realtime] Event handler error:', err);
+  }
+}
+
+function handleSupabaseNoteRealtimeEvent(payload) {
+  try {
+    if (!payload || !payload.eventType) return;
+    console.log('[Supabase Realtime Notes] Event:', payload.eventType, payload);
+
+    let notes = typeof getTeamNotes === 'function' ? getTeamNotes() : [];
+    if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+      const noteObj = mapSupabaseToNote(payload.new);
+      if (!noteObj || !noteObj.id) return;
+      const idx = notes.findIndex(n => String(n.id) === String(noteObj.id));
+      if (idx >= 0) {
+        notes[idx] = noteObj;
+      } else {
+        notes.unshift(noteObj);
+      }
+      saveTeamNotesToStorage(notes);
+      if (document.getElementById('page-notepad')?.classList.contains('active')) {
+        renderNotes();
+      }
+      showToast('📝', 'Catatan tim "' + (noteObj.title || 'Catatan') + '" disinkronkan');
+    } else if (payload.eventType === 'DELETE') {
+      const oldId = payload.old?.id;
+      if (!oldId) return;
+      notes = notes.filter(n => String(n.id) !== String(oldId));
+      saveTeamNotesToStorage(notes);
+      if (document.getElementById('page-notepad')?.classList.contains('active')) {
+        renderNotes();
+      }
+      showToast('🗑️', 'Catatan tim telah dihapus secara real-time');
+    }
+  } catch(err) {
+    console.error('[Supabase Realtime Notes] error:', err);
+  }
+}
+
+function handleSupabasePortalRealtimeEvent(payload) {
+  try {
+    if (!payload || !payload.eventType) return;
+    console.log('[Supabase Realtime Portal] Event:', payload.eventType, payload);
+
+    let systems = typeof getPortalSystems === 'function' ? getPortalSystems() : [];
+    if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+      const portalObj = mapSupabaseToPortal(payload.new);
+      if (!portalObj || !portalObj.id) return;
+      const idx = systems.findIndex(s => String(s.id) === String(portalObj.id));
+      if (idx >= 0) {
+        systems[idx] = portalObj;
+      } else {
+        systems.unshift(portalObj);
+      }
+      savePortalSystemsToStorage(systems);
+      if (document.getElementById('page-portal')?.classList.contains('active')) {
+        renderPortalPage();
+      }
+      showToast('🌐', 'Portal sistem "' + (portalObj.name || 'Sistem') + '" disinkronkan');
+    } else if (payload.eventType === 'DELETE') {
+      const oldId = payload.old?.id;
+      if (!oldId) return;
+      systems = systems.filter(s => String(s.id) !== String(oldId));
+      savePortalSystemsToStorage(systems);
+      if (document.getElementById('page-portal')?.classList.contains('active')) {
+        renderPortalPage();
+      }
+      showToast('🗑️', 'Sistem portal telah dihapus secara real-time');
+    }
+  } catch(err) {
+    console.error('[Supabase Realtime Portal] error:', err);
+  }
+}
+
+function handleSupabaseFileRealtimeEvent(payload) {
+  try {
+    if (!payload || !payload.eventType) return;
+    console.log('[Supabase Realtime Files] Event:', payload.eventType, payload);
+
+    let files = typeof getDriveFiles === 'function' ? getDriveFiles() : [];
+    if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+      const fileObj = mapSupabaseToFile(payload.new);
+      if (!fileObj || !fileObj.id) return;
+      const idx = files.findIndex(f => String(f.id) === String(fileObj.id));
+      if (idx >= 0) {
+        files[idx] = fileObj;
+      } else {
+        files.unshift(fileObj);
+      }
+      saveDriveFiles(files);
+      if (document.getElementById('page-files')?.classList.contains('active')) {
+        renderFileManager();
+      }
+      showToast('📁', 'Berkas "' + (fileObj.name || 'Berkas') + '" disinkronkan');
+    } else if (payload.eventType === 'DELETE') {
+      const oldId = payload.old?.id;
+      if (!oldId) return;
+      files = files.filter(f => String(f.id) !== String(oldId));
+      saveDriveFiles(files);
+      if (document.getElementById('page-files')?.classList.contains('active')) {
+        renderFileManager();
+      }
+      showToast('🗑️', 'Berkas drive telah dihapus secara real-time');
+    }
+  } catch(err) {
+    console.error('[Supabase Realtime Files] error:', err);
   }
 }
 
