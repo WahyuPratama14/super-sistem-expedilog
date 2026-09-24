@@ -412,12 +412,14 @@ body:not(.logged-in-user) #main {
   box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.22) !important;
   outline: none !important;
 }
-[data-theme="dark"] .modern-filter-bar {
-  background: rgba(10, 22, 40, 0.72) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(56, 189, 248, 0.18) !important;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+[data-theme="dark"] .modern-filter-bar,
+.dark-mode .modern-filter-bar,
+.dark .modern-filter-bar {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 [data-theme="dark"] .modern-select-trigger {
   background: rgba(13, 27, 52, 0.7) !important;
@@ -3277,11 +3279,42 @@ button:hover,
 .modern-filter-bar {
   position: relative;
   z-index: 100;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 .filter-popover-anchor {
   position: relative;
   display: inline-block;
   z-index: 110;
+}
+[data-theme="dark"] .btn-popover-trigger,
+.dark-mode .btn-popover-trigger,
+.dark .btn-popover-trigger {
+  background: rgba(13, 27, 52, 0.65) !important;
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
+  color: #f1f5f9 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+[data-theme="dark"] .btn-popover-trigger:hover,
+[data-theme="dark"] .btn-popover-trigger.open,
+.dark-mode .btn-popover-trigger:hover,
+.dark-mode .btn-popover-trigger.open,
+.dark .btn-popover-trigger:hover,
+.dark .btn-popover-trigger.open {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.2) 0%, rgba(14, 165, 233, 0.3) 100%) !important;
+  border-color: rgba(0, 229, 255, 0.5) !important;
+  color: #00e5ff !important;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.25) !important;
+}
+[data-theme="dark"] .btn-popover-trigger.has-active,
+.dark-mode .btn-popover-trigger.has-active,
+.dark .btn-popover-trigger.has-active {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.25) 0%, rgba(2, 132, 199, 0.35) 100%) !important;
+  border-color: #00e5ff !important;
+  color: #00e5ff !important;
 }
 .filter-popover-modal {
   z-index: 1000 !important;
