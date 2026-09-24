@@ -3167,6 +3167,198 @@ button:hover,
   border: 1px solid rgba(16, 185, 129, 0.3) !important;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   GLASSY MODE ENHANCEMENTS: TABLE HOVER, POPUPS, FILTERS & MINIMIZE BTN
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 1. Glassy Table Row Hover */
+[data-theme="dark"] .data-table tbody tr:hover,
+[data-theme="dark"] .modern-table tbody tr:hover,
+.dark-mode .data-table tbody tr:hover,
+.dark-mode .modern-table tbody tr:hover,
+.dark .data-table tbody tr:hover,
+.dark .modern-table tbody tr:hover {
+  background: rgba(14, 165, 233, 0.14) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.08), 0 2px 10px rgba(0, 0, 0, 0.25) !important;
+}
+[data-theme="dark"] .data-table tbody tr:hover td,
+[data-theme="dark"] .modern-table tbody tr:hover td,
+.dark-mode .data-table tbody tr:hover td,
+.dark-mode .modern-table tbody tr:hover td,
+.dark .data-table tbody tr:hover td,
+.dark .modern-table tbody tr:hover td {
+  background: transparent !important;
+  color: #f8fafc !important;
+}
+[data-theme="dark"] .data-table tbody tr:hover .col-awb-cell .awb-text-selectable,
+.dark-mode .data-table tbody tr:hover .col-awb-cell .awb-text-selectable,
+.dark .data-table tbody tr:hover .col-awb-cell .awb-text-selectable {
+  color: #00e5ff !important;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.4) !important;
+}
+[data-theme="dark"] .data-table tbody tr:hover .col-client-cell span,
+.dark-mode .data-table tbody tr:hover .col-client-cell span,
+.dark .data-table tbody tr:hover .col-client-cell span {
+  color: #ffffff !important;
+}
+[data-theme="dark"] .data-table tbody tr:hover .col-no,
+.dark-mode .data-table tbody tr:hover .col-no,
+.dark .data-table tbody tr:hover .col-no {
+  color: #38bdf8 !important;
+}
+
+/* 2. Quick Scan Result Modal Glassy Style */
+.qs-header-box {
+  position: relative;
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid #f1f5f9;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+  text-align: center;
+}
+[data-theme="dark"] .qs-header-box,
+.dark-mode .qs-header-box,
+.dark .qs-header-box {
+  background: rgba(10, 22, 40, 0.85) !important;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2) !important;
+}
+.qs-timer-badge {
+  color: #059669;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+[data-theme="dark"] .qs-timer-badge,
+.dark-mode .qs-timer-badge,
+.dark .qs-timer-badge {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+}
+.qs-check-circle {
+  background: #ecfdf5;
+  border: 2px solid #a7f3d0;
+  color: #10b981;
+  box-shadow: 0 6px 18px rgba(16,185,129,.22);
+}
+[data-theme="dark"] .qs-check-circle,
+.dark-mode .qs-check-circle,
+.dark .qs-check-circle {
+  background: rgba(16, 185, 129, 0.16) !important;
+  border: 2px solid rgba(16, 185, 129, 0.4) !important;
+  color: #34d399 !important;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3) !important;
+}
+.qs-checked-badge {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+[data-theme="dark"] .qs-checked-badge,
+.dark-mode .qs-checked-badge,
+.dark .qs-checked-badge {
+  background: rgba(16, 185, 129, 0.18) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+.qs-metric-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+}
+[data-theme="dark"] .qs-metric-val,
+.dark-mode .qs-metric-val,
+.dark .qs-metric-val {
+  color: #00e5ff !important;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.3) !important;
+}
+
+/* 3. Filter Popover Z-Index & Glassy Style */
+.modern-filter-bar {
+  position: relative;
+  z-index: 100;
+}
+.filter-popover-anchor {
+  position: relative;
+  display: inline-block;
+  z-index: 110;
+}
+.filter-popover-modal {
+  z-index: 1000 !important;
+}
+[data-theme="dark"] .filter-popover-modal,
+.dark-mode .filter-popover-modal,
+.dark .filter-popover-modal {
+  background: rgba(10, 22, 40, 0.96) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1px solid rgba(56, 189, 248, 0.28) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 25px rgba(0, 229, 255, 0.15) !important;
+  color: #f8fafc !important;
+}
+[data-theme="dark"] .popover-segment,
+.dark-mode .popover-segment,
+.dark .popover-segment {
+  background: rgba(13, 27, 52, 0.8) !important;
+  border: 1px solid rgba(56, 189, 248, 0.15) !important;
+}
+[data-theme="dark"] .popover-segment-btn,
+.dark-mode .popover-segment-btn,
+.dark .popover-segment-btn {
+  color: #94a3b8 !important;
+}
+[data-theme="dark"] .popover-segment-btn.active,
+.dark-mode .popover-segment-btn.active,
+.dark .popover-segment-btn.active {
+  background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 229, 255, 0.3) !important;
+}
+[data-theme="dark"] .popover-item-row,
+.dark-mode .popover-item-row,
+.dark .popover-item-row {
+  color: #cbd5e1 !important;
+}
+[data-theme="dark"] .popover-item-row:hover,
+.dark-mode .popover-item-row:hover,
+.dark .popover-item-row:hover {
+  background: rgba(0, 229, 255, 0.1) !important;
+  color: #00e5ff !important;
+}
+[data-theme="dark"] .popover-item-row.selected,
+.dark-mode .popover-item-row.selected,
+.dark .popover-item-row.selected {
+  background: rgba(0, 229, 255, 0.16) !important;
+  color: #00e5ff !important;
+}
+[data-theme="dark"] .filter-popover-footer,
+.dark-mode .filter-popover-footer,
+.dark .filter-popover-footer {
+  background: rgba(8, 18, 36, 0.8) !important;
+  border-top-color: rgba(56, 189, 248, 0.2) !important;
+}
+
+/* 4. Sidebar Minimize Button Glassy Style */
+[data-theme="dark"] .sidebar-toggle-btn,
+.dark-mode .sidebar-toggle-btn,
+.dark .sidebar-toggle-btn {
+  background: rgba(13, 27, 52, 0.65) !important;
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
+  color: #38bdf8 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+[data-theme="dark"] .sidebar-toggle-btn:hover,
+.dark-mode .sidebar-toggle-btn:hover,
+.dark .sidebar-toggle-btn:hover {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.25) 0%, rgba(14, 165, 233, 0.35) 100%) !important;
+  border-color: rgba(0, 229, 255, 0.5) !important;
+  color: #00e5ff !important;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.3) !important;
+}
+
+
 </style>
 </head>
 <body>
@@ -3744,7 +3936,7 @@ button:hover,
           <div class="filter-popover-modal hidden" id="popoverModal_combined" style="min-width:280px;">
             <div class="popover-header">
               <div class="popover-title" id="combinedPopoverTitle">Filter Data</div>
-              <button type="button" class="popover-btn-close" onclick="closeCombinedFilterPopover()" title="Tutup Filter" style="width:28px;height:28px;border-radius:8px;border:none;background:#f8fafc;color:#64748b;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s ease;" onmouseover="this.style.background='#f1f5f9';this.style.color='#0f172a'" onmouseout="this.style.background='#f8fafc';this.style.color='#64748b'">
+              <button type="button" class="btn btn-ghost popover-btn-close" onclick="closeCombinedFilterPopover()" title="Tutup Filter" style="width:28px;height:28px;padding:0;border-radius:8px;font-size:16px;display:flex;align-items:center;justify-content:center;">
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               </button>
             </div>
@@ -3760,12 +3952,12 @@ button:hover,
               <input type="text" class="popover-search-input" id="searchFilter_combined" placeholder="Cari opsi..." oninput="renderCombinedFilterItems()"/>
             </div>
             <div class="popover-items-box" id="optionsBox_combined" style="max-height:240px;overflow-y:auto;"></div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-top:1px solid #f1f5f9;background:#fafafa;">
-              <button type="button" onclick="clearCurrentFilterTab()" style="border:none;background:transparent;color:#64748b;font-size:11.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#64748b'">
+            <div class="filter-popover-footer" style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-top:1px solid var(--border);">
+              <button type="button" onclick="clearCurrentFilterTab()" style="border:none;background:transparent;color:var(--muted-foreground);font-size:11.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--muted-foreground)'">
                 <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                 <span>Reset Tab</span>
               </button>
-              <button type="button" onclick="closeCombinedFilterPopover()" style="padding:4px 12px;border-radius:7px;background:#10b981;border:none;color:#fff;font-size:11.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(16,185,129,.25);">Selesai</button>
+              <button type="button" onclick="closeCombinedFilterPopover()" class="btn btn-primary btn-sm" style="padding:4px 12px;border-radius:7px;font-size:11.5px;font-weight:700;cursor:pointer;">Selesai</button>
             </div>
           </div>
         </div>
@@ -5009,22 +5201,22 @@ end $$;</pre>
     </div>
 
     <!-- Header Modal (Centered Checklist Icon & Clean Layout) -->
-    <div style="position:relative;padding:24px 20px 18px;border-bottom:1px solid #f1f5f9;background:linear-gradient(135deg,#f0fdf4 0%,#ffffff 100%);text-align:center;">
+    <div class="qs-header-box" style="position:relative;padding:24px 20px 18px;text-align:center;">
       <!-- Controls Top Right (Timer Badge & Close Button) -->
       <div style="position:absolute;top:14px;right:16px;display:flex;align-items:center;gap:6px;z-index:2;">
-        <span id="qsTimerBadge" style="font-size:11px;font-weight:800;color:#059669;background:#ecfdf5;border:1px solid #a7f3d0;padding:2px 7px;border-radius:7px;">3s</span>
-        <button type="button" onclick="closeQuickScanResultModal()" style="width:28px;height:28px;border-radius:8px;border:none;background:#f8fafc;color:#64748b;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .15s ease;" onmouseover="this.style.background='#f1f5f9';this.style.color='#0f172a'" onmouseout="this.style.background='#f8fafc';this.style.color='#64748b'">&times;</button>
+        <span id="qsTimerBadge" class="qs-timer-badge" style="font-size:11px;font-weight:800;padding:2px 7px;border-radius:7px;">3s</span>
+        <button type="button" class="btn btn-ghost" onclick="closeQuickScanResultModal()" style="width:28px;height:28px;padding:0;border-radius:8px;font-size:18px;display:flex;align-items:center;justify-content:center;">&times;</button>
       </div>
 
       <!-- Icon Checklist Besar di Tengah -->
-      <div style="width:56px;height:56px;border-radius:18px;background:#ecfdf5;border:2px solid #a7f3d0;display:flex;align-items:center;justify-content:center;color:#10b981;box-shadow:0 6px 18px rgba(16,185,129,.22);margin:0 auto 12px;">
+      <div class="qs-check-circle" style="width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
         <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </div>
 
       <!-- No AWB & Badge (Tengah) -->
       <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
         <span style="font-size:18px;font-weight:800;color:var(--foreground);letter-spacing:-0.01em;" id="qsResiNo">EXP982103490</span>
-        <span style="background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:3px;">
+        <span class="qs-checked-badge" style="padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:3px;">
           <span>✓</span> Terchecklist
         </span>
       </div>
@@ -5038,17 +5230,17 @@ end $$;</pre>
         <!-- Card 1: SLA RTN -->
         <div class="qs-metric-card" style="border-radius:14px;padding:16px 10px;text-align:center;border:1px solid var(--border);" id="qsSlaRtnBox">
           <div style="font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">SLA RTN</div>
-          <div id="qsSlaRtnValue" style="font-size:20px;font-weight:800;color:var(--foreground);">-</div>
+          <div id="qsSlaRtnValue" class="qs-metric-val" style="font-size:20px;font-weight:800;">-</div>
         </div>
         <!-- Card 2: SLA EV -->
         <div class="qs-metric-card" style="border-radius:14px;padding:16px 10px;text-align:center;border:1px solid var(--border);" id="qsSlaEvBox">
           <div style="font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">SLA EV</div>
-          <div id="qsSlaEvValue" style="font-size:20px;font-weight:800;color:var(--foreground);">Tepat Waktu</div>
+          <div id="qsSlaEvValue" class="qs-metric-val" style="font-size:20px;font-weight:800;">Tepat Waktu</div>
         </div>
         <!-- Card 3: DRS KE -->
         <div class="qs-metric-card" style="border-radius:14px;padding:16px 10px;text-align:center;border:1px solid var(--border);" id="qsDrsBox">
           <div style="font-size:11px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">DRS KE-</div>
-          <div id="qsDrsValue" style="font-size:20px;font-weight:800;color:var(--foreground);">1</div>
+          <div id="qsDrsValue" class="qs-metric-val" style="font-size:20px;font-weight:800;">1</div>
         </div>
       </div>
     </div>
@@ -6022,12 +6214,16 @@ function toggleCombinedFilterPopover(event) {
   if (event) event.stopPropagation();
   const modal = document.getElementById('popoverModal_combined');
   const trigger = document.getElementById('trigger_combinedFilter');
+  const anchor = document.getElementById('popoverAnchor_combined');
+  const filterBar = anchor?.closest('.modern-filter-bar');
   if (!modal) return;
 
   isCombinedFilterOpen = !isCombinedFilterOpen;
   if (isCombinedFilterOpen) {
     modal.classList.remove('hidden');
     trigger?.classList.add('open');
+    if (anchor) anchor.style.zIndex = '1000';
+    if (filterBar) filterBar.style.zIndex = '1000';
     renderCombinedFilterItems();
     const searchInp = document.getElementById('searchFilter_combined');
     if (searchInp) {
@@ -6037,14 +6233,20 @@ function toggleCombinedFilterPopover(event) {
   } else {
     modal.classList.add('hidden');
     trigger?.classList.remove('open');
+    if (anchor) anchor.style.zIndex = '';
+    if (filterBar) filterBar.style.zIndex = '';
   }
 }
 
 function closeCombinedFilterPopover() {
   const modal = document.getElementById('popoverModal_combined');
   const trigger = document.getElementById('trigger_combinedFilter');
+  const anchor = document.getElementById('popoverAnchor_combined');
+  const filterBar = anchor?.closest('.modern-filter-bar');
   if (modal) modal.classList.add('hidden');
   if (trigger) trigger.classList.remove('open');
+  if (anchor) anchor.style.zIndex = '';
+  if (filterBar) filterBar.style.zIndex = '';
   isCombinedFilterOpen = false;
 }
 
@@ -10837,13 +11039,17 @@ function applyTheme(t, notify) {
 
   if (t === 'dark') {
     document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.classList.add('dark');
     document.body.classList.add('dark-mode');
+    document.body.classList.add('dark');
     if (sun) sun.style.display = 'block';
     if (moon) moon.style.display = 'none';
     if (notify) showToast('🌙', 'Glassy Mode (Mode Gelap) aktif');
   } else {
     document.documentElement.removeAttribute('data-theme');
+    document.documentElement.classList.remove('dark');
     document.body.classList.remove('dark-mode');
+    document.body.classList.remove('dark');
     if (sun) sun.style.display = 'none';
     if (moon) moon.style.display = 'block';
     if (notify) showToast('☀️', 'Light Mode (Mode Terang) aktif');
@@ -13403,51 +13609,53 @@ function openQuickScanResultModal(r) {
 
   if (resiEl) resiEl.textContent = r.nomorResi || r.id;
 
-  // 1. SLA RTN: Nilai hitam, warna merah jika nilai 7 ke atas atau berstatus return
+  const isDark = typeof isDarkMode === 'function' ? isDarkMode() : false;
+
+  // 1. SLA RTN: Nilai terang/cyan di dark mode, merah jika nilai 7 ke atas atau berstatus return
   if (slaRtnEl) {
     const rtnVal = r.slaRtn || '-';
     slaRtnEl.textContent = rtnVal;
     const numRtn = typeof getNumericSlaRtn === 'function' ? getNumericSlaRtn(rtnVal) : parseFloat(String(rtnVal).replace(/[^\d.]/g, ''));
     const isRtnRed = (!isNaN(numRtn) && numRtn >= 7) || String(rtnVal).toLowerCase().includes('return');
     if (isRtnRed) {
-      slaRtnEl.style.color = '#ef4444';
+      slaRtnEl.style.color = isDark ? '#f87171' : '#ef4444';
       if (slaRtnBox) {
-        slaRtnBox.style.borderColor = '#fca5a5';
-        slaRtnBox.style.background = '#fef2f2';
+        slaRtnBox.style.borderColor = isDark ? 'rgba(239, 68, 68, 0.45)' : '#fca5a5';
+        slaRtnBox.style.background = isDark ? 'rgba(239, 68, 68, 0.16)' : '#fef2f2';
       }
     } else {
-      slaRtnEl.style.color = '#0f172a';
+      slaRtnEl.style.color = isDark ? '#00e5ff' : '#0f172a';
       if (slaRtnBox) {
-        slaRtnBox.style.borderColor = '#e2e8f0';
-        slaRtnBox.style.background = '#ffffff';
+        slaRtnBox.style.borderColor = isDark ? 'rgba(56, 189, 248, 0.25)' : '#e2e8f0';
+        slaRtnBox.style.background = isDark ? 'rgba(13, 27, 52, 0.7)' : '#ffffff';
       }
     }
   }
 
-  // 2. SLA EV: Nilai hitam, warna merah jika nilai 10 ke atas atau berstatus kendala/gagal
+  // 2. SLA EV: Nilai terang/cyan di dark mode, merah jika nilai 10 ke atas atau berstatus kendala/gagal
   if (slaEvEl) {
     const evVal = r.slaEv || 'Tepat Waktu';
     slaEvEl.textContent = evVal;
     const isRed = checkSlaEvAlert(evVal);
     if (isRed) {
-      slaEvEl.style.color = '#ef4444';
+      slaEvEl.style.color = isDark ? '#f87171' : '#ef4444';
       if (slaEvBox) {
-        slaEvBox.style.borderColor = '#fca5a5';
-        slaEvBox.style.background = '#fef2f2';
+        slaEvBox.style.borderColor = isDark ? 'rgba(239, 68, 68, 0.45)' : '#fca5a5';
+        slaEvBox.style.background = isDark ? 'rgba(239, 68, 68, 0.16)' : '#fef2f2';
       }
     } else {
-      slaEvEl.style.color = '#0f172a';
+      slaEvEl.style.color = isDark ? '#00e5ff' : '#0f172a';
       if (slaEvBox) {
-        slaEvBox.style.borderColor = '#e2e8f0';
-        slaEvBox.style.background = '#ffffff';
+        slaEvBox.style.borderColor = isDark ? 'rgba(56, 189, 248, 0.25)' : '#e2e8f0';
+        slaEvBox.style.background = isDark ? 'rgba(13, 27, 52, 0.7)' : '#ffffff';
       }
     }
   }
 
-  // 3. DRS KE: Tetap dengan warna hitam
+  // 3. DRS KE: Tetap jelas terbaca (cyan di dark mode, gelap di light mode)
   if (drsEl) {
     drsEl.textContent = String(r.drsKe || 1);
-    drsEl.style.color = '#0f172a';
+    drsEl.style.color = isDark ? '#00e5ff' : '#0f172a';
   }
 
   modal.classList.remove('hidden');
