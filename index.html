@@ -5209,31 +5209,74 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
           </div>
         </div>
 
-        <!-- PANEL: MULTI-DEVICE CLOUD SYNC -->
-        <div class="panel">
-          <div class="panel-title" style="margin-bottom:6px;display:flex;align-items:center;gap:8px;">
-            <svg width="18" height="18" fill="none" stroke="#10b981" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
-            <span>Sinkronisasi Multi-Device (Cloud Sync)</span>
+        <!-- PANEL: GOOGLE APPS SCRIPT DATABASE CLOUD (GOOGLE SHEETS) -->
+        <div class="panel" style="border:1px solid rgba(16,185,129,0.35);box-shadow:0 4px 20px rgba(16,185,129,0.06);margin-bottom:20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:40px;height:40px;border-radius:12px;background:rgba(16,185,129,0.12);display:flex;align-items:center;justify-content:center;color:#10b981;">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </div>
+              <div>
+                <div class="panel-title" style="font-size:16.5px;display:flex;align-items:center;gap:8px;">
+                  <span>Database Google Apps Script (Google Sheets)</span>
+                  <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:#10b981;color:#fff;font-weight:800;letter-spacing:0.04em;">100% GRATIS &amp; FLEKSIBEL</span>
+                </div>
+                <div class="panel-sub" style="font-size:12.5px;">Sinkronisasi data otomatis ke Google Spreadsheet Anda. Data tersimpan di akun Google pribadi, aman, dan mudah diolah rumus spreadsheet.</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button type="button" class="btn btn-ghost btn-sm" onclick="showGasScriptModal()" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                <span>📋 Skrip Kode Google Apps Script</span>
+              </button>
+            </div>
           </div>
-          <div class="panel-sub" style="margin-bottom:12px;">Sambungkan ke Google Apps Script Web App agar data otomatis tersinkronisasi saat dibuka di laptop, HP, atau browser lain.</div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
+
+          <!-- Status Indicator Badge -->
+          <div id="cloudSyncStatusBadge" style="margin-bottom:16px;font-size:12px;padding:9px 14px;border-radius:10px;background:var(--accent);color:var(--muted-foreground);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span id="cloudSyncStatusDot" style="width:10px;height:10px;border-radius:50%;background:#94a3b8;display:inline-block;"></span>
+              <span id="cloudSyncStatusText" style="font-weight:600;">Mode Offline Standalone (Google Apps Script Belum Terhubung)</span>
+            </div>
+            <span id="cloudSyncLatencyBadge" style="font-size:11.5px;color:#10b981;font-weight:700;display:none;"></span>
+          </div>
+
+          <!-- Configuration Inputs -->
+          <div style="display:flex;flex-direction:column;gap:12px;">
             <div>
-              <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);margin-bottom:4px;">URL GOOGLE APPS SCRIPT WEB APP</label>
-              <input type="url" id="cloudSyncUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="width:100%;padding:8px 12px;font-size:12px;border-radius:8px;border:1px solid var(--border);" />
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);margin-bottom:5px;">GOOGLE APPS SCRIPT WEB APP URL (Berakhiran /exec)</label>
+              <input type="url" id="cloudSyncUrlInput" placeholder="https://script.google.com/macros/s/AKfycb.../exec" style="width:100%;padding:9px 12px;font-size:12.5px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);" />
             </div>
-            <div style="display:flex;gap:8px;">
-              <button type="button" class="btn btn-primary btn-sm" onclick="saveAndTestCloudSync()" style="flex:1;justify-content:center;">
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
-                <span>Uji & Hubungkan Cloud</span>
+
+            <!-- Action Buttons -->
+            <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:4px;">
+              <button type="button" class="btn btn-primary" onclick="saveAndTestCloudSync()" style="display:inline-flex;align-items:center;gap:6px;">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                <span>Simpan &amp; Tes Koneksi</span>
               </button>
-              <button type="button" class="btn btn-ghost btn-sm" onclick="pullDataFromCloud()" style="justify-content:center;">
+              <button type="button" class="btn btn-ghost" onclick="pullDataFromCloud(true)" style="display:inline-flex;align-items:center;gap:6px;">
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-                <span>Tarik Data</span>
+                <span>Tarik Data dari Google Sheets</span>
+              </button>
+              <button type="button" class="btn btn-ghost" onclick="uploadLocalDataToCloud()" style="display:inline-flex;align-items:center;gap:6px;border-color:rgba(16,185,129,0.4);color:#10b981;font-weight:600;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <span>Upload Semua Data Lokal ke Google Sheets (1-Klik)</span>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="disconnectCloudSync()" style="display:inline-flex;align-items:center;gap:6px;margin-left:auto;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+                <span>Putuskan Koneksi</span>
               </button>
             </div>
-            <div id="cloudSyncStatusBadge" style="font-size:11.5px;padding:6px 10px;border-radius:6px;background:var(--accent);color:var(--muted-foreground);display:flex;align-items:center;gap:6px;">
-              <span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block;"></span>
-              <span id="cloudSyncStatusText">Mode Offline Standalone (Data tersimpan di browser ini)</span>
+
+            <!-- Panduan Bantuan Cepat -->
+            <div style="font-size:12px;color:var(--muted-foreground);line-height:1.6;margin-top:6px;padding:10px 14px;background:var(--accent);border-radius:8px;">
+              💡 <strong>Panduan Singkat:</strong> Buka Google Spreadsheet baru &gt; menu <strong>Ekstensi &gt; Apps Script</strong> &gt; tempelkan kode dari tombol <strong>"📋 Skrip Kode Google Apps Script"</strong> di atas &gt; Deploy sebagai <strong>Web app</strong> (Akses: <em>Anyone/Siapa saja</em>) &gt; tempelkan Web App URL ke kolom di atas.
             </div>
           </div>
         </div>
@@ -5481,6 +5524,659 @@ end $$;</pre>
   </div>
 </div>
 
+
+<!-- ══════════════ MODAL SETUP SKRIP GOOGLE APPS SCRIPT (GAS) ══════════════ -->
+<div id="gasScriptModal" class="modal-overlay hidden" style="z-index:9999;" onclick="if(event.target===this) closeGasScriptModal()">
+  <div class="modal-box" style="max-width:720px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(16,185,129,0.12);color:#10b981;display:flex;align-items:center;justify-content:center;font-size:20px;">
+          📊
+        </div>
+        <div>
+          <div class="panel-title" style="font-size:16px;">Skrip Kode Google Apps Script (Code.gs)</div>
+          <div class="panel-sub" style="font-size:12px;">Salin dan tempel skrip ini di <b>Apps Script</b> Google Spreadsheet Anda untuk mengaktifkan database cloud.</div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost" style="padding:6px 10px;" onclick="closeGasScriptModal()">✕</button>
+    </div>
+    
+    <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px;">
+      <!-- Langkah Cepat -->
+      <div style="background:var(--accent);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:12.5px;line-height:1.6;">
+        <div style="font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px;color:#10b981;">
+          <span>📌 4 Langkah Cepat Menghubungkan Google Sheets via Apps Script:</span>
+        </div>
+        <ol style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;color:var(--foreground);">
+          <li>Buka <b><a href="https://drive.google.com" target="_blank" style="color:#10b981;text-decoration:underline;">Google Drive</a></b> lalu buat Google Spreadsheet baru (beri nama bebas, misal: <i>Database ExpediLog</i>).</li>
+          <li>Di menu atas Google Sheets, klik <b>Ekstensi</b> &rarr; <b>Apps Script</b>.</li>
+          <li>Hapus seluruh kode bawaan yang ada di editor, klik tombol hijau <b>"Salin Seluruh Skrip Code.gs"</b> di bawah, lalu tempel (paste) ke editor dan klik ikon <b>Simpan (💾)</b>.</li>
+          <li>Klik tombol biru <b>Deploy</b> (kanan atas) &rarr; <b>New deployment</b> &rarr; klik ikon roda gerigi ⚙️ &rarr; pilih <b>Web app</b> &rarr; atur <b>Who has access</b> ke <b>"Anyone"</b> (Siapa saja) &rarr; klik <b>Deploy</b> &rarr; salin <b>Web app URL</b> (yang berakhiran <code>/exec</code>) dan tempel di Pengaturan ExpediLog.</li>
+        </ol>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+        <span style="font-size:12px;font-weight:700;color:var(--muted-foreground);">KODE BACKEND APPS SCRIPT (Code.gs):</span>
+        <button type="button" class="btn btn-primary btn-sm" id="btnCopyGasScript" onclick="copyGasScript()" style="display:inline-flex;align-items:center;gap:6px;">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span id="btnCopyGasScriptText">Salin Seluruh Skrip Code.gs</span>
+        </button>
+      </div>
+
+      <pre id="gasScriptCodeBlock" style="margin:0;background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;font-size:12px;line-height:1.5;max-height:300px;overflow-y:auto;font-family:Consolas,Monaco,'Courier New',monospace;border:1px solid #334155;user-select:all;">/**
+ * ════════════════════════════════════════════════════════════════════════════
+ * EXPEDILOG - GOOGLE APPS SCRIPT DATABASE ENGINE (Code.gs)
+ * Backend Database Google Sheets untuk Sistem Manajemen Ekspedisi &amp; Logistik
+ * ════════════════════════════════════════════════════════════════════════════
+ * 
+ * CARA MEMASANG DI GOOGLE SHEETS:
+ * 1. Buka Google Spreadsheet baru di https://drive.google.com
+ * 2. Klik menu "Ekstensi" &gt; "Apps Script"
+ * 3. Hapus seluruh kode bawaan di editor, lalu TEMPEL (PASTE) seluruh kode ini
+ * 4. Klik ikon Simpan (Save 💾)
+ * 5. Klik tombol biru "Deploy" (di kanan atas) &gt; "New deployment"
+ * 6. Klik ikon gerigi (Select type) &gt; pilih "Web app"
+ * 7. Isi:
+ *    - Description: ExpediLog Database Cloud v1
+ *    - Execute as: Me (email Anda)
+ *    - Who has access: Anyone (Siapa saja - PENTING agar web app dapat terhubung)
+ * 8. Klik "Deploy", beri izin akses Google jika diminta
+ * 9. Salin "Web app URL" (yang berakhiran /exec)
+ * 10. Buka ExpediLog &gt; Menu Pengaturan &gt; Tempelkan URL ke kolom Google Apps Script
+ * ════════════════════════════════════════════════════════════════════════════
+ */
+
+const SHEET_NAMES = {
+  RESI: 'Resi',
+  NOTES: 'Catatan',
+  PORTAL: 'Portal',
+  SETTINGS: 'Pengaturan'
+};
+
+const RESI_HEADERS = [
+  'id', 'nomorResi', 'namaClient', 'tanggalKirim', 'layanan', 'status',
+  'kurir', 'slaRtn', 'slaEv', 'drsKe', 'biaya', 'keterangan',
+  'pengirim_json', 'penerima_json', 'barang_json', 'riwayat_json', 'createdAt'
+];
+
+const NOTES_HEADERS = [
+  'id', 'title', 'content', 'author', 'urgency', 'category', 'tags_json', 'createdAt', 'updatedAt'
+];
+
+const PORTAL_HEADERS = [
+  'id', 'name', 'url', 'category', 'color', 'description', 'updatedAt'
+];
+
+const SETTINGS_HEADERS = ['key', 'value', 'updatedAt'];
+
+/**
+ * Endpoint HTTP GET (Digunakan untuk Ping, Tarik Data, dan JSONP)
+ */
+function doGet(e) {
+  e = e || { parameter: {} };
+  const params = e.parameter || {};
+  const action = params.action || '';
+  const callback = params.callback || '';
+
+  // 1. Tes Koneksi (Ping)
+  if (action === 'ping') {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    return createJsonResponse({
+      success: true,
+      message: 'ExpediLog Google Apps Script Database Online!',
+      spreadsheetName: ss ? ss.getName() : 'Google Spreadsheet',
+      timestamp: Date.now()
+    }, callback);
+  }
+
+  // 2. Tarik Seluruh Data (getData)
+  if (action === 'getData' || action === 'getAllData') {
+    try {
+      const allData = getAllInitialData();
+      return createJsonResponse(Object.assign({ success: true, timestamp: Date.now() }, allData), callback);
+    } catch(err) {
+      return createJsonResponse({ success: false, message: err.toString() }, callback);
+    }
+  }
+
+  // 3. Tampilan Dashboard Web jika URL dibuka langsung di browser
+  return HtmlService.createHtmlOutput(getHtmlStatusPage())
+    .setTitle('ExpediLog Database GAS Online')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+/**
+ * Endpoint HTTP POST (Digunakan untuk Simpan, Sinkronisasi Masal, &amp; Update)
+ */
+function doPost(e) {
+  try {
+    let payload = {};
+    if (e &amp;&amp; e.postData &amp;&amp; e.postData.contents) {
+      try {
+        payload = JSON.parse(e.postData.contents);
+      } catch(parseErr) {
+        payload = { action: 'syncAll' };
+      }
+    } else if (e &amp;&amp; e.parameter) {
+      payload = e.parameter;
+    }
+
+    const action = payload.action || 'syncAll';
+
+    // 1. Ping via POST
+    if (action === 'ping') {
+      return createJsonResponse({ success: true, message: 'Pong POST', timestamp: Date.now() });
+    }
+
+    // 2. Sinkronisasi Masal (syncAll / uploadAll)
+    if (action === 'syncAll' || action === 'uploadAll') {
+      const resiList = Array.isArray(payload.resiList) ? payload.resiList : [];
+      const notesList = Array.isArray(payload.notesList) ? payload.notesList : [];
+      const portalList = Array.isArray(payload.portalList) ? payload.portalList : [];
+      const settings = payload.settings || {};
+
+      let resiCount = 0;
+      let notesCount = 0;
+      let portalCount = 0;
+
+      if (resiList.length &gt; 0) resiCount = syncResiBatchToSheets(resiList);
+      if (notesList.length &gt; 0) notesCount = syncNotesToSheets(notesList);
+      if (portalList.length &gt; 0) portalCount = syncPortalsToSheets(portalList);
+
+      if (settings &amp;&amp; typeof settings === 'object') {
+        for (const k in settings) {
+          syncSettingToSheets(k, settings[k]);
+        }
+      }
+
+      return createJsonResponse({
+        success: true,
+        message: 'Seluruh data berhasil disinkronkan ke Google Sheets',
+        resiCount: resiCount,
+        notesCount: notesCount,
+        portalCount: portalCount,
+        timestamp: Date.now()
+      });
+    }
+
+    // 3. Sinkronisasi 1 Resi (syncSingle)
+    if (action === 'syncSingleResi' || (action === 'syncSingle' &amp;&amp; payload.table === 'resi')) {
+      const item = payload.item || payload.resi;
+      if (item) {
+        syncSingleResi(item);
+        return createJsonResponse({ success: true, message: 'Resi berhasil disinkronkan', id: item.id || item.nomorResi });
+      }
+    }
+
+    // 4. Hapus Resi (deleteResi)
+    if (action === 'deleteResi' || (action === 'delete' &amp;&amp; payload.table === 'resi')) {
+      const idOrIds = payload.id || payload.ids;
+      deleteResiFromSheets(idOrIds);
+      return createJsonResponse({ success: true, message: 'Resi berhasil dihapus' });
+    }
+
+    return createJsonResponse({ success: true, message: 'Aksi diproses' });
+  } catch(err) {
+    return createJsonResponse({ success: false, message: err.toString() });
+  }
+}
+
+/**
+ * Format output JSON atau JSONP
+ */
+function createJsonResponse(data, callback) {
+  const jsonStr = JSON.stringify(data);
+  if (callback &amp;&amp; typeof callback === 'string' &amp;&amp; /^[a-zA-Z0-9_]+$/.test(callback)) {
+    return ContentService.createTextOutput(callback + '(' + jsonStr + ');')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService.createTextOutput(jsonStr)
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * Ambil atau buat Sheet jika belum ada
+ */
+function getOrCreateSheet(sheetName, headers) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(sheetName);
+  if (!sheet) {
+    sheet = ss.insertSheet(sheetName);
+    if (headers &amp;&amp; headers.length &gt; 0) {
+      sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+      sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+      sheet.getRange(1, 1, 1, headers.length).setBackground('#10b981');
+      sheet.getRange(1, 1, 1, headers.length).setFontColor('#ffffff');
+      sheet.setFrozenRows(1);
+    }
+  }
+  return sheet;
+}
+
+/**
+ * Tarik seluruh data dari Google Sheets (Resi, Catatan, Portal, Pengaturan)
+ */
+function getAllInitialData() {
+  const resiList = getResiFromSheets();
+  const notesList = getNotesFromSheets();
+  const portalList = getPortalsFromSheets();
+  const settings = getSettingsFromSheets();
+
+  return {
+    resiList: resiList,
+    notesList: notesList,
+    portalList: portalList,
+    settings: settings
+  };
+}
+
+/**
+ * Membaca data Resi dari Sheet
+ */
+function getResiFromSheets() {
+  const sheet = getOrCreateSheet(SHEET_NAMES.RESI, RESI_HEADERS);
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt;= 1) return [];
+
+  const values = sheet.getRange(2, 1, lastRow - 1, RESI_HEADERS.length).getValues();
+  const result = [];
+
+  for (let i = 0; i &lt; values.length; i++) {
+    const row = values[i];
+    if (!row[0] &amp;&amp; !row[1]) continue; // Lewati baris kosong
+
+    let pengirim = {};
+    let penerima = {};
+    let barang = {};
+    let riwayat = [];
+
+    try { pengirim = JSON.parse(row[12] || '{}'); } catch(e) {}
+    try { penerima = JSON.parse(row[13] || '{}'); } catch(e) {}
+    try { barang = JSON.parse(row[14] || '{}'); } catch(e) {}
+    try { riwayat = JSON.parse(row[15] || '[]'); } catch(e) {}
+
+    result.push({
+      id: String(row[0] || row[1]),
+      nomorResi: String(row[1] || row[0]),
+      namaClient: String(row[2] || (pengirim &amp;&amp; pengirim.nama) || '-'),
+      tanggalKirim: String(row[3] || ''),
+      layanan: String(row[4] || 'Reguler'),
+      status: String(row[5] || 'Manifest'),
+      kurir: String(row[6] || '-'),
+      slaRtn: String(row[7] || '-'),
+      slaEv: String(row[8] || '-'),
+      drsKe: parseInt(row[9] || 1, 10) || 1,
+      biaya: Number(row[10] || 0),
+      keterangan: String(row[11] || ''),
+      pengirim: pengirim,
+      penerima: penerima,
+      barang: barang,
+      riwayatStatus: riwayat,
+      riwayat: riwayat,
+      createdAt: Number(row[16] || Date.now())
+    });
+  }
+
+  return result;
+}
+
+/**
+ * Simpan seluruh array data Resi sekaligus ke Sheet (Cepat &amp; Efisien)
+ */
+function syncResiBatchToSheets(resiList) {
+  if (!Array.isArray(resiList) || resiList.length === 0) return 0;
+  const sheet = getOrCreateSheet(SHEET_NAMES.RESI, RESI_HEADERS);
+
+  const rows = [];
+  for (let i = 0; i &lt; resiList.length; i++) {
+    const r = resiList[i];
+    if (!r) continue;
+
+    const id = String(r.id || r.nomorResi || ('R-' + Date.now() + '-' + i));
+    const nomorResi = String(r.nomorResi || id);
+    const namaClient = String(r.namaClient || (r.pengirim &amp;&amp; r.pengirim.nama) || '-');
+    const tanggalKirim = String(r.tanggalKirim || '');
+    const layanan = String(r.layanan || 'Reguler');
+    const status = String(r.status || 'Manifest');
+    const kurir = String(r.kurir || '-');
+    const slaRtn = String(r.slaRtn || '-');
+    const slaEv = String(r.slaEv || '-');
+    const drsKe = parseInt(r.drsKe || 1, 10) || 1;
+    const biaya = Number(r.biaya || 0);
+    const keterangan = String(r.keterangan || '');
+    const pengirimJson = JSON.stringify(r.pengirim || {});
+    const penerimaJson = JSON.stringify(r.penerima || {});
+    const barangJson = JSON.stringify(r.barang || {});
+    const riwayatJson = JSON.stringify(r.riwayatStatus || r.riwayat || []);
+    const createdAt = Number(r.createdAt || Date.now());
+
+    rows.push([
+      id, nomorResi, namaClient, tanggalKirim, layanan, status,
+      kurir, slaRtn, slaEv, drsKe, biaya, keterangan,
+      pengirimJson, penerimaJson, barangJson, riwayatJson, createdAt
+    ]);
+  }
+
+  if (rows.length === 0) return 0;
+
+  // Bersihkan data lama, lalu tulis data baru (Atomic Batch Write)
+  const lastRow = sheet.getLastRow();
+  if (lastRow &gt; 1) {
+    sheet.getRange(2, 1, lastRow - 1, RESI_HEADERS.length).clearContent();
+  }
+
+  sheet.getRange(2, 1, rows.length, RESI_HEADERS.length).setValues(rows);
+  return rows.length;
+}
+
+/**
+ * Simpan / Update 1 Resi
+ */
+function syncSingleResi(r) {
+  if (!r) return;
+  const sheet = getOrCreateSheet(SHEET_NAMES.RESI, RESI_HEADERS);
+  const id = String(r.id || r.nomorResi);
+
+  const rowData = [
+    id,
+    String(r.nomorResi || id),
+    String(r.namaClient || (r.pengirim &amp;&amp; r.pengirim.nama) || '-'),
+    String(r.tanggalKirim || ''),
+    String(r.layanan || 'Reguler'),
+    String(r.status || 'Manifest'),
+    String(r.kurir || '-'),
+    String(r.slaRtn || '-'),
+    String(r.slaEv || '-'),
+    parseInt(r.drsKe || 1, 10) || 1,
+    Number(r.biaya || 0),
+    String(r.keterangan || ''),
+    JSON.stringify(r.pengirim || {}),
+    JSON.stringify(r.penerima || {}),
+    JSON.stringify(r.barang || {}),
+    JSON.stringify(r.riwayatStatus || r.riwayat || []),
+    Number(r.createdAt || Date.now())
+  ];
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow &gt; 1) {
+    const ids = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+    for (let i = 0; i &lt; ids.length; i++) {
+      if (String(ids[i][0]) === id) {
+        sheet.getRange(i + 2, 1, 1, RESI_HEADERS.length).setValues([rowData]);
+        return;
+      }
+    }
+  }
+
+  sheet.appendRow(rowData);
+}
+
+/**
+ * Hapus resi berdasarkan ID atau daftar ID
+ */
+function deleteResiFromSheets(idOrIds) {
+  if (!idOrIds) return;
+  const sheet = getOrCreateSheet(SHEET_NAMES.RESI, RESI_HEADERS);
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt;= 1) return;
+
+  const targetIds = Array.isArray(idOrIds) ? idOrIds.map(String) : [String(idOrIds)];
+  const ids = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+
+  // Hapus dari baris terbawah ke atas agar index baris tidak bergeser
+  for (let i = ids.length - 1; i &gt;= 0; i--) {
+    if (targetIds.includes(String(ids[i][0]))) {
+      sheet.deleteRow(i + 2);
+    }
+  }
+}
+
+/**
+ * Membaca data Catatan Tim
+ */
+function getNotesFromSheets() {
+  const sheet = getOrCreateSheet(SHEET_NAMES.NOTES, NOTES_HEADERS);
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt;= 1) return [];
+
+  const values = sheet.getRange(2, 1, lastRow - 1, NOTES_HEADERS.length).getValues();
+  const result = [];
+
+  for (let i = 0; i &lt; values.length; i++) {
+    const row = values[i];
+    if (!row[0]) continue;
+
+    let tags = [];
+    try { tags = JSON.parse(row[6] || '[]'); } catch(e) {}
+
+    result.push({
+      id: String(row[0]),
+      title: String(row[1] || ''),
+      content: String(row[2] || ''),
+      author: String(row[3] || 'Tim Operasional'),
+      urgency: String(row[4] || 'Biasa'),
+      category: String(row[5] || 'Biasa'),
+      tags: tags,
+      createdAt: Number(row[7] || Date.now()),
+      updatedAt: Number(row[8] || Date.now())
+    });
+  }
+
+  return result;
+}
+
+/**
+ * Simpan seluruh Catatan Tim ke Sheet
+ */
+function syncNotesToSheets(notesList) {
+  if (!Array.isArray(notesList) || notesList.length === 0) return 0;
+  const sheet = getOrCreateSheet(SHEET_NAMES.NOTES, NOTES_HEADERS);
+
+  const rows = [];
+  for (let i = 0; i &lt; notesList.length; i++) {
+    const n = notesList[i];
+    if (!n) continue;
+
+    rows.push([
+      String(n.id || ('NOTE-' + Date.now() + '-' + i)),
+      String(n.title || ''),
+      String(n.content || ''),
+      String(n.author || 'Tim Operasional'),
+      String(n.urgency || 'Biasa'),
+      String(n.category || 'Biasa'),
+      JSON.stringify(Array.isArray(n.tags) ? n.tags : []),
+      Number(n.createdAt || Date.now()),
+      Number(n.updatedAt || Date.now())
+    ]);
+  }
+
+  if (rows.length === 0) return 0;
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow &gt; 1) {
+    sheet.getRange(2, 1, lastRow - 1, NOTES_HEADERS.length).clearContent();
+  }
+
+  sheet.getRange(2, 1, rows.length, NOTES_HEADERS.length).setValues(rows);
+  return rows.length;
+}
+
+/**
+ * Membaca data Portal
+ */
+function getPortalsFromSheets() {
+  const sheet = getOrCreateSheet(SHEET_NAMES.PORTAL, PORTAL_HEADERS);
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt;= 1) return [];
+
+  const values = sheet.getRange(2, 1, lastRow - 1, PORTAL_HEADERS.length).getValues();
+  const result = [];
+
+  for (let i = 0; i &lt; values.length; i++) {
+    const row = values[i];
+    if (!row[0]) continue;
+
+    result.push({
+      id: String(row[0]),
+      name: String(row[1] || ''),
+      url: String(row[2] || ''),
+      category: String(row[3] || 'Operasional'),
+      color: String(row[4] || 'emerald'),
+      description: String(row[5] || ''),
+      updatedAt: Number(row[6] || Date.now())
+    });
+  }
+
+  return result;
+}
+
+/**
+ * Simpan data Portal ke Sheet
+ */
+function syncPortalsToSheets(portalList) {
+  if (!Array.isArray(portalList) || portalList.length === 0) return 0;
+  const sheet = getOrCreateSheet(SHEET_NAMES.PORTAL, PORTAL_HEADERS);
+
+  const rows = [];
+  for (let i = 0; i &lt; portalList.length; i++) {
+    const p = portalList[i];
+    if (!p) continue;
+
+    rows.push([
+      String(p.id || ('SYS-' + Date.now() + '-' + i)),
+      String(p.name || ''),
+      String(p.url || ''),
+      String(p.category || 'Operasional'),
+      String(p.color || 'emerald'),
+      String(p.description || ''),
+      Number(p.updatedAt || Date.now())
+    ]);
+  }
+
+  if (rows.length === 0) return 0;
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow &gt; 1) {
+    sheet.getRange(2, 1, lastRow - 1, PORTAL_HEADERS.length).clearContent();
+  }
+
+  sheet.getRange(2, 1, rows.length, PORTAL_HEADERS.length).setValues(rows);
+  return rows.length;
+}
+
+/**
+ * Membaca pengaturan dari Sheet
+ */
+function getSettingsFromSheets() {
+  const sheet = getOrCreateSheet(SHEET_NAMES.SETTINGS, SETTINGS_HEADERS);
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt;= 1) return {};
+
+  const values = sheet.getRange(2, 1, lastRow - 1, SETTINGS_HEADERS.length).getValues();
+  const settings = {};
+
+  for (let i = 0; i &lt; values.length; i++) {
+    const key = String(values[i][0] || '');
+    if (key) {
+      settings[key] = values[i][1];
+    }
+  }
+
+  return settings;
+}
+
+/**
+ * Menyimpan 1 baris pengaturan ke Sheet
+ */
+function syncSettingToSheets(key, value) {
+  if (!key) return;
+  const sheet = getOrCreateSheet(SHEET_NAMES.SETTINGS, SETTINGS_HEADERS);
+  const keyStr = String(key);
+  const valStr = String(value || '');
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow &gt; 1) {
+    const keys = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+    for (let i = 0; i &lt; keys.length; i++) {
+      if (String(keys[i][0]) === keyStr) {
+        sheet.getRange(i + 2, 2, 1, 2).setValues([[valStr, Date.now()]]);
+        return;
+      }
+    }
+  }
+
+  sheet.appendRow([keyStr, valStr, Date.now()]);
+}
+
+/**
+ * Halaman Status HTML Informatif saat Web App URL dibuka di browser
+ */
+function getHtmlStatusPage() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ssName = ss ? ss.getName() : 'Google Spreadsheet';
+  const resiCount = ss &amp;&amp; ss.getSheetByName(SHEET_NAMES.RESI) ? Math.max(0, ss.getSheetByName(SHEET_NAMES.RESI).getLastRow() - 1) : 0;
+  const notesCount = ss &amp;&amp; ss.getSheetByName(SHEET_NAMES.NOTES) ? Math.max(0, ss.getSheetByName(SHEET_NAMES.NOTES).getLastRow() - 1) : 0;
+  const portalCount = ss &amp;&amp; ss.getSheetByName(SHEET_NAMES.PORTAL) ? Math.max(0, ss.getSheetByName(SHEET_NAMES.PORTAL).getLastRow() - 1) : 0;
+
+  return `&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;ExpediLog GAS Database Online&lt;/title&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;style&gt;
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0b1528; color: #f8fafc; margin: 0; padding: 30px 16px; display: flex; justify-content: center; }
+    .card { background: #112240; border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 20px; max-width: 580px; width: 100%; padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 99px; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-size: 12px; font-weight: 700; margin-bottom: 14px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
+    h1 { font-size: 20px; margin: 0 0 8px 0; color: #f8fafc; }
+    p { font-size: 13.5px; color: #94a3b8; line-height: 1.6; margin: 0 0 20px 0; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+    .stat-box { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 12px; padding: 12px; text-align: center; }
+    .stat-val { font-size: 20px; font-weight: 800; color: #00e5ff; }
+    .stat-lbl { font-size: 11px; color: #64748b; margin-top: 4px; }
+    .guide { background: rgba(2, 132, 199, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 14px 18px; font-size: 12.5px; color: #cbd5e1; line-height: 1.6; }
+    .guide strong { color: #38bdf8; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="card"&gt;
+    &lt;div class="badge"&gt;&lt;span class="dot"&gt;&lt;/span&gt; Web App Aktif &amp;amp; Terhubung&lt;/div&gt;
+    &lt;h1&gt;⚡ ExpediLog Database Google Apps Script&lt;/h1&gt;
+    &lt;p&gt;Endpoint database Google Sheets berhasil di-deploy dan siap melayani permintaan data aplikasi ExpediLog.&lt;/p&gt;
+    
+    &lt;div class="stats"&gt;
+      &lt;div class="stat-box"&gt;
+        &lt;div class="stat-val"&gt;${resiCount}&lt;/div&gt;
+        &lt;div class="stat-lbl"&gt;Data Resi&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="stat-box"&gt;
+        &lt;div class="stat-val"&gt;${notesCount}&lt;/div&gt;
+        &lt;div class="stat-lbl"&gt;Catatan Tim&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="stat-box"&gt;
+        &lt;div class="stat-val"&gt;${portalCount}&lt;/div&gt;
+        &lt;div class="stat-lbl"&gt;Portal Sistem&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="guide"&gt;
+      &lt;strong&gt;Langkah Selanjutnya:&lt;/strong&gt;&lt;br&gt;
+      Salin URL web app dari browser ini (yang berakhiran &lt;code&gt;/exec&lt;/code&gt;), lalu buka aplikasi &lt;strong&gt;ExpediLog&lt;/strong&gt; &amp;gt; menu &lt;strong&gt;Pengaturan&lt;/strong&gt; &amp;gt; tempelkan ke kolom &lt;strong&gt;URL Google Apps Script Web App&lt;/strong&gt;.
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;`;
+}
+</pre>
+    </div>
+
+    <div style="padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;background:var(--accent);">
+      <button type="button" class="btn btn-ghost" onclick="closeGasScriptModal()">Tutup</button>
+      <button type="button" class="btn btn-primary" onclick="copyGasScript()">Salin &amp; Tutup</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════ MODAL PENGATURAN WHATSAPP GATEWAY ══════════════ -->
 <div id="waGatewayModal" class="modal-overlay hidden" style="z-index:9999;">
@@ -6369,12 +7065,11 @@ function saveData() {
   try {
     SafeStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     if (typeof updateSubtabBadges === 'function') updateSubtabBadges();
-    // Auto-sync ke Cloud jika tersambung
-    if (typeof getCloudSyncUrl === 'function') {
-      const cloudUrl = getCloudSyncUrl();
-      if (cloudUrl && typeof pushDataToCloud === 'function') {
-        pushDataToCloud(false);
-      }
+    // Auto-sync ke Cloud Google Apps Script jika tersambung
+    if (typeof pushDataToCloudDebounced === 'function') {
+      pushDataToCloudDebounced();
+    } else if (typeof getCloudSyncUrl === 'function' && getCloudSyncUrl() && typeof pushDataToCloud === 'function') {
+      pushDataToCloud(false);
     }
     // Auto-sync ke Cloud Supabase jika tersambung
     if (typeof syncToSupabaseDebounced === 'function') {
@@ -11624,35 +12319,64 @@ function applyTheme(t, notify) {
   }
 }
 
-// ─── MULTI-DEVICE CLOUD SYNC ENGINE (ROBUST CORS & JSONP) ────
+// ══════════════ MODUL DATABASE CLOUD GOOGLE APPS SCRIPT (GAS) ══════════════
 function getCloudSyncUrl() {
   return SafeStorage.getItem('cloud_sync_url') || '';
 }
 
-function updateCloudSyncStatusUI() {
+function updateCloudSyncStatusUI(isConnected, latencyMs, errorMsg) {
   const url = getCloudSyncUrl();
   const inputEl = document.getElementById('cloudSyncUrlInput');
   const badgeEl = document.getElementById('cloudSyncStatusBadge');
   const textEl = document.getElementById('cloudSyncStatusText');
+  const dotEl = document.getElementById('cloudSyncStatusDot');
+  const latencyBadge = document.getElementById('cloudSyncLatencyBadge');
 
-  if (inputEl) inputEl.value = url;
-  if (url) {
+  if (inputEl && !inputEl.value) inputEl.value = url;
+
+  if (isConnected === true || (url && isConnected !== false)) {
+    if (dotEl) dotEl.style.background = '#10b981';
     if (badgeEl) {
-      badgeEl.style.background = 'rgba(16,185,129,0.12)';
-      badgeEl.style.color = '#047857';
+      badgeEl.style.background = 'rgba(16, 185, 129, 0.12)';
+      badgeEl.style.borderColor = 'rgba(16, 185, 129, 0.3)';
     }
-    if (textEl) textEl.textContent = '🟢 Tersambung ke Cloud Google Apps Script (Sinkronisasi Aktif)';
+    if (textEl) {
+      textEl.textContent = '🟢 Terhubung ke Google Apps Script (Google Sheets Aktif)';
+      textEl.style.color = '#10b981';
+      textEl.style.fontWeight = '600';
+    }
+    if (latencyBadge && latencyMs !== undefined && latencyMs !== null) {
+      latencyBadge.textContent = '⚡ Latensi: ' + latencyMs + 'ms';
+      latencyBadge.style.display = 'inline-block';
+    }
+  } else if (errorMsg) {
+    if (dotEl) dotEl.style.background = '#ef4444';
+    if (badgeEl) {
+      badgeEl.style.background = 'rgba(239, 68, 68, 0.1)';
+      badgeEl.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+    }
+    if (textEl) {
+      textEl.textContent = '❌ Gagal Terhubung: ' + errorMsg;
+      textEl.style.color = '#ef4444';
+    }
+    if (latencyBadge) latencyBadge.style.display = 'none';
   } else {
+    if (dotEl) dotEl.style.background = '#94a3b8';
     if (badgeEl) {
       badgeEl.style.background = 'var(--accent)';
-      badgeEl.style.color = 'var(--muted-foreground)';
+      badgeEl.style.borderColor = 'var(--border)';
     }
-    if (textEl) textEl.textContent = 'Mode Offline Standalone (Data tersimpan di browser ini)';
+    if (textEl) {
+      textEl.textContent = 'Mode Offline Standalone (Google Apps Script Belum Terhubung)';
+      textEl.style.color = 'var(--muted-foreground)';
+      textEl.style.fontWeight = 'normal';
+    }
+    if (latencyBadge) latencyBadge.style.display = 'none';
   }
 }
 
 // Helper JSONP untuk menembus batasan CORS browser secara 100%
-function fetchJsonp(url, timeoutMs = 12000) {
+function fetchJsonp(url, timeoutMs = 15000) {
   return new Promise((resolve, reject) => {
     const callbackName = 'gas_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
     const script = document.createElement('script');
@@ -11703,8 +12427,7 @@ async function callCloudApi(endpointUrl, params = {}) {
     const data = await res.json();
     return data;
   } catch(fetchErr) {
-    console.warn('Direct fetch failed, trying JSONP fallback...', fetchErr);
-    // Fallback otomatis ke JSONP
+    console.warn('[GAS] Direct fetch failed, trying JSONP fallback...', fetchErr);
     return await fetchJsonp(fullUrl);
   }
 }
@@ -11715,8 +12438,8 @@ async function saveAndTestCloudSync() {
 
   if (!url) {
     SafeStorage.removeItem('cloud_sync_url');
-    updateCloudSyncStatusUI();
-    showToast('ℹ️', 'URL Cloud dikosongkan. Sistem beroperasi dalam mode penyimpanan lokal.');
+    updateCloudSyncStatusUI(false);
+    showToast('ℹ️', 'URL Google Apps Script dikosongkan. Sistem beroperasi dalam mode penyimpanan lokal.');
     return;
   }
 
@@ -11739,18 +12462,29 @@ async function saveAndTestCloudSync() {
   showToast('⏳', 'Menguji koneksi ke Google Apps Script Cloud...');
 
   try {
+    const t0 = performance.now();
     const json = await callCloudApi(url, { action: 'ping' });
     if (json && json.success) {
+      const latency = Math.round(performance.now() - t0);
       SafeStorage.setItem('cloud_sync_url', url);
-      updateCloudSyncStatusUI();
-      showToast('✅', 'Berhasil terhubung ke Cloud Google Sheets! Melakukan sinkronisasi data...');
-      await pullDataFromCloud(false);
-      await pushDataToCloud(false);
+      updateCloudSyncStatusUI(true, latency);
+      showToast('⚡', 'Terhubung ke Google Apps Script Cloud! Latensi: ' + latency + 'ms');
+
+      // Tawarkan sinkronisasi jika data lokal ada
+      loadData();
+      if (Array.isArray(data) && data.length > 0) {
+        if (confirm('Koneksi Google Apps Script berhasil (' + latency + 'ms)!\n\nSaat ini Anda memiliki ' + data.length + ' data resi di komputer ini. Apakah Anda ingin langsung mengunggah semua data lokal ke Google Sheets sekarang?')) {
+          uploadLocalDataToCloud();
+        }
+      } else {
+        await pullDataFromCloud(false);
+      }
     } else {
-      throw new Error(json.message || 'Respon cloud tidak valid');
+      throw new Error(json?.message || 'Respon cloud tidak valid');
     }
   } catch(err) {
-    console.error('Cloud test error:', err);
+    console.error('[GAS] Cloud test error:', err);
+    updateCloudSyncStatusUI(false, null, err.message);
     showCloudHelpModal(err.message);
   }
 }
@@ -11805,7 +12539,7 @@ async function triggerManualCloudSync() {
     showToast('ℹ️', 'Masukkan URL Google Apps Script Web App terlebih dahulu untuk menghubungkan cloud.');
     return;
   }
-  showToast('🔄', 'Menyinkronkan data dengan Cloud...');
+  showToast('🔄', 'Menyinkronkan data dengan Google Sheets...');
   await pullDataFromCloud(true);
 }
 
@@ -11814,63 +12548,180 @@ async function pullDataFromCloud(showNotice) {
   if (!url) return;
 
   try {
+    const t0 = performance.now();
     const json = await callCloudApi(url, { action: 'getData' });
+    const latency = Math.round(performance.now() - t0);
 
     if (json && json.success) {
-      if (Array.isArray(json.resiList) && json.resiList.length > 0) {
-        data = json.resiList;
-        data.forEach(r => ensureShipmentFields(r));
-        saveDataLocally();
-        refreshDashboard();
-        renderTable();
-        if (typeof renderTakeoutReturnTable === 'function') renderTakeoutReturnTable();
-        if (typeof updateSubtabBadges === 'function') updateSubtabBadges();
+      let resiCount = 0;
+      let notesCount = 0;
+      let portalCount = 0;
+
+      if (Array.isArray(json.resiList)) {
+        if (json.resiList.length > 0) {
+          data = json.resiList;
+          data.forEach(r => ensureShipmentFields(r));
+          SafeStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          resiCount = data.length;
+        }
       }
       if (Array.isArray(json.notesList)) {
         SafeStorage.setItem('ekspedisi_team_notes_v2', JSON.stringify(json.notesList));
         if (typeof loadTeamNotes === 'function') loadTeamNotes();
+        notesCount = json.notesList.length;
       }
       if (Array.isArray(json.portalList)) {
         SafeStorage.setItem('ekspedisi_portal_systems', JSON.stringify(json.portalList));
         if (typeof renderPortalPage === 'function') renderPortalPage();
+        portalCount = json.portalList.length;
       }
-      if (showNotice) showToast('✅', 'Data terbaru berhasil dimuat dari Cloud!');
+      if (json.settings && json.settings.ADMIN_PASSWORD) {
+        SafeStorage.setItem('ekspedisi_admin_pass', json.settings.ADMIN_PASSWORD);
+      }
+
+      updateCloudSyncStatusUI(true, latency);
+      refreshDashboard();
+      if (document.getElementById('page-daftar')?.classList.contains('active')) {
+        renderTable();
+        if (typeof renderTakeoutReturnTable === 'function') renderTakeoutReturnTable();
+      }
+      if (document.getElementById('page-outstanding')?.classList.contains('active')) renderOutstanding();
+      if (document.getElementById('page-client')?.classList.contains('active')) renderClientPage();
+      if (document.getElementById('page-notepad')?.classList.contains('active') && typeof renderNotes === 'function') renderNotes();
+      if (typeof updateSubtabBadges === 'function') updateSubtabBadges();
+
+      if (showNotice) {
+        showToast('✅', 'Data terbaru berhasil dimuat dari Google Sheets! (' + latency + 'ms)');
+        alert('🎉 Sinkronisasi Google Sheets Berhasil!\n\nData aktif:\n• Resi: ' + resiCount + ' data\n• Catatan Tim: ' + notesCount + ' catatan\n• Portal: ' + portalCount + ' portal\n\nLatensi: ' + latency + 'ms');
+      }
     }
   } catch(err) {
-    console.warn('Pull cloud data error:', err);
-    if (showNotice) showToast('⚠️', 'Gagal memuat data dari cloud: ' + err.message);
+    console.warn('[GAS] Pull cloud data error:', err);
+    if (showNotice) showToast('⚠️', 'Gagal memuat data dari Google Sheets: ' + err.message);
   }
 }
 
-async function pushDataToCloud(showNotice) {
+let gasDebounceTimer = null;
+function pushDataToCloudDebounced(delay = 1500) {
   const url = getCloudSyncUrl();
-  if (!url) return;
+  if (!url || !Array.isArray(data)) return;
+  if (gasDebounceTimer) clearTimeout(gasDebounceTimer);
+  gasDebounceTimer = setTimeout(async () => {
+    try {
+      console.log('[GAS] Auto-syncing to Google Sheets...');
+      const payload = {
+        action: 'syncAll',
+        resiList: data,
+        notesList: typeof getTeamNotes === 'function' ? getTeamNotes() : [],
+        portalList: typeof getPortalSystems === 'function' ? getPortalSystems() : [],
+        settings: { ADMIN_PASSWORD: (typeof getSuperAdminPass === 'function' ? getSuperAdminPass() : '') }
+      };
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      console.log('[GAS] Auto-sync completed');
+    } catch(err) {
+      console.warn('[GAS] Auto-sync error:', err);
+    }
+  }, delay);
+}
+
+async function uploadLocalDataToCloud() {
+  const url = getCloudSyncUrl();
+  if (!url) {
+    alert('⚠️ Google Apps Script belum terhubung. Masukkan URL Web App terlebih dahulu.');
+    return;
+  }
+
+  loadData();
+  const localResi = Array.isArray(data) ? data : [];
+  const localNotes = typeof getTeamNotes === 'function' ? getTeamNotes() : [];
+  const localPortals = typeof getPortalSystems === 'function' ? getPortalSystems() : [];
+
+  const totalResi = localResi.length;
+  const totalNotes = localNotes.length;
+  const totalPortals = localPortals.length;
+  const grandTotal = totalResi + totalNotes + totalPortals;
+
+  if (grandTotal === 0) {
+    alert('ℹ️ Tidak ada data lokal untuk diunggah.');
+    return;
+  }
+
+  const confirmMsg = 'Apakah Anda yakin ingin mengunggah seluruh data lokal ke Google Sheets?\n\n' +
+    '• Data Resi: ' + totalResi + ' data\n' +
+    '• Catatan Tim: ' + totalNotes + ' catatan\n' +
+    '• Portal Terpadu: ' + totalPortals + ' portal\n\n' +
+    'Total: ' + grandTotal + ' data akan disimpan ke Google Sheets.';
+
+  if (!confirm(confirmMsg)) return;
+
+  showToast('⏳', 'Mengunggah ' + grandTotal + ' data lokal ke Google Sheets...');
 
   try {
     const payload = {
       action: 'syncAll',
-      resiList: data,
-      notesList: typeof getTeamNotesFromStorage === 'function' ? getTeamNotesFromStorage() : [],
-      settings: { ADMIN_PASSWORD: getSuperAdminPass() }
+      resiList: localResi,
+      notesList: localNotes,
+      portalList: localPortals,
+      settings: { ADMIN_PASSWORD: (typeof getSuperAdminPass === 'function' ? getSuperAdminPass() : '') }
     };
-    // Menggunakan mode no-cors atau text/plain agar tidak memicu OPTIONS preflight yang diblokir Apps Script
+
     await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     });
-    if (showNotice) showToast('☁️', 'Perubahan berhasil disimpan ke Cloud!');
+
+    showToast('🚀', 'Sukses! Data berhasil diunggah ke Google Sheets.');
+    alert('🎉 Migrasi Berhasil!\n\nSebanyak:\n• ' + totalResi + ' data Resi\n• ' + totalNotes + ' Catatan Tim\n• ' + totalPortals + ' Portal Terpadu\n\nBerhasil tersimpan di Google Spreadsheet Anda!');
   } catch(err) {
-    console.warn('Push cloud data error:', err);
+    console.error('[GAS] Upload error:', err);
+    alert('⚠️ Gagal mengunggah data ke Google Sheets:\n' + err.message);
   }
+}
+
+function disconnectCloudSync() {
+  if (!confirm('Apakah Anda yakin ingin memutuskan koneksi Google Apps Script? Sistem akan kembali menggunakan penyimpanan lokal.')) return;
+  SafeStorage.removeItem('cloud_sync_url');
+  const input = document.getElementById('cloudSyncUrlInput');
+  if (input) input.value = '';
+  updateCloudSyncStatusUI(false);
+  showToast('ℹ️', 'Koneksi Google Apps Script diputuskan. Sistem beroperasi dalam mode penyimpanan lokal.');
+}
+
+function showGasScriptModal() {
+  const m = document.getElementById('gasScriptModal');
+  if (m) m.classList.remove('hidden');
+}
+
+function closeGasScriptModal() {
+  const m = document.getElementById('gasScriptModal');
+  if (m) m.classList.add('hidden');
+}
+
+function copyGasScript() {
+  const el = document.getElementById('gasScriptCodeBlock');
+  if (!el) return;
+  const code = el.textContent || el.innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btnText = document.getElementById('btnCopyGasScriptText');
+    if (btnText) btnText.textContent = '✅ Berhasil Disalin!';
+    showToast('📋', 'Skrip Code.gs berhasil disalin ke clipboard!');
+    setTimeout(() => {
+      if (btnText) btnText.textContent = 'Salin Seluruh Skrip Code.gs';
+    }, 2500);
+  }).catch(() => {
+    showToast('⚠️', 'Gagal menyalin otomatis, silakan salin secara manual.');
+  });
 }
 
 function saveDataLocally() {
   SafeStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-// Hook saveData agar otomatis push ke cloud jika cloud aktif
-const originalSaveData = typeof saveData === 'function' ? saveData : null;
 
 
 // ══════════════ MODUL DATABASE CLOUD SUPABASE (POSTGRESQL) ══════════════
