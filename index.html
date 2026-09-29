@@ -5311,7 +5311,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
           <div id="supabaseStatusBadge" style="margin-bottom:16px;font-size:12px;padding:9px 14px;border-radius:10px;background:var(--accent);color:var(--muted-foreground);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border:1px solid var(--border);">
             <div style="display:flex;align-items:center;gap:8px;">
               <span id="supabaseStatusDot" style="width:10px;height:10px;border-radius:50%;background:#94a3b8;display:inline-block;"></span>
-              <span id="supabaseStatusText" style="font-weight:600;">⚪ Mode Lokal Standalone (Supabase Belum Dikonfigurasi)</span>
+              <span id="supabaseStatusText" style="font-weight:600;">⚪ Nonaktif / Terputus (Sistem Menggunakan Database Google Apps Script)</span>
             </div>
             <span id="supabaseLatencyBadge" style="font-size:11.5px;color:#10b981;font-weight:700;display:none;"></span>
           </div>
@@ -5320,11 +5320,11 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
             <div>
               <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);margin-bottom:5px;">SUPABASE PROJECT URL</label>
-              <input type="url" id="supabaseUrlInput" value="https://zroypgtmflnhmqfvwpvc.supabase.co" placeholder="https://xyzproject.supabase.co" style="width:100%;padding:9px 12px;font-size:12.5px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);" />
+              <input type="url" id="supabaseUrlInput" placeholder="https://xyzproject.supabase.co" style="width:100%;padding:9px 12px;font-size:12.5px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);" />
             </div>
             <div>
               <label style="display:block;font-size:11px;font-weight:700;color:var(--muted-foreground);margin-bottom:5px;">SUPABASE ANON PUBLIC KEY (API Key)</label>
-              <input type="password" id="supabaseKeyInput" value="sb_publishable_ka3jW5xBuc-L5LMD6lLoVw_IOuKhl8S" placeholder="sb_publishable_..." style="width:100%;padding:9px 12px;font-size:12.5px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);" />
+              <input type="password" id="supabaseKeyInput" placeholder="sb_publishable_..." style="width:100%;padding:9px 12px;font-size:12.5px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);" />
             </div>
           </div>
 
@@ -12727,8 +12727,20 @@ function saveDataLocally() {
 // ══════════════ MODUL DATABASE CLOUD SUPABASE (POSTGRESQL) ══════════════
 const SUPABASE_URL_KEY = 'expedilog_supabase_url';
 const SUPABASE_ANON_KEY = 'expedilog_supabase_key';
-const DEFAULT_SUPABASE_URL = 'https://zroypgtmflnhmqfvwpvc.supabase.co';
-const DEFAULT_SUPABASE_KEY = 'sb_publishable_ka3jW5xBuc-L5LMD6lLoVw_IOuKhl8S';
+const SUPABASE_DISABLED_KEY = 'expedilog_supabase_disabled';
+const DEFAULT_SUPABASE_URL = '';
+const DEFAULT_SUPABASE_KEY = '';
+
+// Default: Nonaktifkan auto-connect Supabase agar beralih penuh ke Google Apps Script
+(function() {
+  try {
+    if (typeof SafeStorage !== 'undefined') {
+      SafeStorage.setItem(SUPABASE_DISABLED_KEY, 'true');
+      SafeStorage.removeItem(SUPABASE_URL_KEY);
+      SafeStorage.removeItem(SUPABASE_ANON_KEY);
+    }
+  } catch(e) {}
+})();
 window.supabaseClient = null;
 window.supabaseRealtimeChannel = null;
 let supabaseDebounceTimer = null;
@@ -12746,13 +12758,16 @@ function cleanSupabaseUrl(rawUrl) {
 }
 
 function getSupabaseConfig() {
-  let url = (SafeStorage.getItem(SUPABASE_URL_KEY) || DEFAULT_SUPABASE_URL || '').trim();
+  const isDisabled = SafeStorage.getItem(SUPABASE_DISABLED_KEY) === 'true';
+  let url = (SafeStorage.getItem(SUPABASE_URL_KEY) || '').trim();
   url = cleanSupabaseUrl(url);
-  const key = (SafeStorage.getItem(SUPABASE_ANON_KEY) || DEFAULT_SUPABASE_KEY || '').trim();
+  const key = (SafeStorage.getItem(SUPABASE_ANON_KEY) || '').trim();
+  const isConfigured = !isDisabled && Boolean(url && key);
   return {
     url,
     key,
-    isConfigured: Boolean(url && key)
+    isConfigured,
+    isDisabled
   };
 }
 
@@ -12789,14 +12804,30 @@ function updateSupabaseStatusUI(isConnected, latencyMs, errorMsg) {
   const badge = document.getElementById('supabaseStatusBadge');
   const latencyBadge = document.getElementById('supabaseLatencyBadge');
 
-  if (urlInput && (!urlInput.value || urlInput.value.includes('/rest/v1'))) urlInput.value = cfg.url || DEFAULT_SUPABASE_URL;
-  if (keyInput && !keyInput.value) keyInput.value = cfg.key || DEFAULT_SUPABASE_KEY;
+  if (urlInput && !cfg.isConfigured) urlInput.value = cfg.url || '';
+  if (keyInput && !cfg.isConfigured) keyInput.value = cfg.key || '';
+
+  if (cfg.isDisabled || !cfg.isConfigured) {
+    if (dot) dot.style.background = '#94a3b8';
+    if (text) {
+      text.textContent = '⚪ Nonaktif / Terputus (Sistem Menggunakan Database Google Apps Script)';
+      text.style.color = 'var(--muted-foreground)';
+      text.style.fontWeight = 'normal';
+    }
+    if (badge) {
+      badge.style.background = 'var(--accent)';
+      badge.style.borderColor = 'var(--border)';
+    }
+    if (latencyBadge) latencyBadge.style.display = 'none';
+    return;
+  }
 
   if (isConnected === true) {
     if (dot) dot.style.background = '#10b981';
     if (text) {
       text.textContent = '🟢 Terhubung ke Supabase Cloud (PostgreSQL Aktif)';
       text.style.color = '#10b981';
+      text.style.fontWeight = '600';
     }
     if (badge) {
       badge.style.background = 'rgba(16,185,129,0.1)';
@@ -12819,22 +12850,12 @@ function updateSupabaseStatusUI(isConnected, latencyMs, errorMsg) {
       badge.style.borderColor = 'rgba(239,68,68,0.3)';
     }
     if (latencyBadge) latencyBadge.style.display = 'none';
-  } else if (cfg.isConfigured) {
-    if (dot) dot.style.background = '#f59e0b';
-    if (text) {
-      text.textContent = '🟡 Menghubungkan ke Supabase Cloud...';
-      text.style.color = '#f59e0b';
-    }
-    if (badge) {
-      badge.style.background = 'rgba(245,158,11,0.08)';
-      badge.style.borderColor = 'rgba(245,158,11,0.3)';
-    }
-    if (latencyBadge) latencyBadge.style.display = 'none';
   } else {
     if (dot) dot.style.background = '#94a3b8';
     if (text) {
-      text.textContent = '⚪ Mode Lokal Standalone (Supabase Belum Dikonfigurasi)';
+      text.textContent = '⚪ Nonaktif / Terputus (Sistem Menggunakan Database Google Apps Script)';
       text.style.color = 'var(--muted-foreground)';
+      text.style.fontWeight = 'normal';
     }
     if (badge) {
       badge.style.background = 'var(--accent)';
@@ -13002,6 +13023,7 @@ function debouncedSupabaseUIRefresh() {
 }
 
 async function saveAndTestSupabase() {
+  SafeStorage.removeItem(SUPABASE_DISABLED_KEY);
   const urlEl = document.getElementById('supabaseUrlInput');
   const keyEl = document.getElementById('supabaseKeyInput');
 
@@ -13072,13 +13094,12 @@ async function saveAndTestSupabase() {
 }
 
 function disconnectSupabase() {
-  if (!confirm('Apakah Anda yakin ingin memutuskan koneksi Supabase? Sistem akan kembali menggunakan penyimpanan lokal.')) return;
-  
   if (window.supabaseRealtimeChannel) {
     try { window.supabaseRealtimeChannel.unsubscribe(); } catch(e) {}
     window.supabaseRealtimeChannel = null;
   }
   
+  SafeStorage.setItem(SUPABASE_DISABLED_KEY, 'true');
   SafeStorage.removeItem(SUPABASE_URL_KEY);
   SafeStorage.removeItem(SUPABASE_ANON_KEY);
   window.supabaseClient = null;
@@ -13089,7 +13110,7 @@ function disconnectSupabase() {
   if (keyInput) keyInput.value = '';
 
   updateSupabaseStatusUI(false);
-  showToast('ℹ️', 'Koneksi Supabase diputuskan. Sistem beroperasi dalam mode penyimpanan lokal.');
+  showToast('ℹ️', 'Koneksi Supabase dinonaktifkan. Sistem sepenuhnya menggunakan Database Google Apps Script.');
 }
 
 async function fetchDataFromSupabase(isManual = false) {
@@ -13386,6 +13407,8 @@ async function uploadLocalDataToSupabase() {
 }
 
 async function syncSingleToSupabase(resiItem) {
+  const cfg = typeof getSupabaseConfig === 'function' ? getSupabaseConfig() : null;
+  if (cfg && (cfg.isDisabled || !cfg.isConfigured)) return;
   if (!window.supabaseClient || !resiItem) return;
   try {
     const dbRow = mapResiToSupabase(resiItem);
@@ -13401,6 +13424,8 @@ async function syncSingleToSupabase(resiItem) {
 }
 
 async function deleteFromSupabase(idOrIds) {
+  const cfg = typeof getSupabaseConfig === 'function' ? getSupabaseConfig() : null;
+  if (cfg && (cfg.isDisabled || !cfg.isConfigured)) return;
   if (!window.supabaseClient || !idOrIds) return;
   try {
     if (Array.isArray(idOrIds)) {
@@ -13420,6 +13445,8 @@ async function deleteFromSupabase(idOrIds) {
 }
 
 function syncToSupabaseDebounced(delay = 1200) {
+  const cfg = typeof getSupabaseConfig === 'function' ? getSupabaseConfig() : null;
+  if (cfg && (cfg.isDisabled || !cfg.isConfigured)) return;
   if (!window.supabaseClient || !Array.isArray(data)) return;
   if (supabaseDebounceTimer) clearTimeout(supabaseDebounceTimer);
   supabaseDebounceTimer = setTimeout(async () => {
@@ -13743,7 +13770,7 @@ async function initSupabaseIntegration() {
   const cfg = getSupabaseConfig();
   updateSupabaseStatusUI();
 
-  if (!cfg.isConfigured) return;
+  if (cfg.isDisabled || !cfg.isConfigured) return;
 
   const client = initSupabaseClient();
   if (!client) return;
