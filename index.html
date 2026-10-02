@@ -388,11 +388,29 @@ body:not(.logged-in-user) #main {
   gap: 12px;
   margin-bottom: 18px;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 500;
 }
 .todo-toolbar-left {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative;
+  z-index: 510;
+}
+#todoBulkDropdown,
+#todoOrderDropdown {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  z-index: 10000 !important;
+}
+[data-theme="dark"] #todoBulkDropdown,
+[data-theme="dark"] #todoOrderDropdown {
+  background: rgba(10, 22, 40, 0.96) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 229, 255, 0.15) !important;
 }
 .todo-toolbar-right {
   display: flex;
@@ -5600,7 +5618,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
         <div style="display:flex;gap:10px;align-items:center;">
           <button type="button" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:6px;background:#4f46e5;border-color:#4f46e5;" onclick="openTodoModal()">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            <span>+ Tambah Tugas</span>
+            <span>Tambah Tugas</span>
           </button>
         </div>
       </div>
@@ -5609,7 +5627,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
       <div class="todo-toolbar">
         <div class="todo-toolbar-left">
           <!-- Master Select Box with Dropdown Options -->
-          <div style="position:relative;">
+          <div style="position:relative;z-index:520;">
             <button type="button" class="todo-select-all-box" onclick="toggleTodoSelectDropdown(event)" title="Pilihan Aksi Massal">
               <div id="todoMasterCheck" class="todo-checkbox" style="width:16px;height:16px;"></div>
               <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
@@ -5632,7 +5650,7 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
           </div>
 
           <!-- Order by dropdown -->
-          <div style="position:relative;">
+          <div style="position:relative;z-index:520;">
             <button type="button" class="todo-order-btn" onclick="toggleTodoOrderDropdown(event)">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
               <span id="todoCurrentOrderLabel">Order by</span>
