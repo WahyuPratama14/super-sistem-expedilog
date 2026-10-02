@@ -538,6 +538,28 @@ body:not(.logged-in-user) #main {
   transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 6px rgba(0,0,0,0.02);
   position: relative;
+  z-index: 1;
+}
+.todo-item-card.menu-open {
+  z-index: 9999 !important;
+}
+.todo-action-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 6px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 6px;
+  z-index: 10000 !important;
+  min-width: 175px;
+}
+[data-theme="dark"] .todo-action-dropdown {
+  background: rgba(10, 22, 40, 0.96) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 229, 255, 0.15) !important;
 }
 .todo-item-card:hover {
   box-shadow: 0 6px 16px rgba(0,0,0,0.05);
@@ -16804,6 +16826,7 @@ document.addEventListener('click', () => {
   if (b && !b.classList.contains('hidden')) b.classList.add('hidden');
   const o = document.getElementById('todoOrderDropdown');
   if (o && !o.classList.contains('hidden')) o.classList.add('hidden');
+  if (typeof closeAllTodoActionMenus === 'function') closeAllTodoActionMenus();
 });
 
 function toggleSelectAllTodos(forceVal) {
@@ -17047,7 +17070,7 @@ function renderTodoListPage() {
             <button type="button" class="todo-more-btn" onclick="openTodoItemActions('${t.id}', event)" title="Menu aksi">
               <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
             </button>
-            <div id="todoActionMenu-${t.id}" class="hidden" style="position:absolute;right:0;top:100%;margin-top:4px;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.12);padding:6px;z-index:90;min-width:160px;">
+            <div id="todoActionMenu-${t.id}" class="todo-action-dropdown hidden">
               ${t.isDeleted ? `
                 <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12px;padding:7px 10px;" onclick="handleRestoreTodoItem('${t.id}', event)">
                   <span>♻️ Pulihkan Tugas</span>
@@ -17078,14 +17101,35 @@ function renderTodoListPage() {
   }).join('');
 }
 
-function openTodoItemActions(id, e) {
-  if (e) e.stopPropagation();
-  // Close any open menus
+function closeAllTodoActionMenus() {
   document.querySelectorAll('[id^="todoActionMenu-"]').forEach(el => {
-    if (el.id !== 'todoActionMenu-' + id) el.classList.add('hidden');
+    el.classList.add('hidden');
   });
+  document.querySelectorAll('.todo-item-card').forEach(card => {
+    card.classList.remove('menu-open');
+    card.style.zIndex = '';
+  });
+}
+
+function openTodoItemActions(id, e) {
+  if (e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
   const menu = document.getElementById('todoActionMenu-' + id);
-  if (menu) menu.classList.toggle('hidden');
+  const parentCard = document.getElementById('todo-card-' + id);
+  const willOpen = menu && menu.classList.contains('hidden');
+
+  // Tutup semua menu lainnya terlebih dahulu
+  closeAllTodoActionMenus();
+
+  if (willOpen && menu) {
+    menu.classList.remove('hidden');
+    if (parentCard) {
+      parentCard.classList.add('menu-open');
+      parentCard.style.zIndex = '9999';
+    }
+  }
 }
 
 function openTodoModal(id = null, e = null) {
