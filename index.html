@@ -318,6 +318,419 @@ body:not(.logged-in-user) #main {
   border-color: rgba(239, 68, 68, 0.5) !important;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), 0 0 20px rgba(239, 68, 68, 0.2) !important;
 }
+
+/* ══════════════ PORTAL TERPADU CARD (LIGHT & DARK ENHANCED) ══════════════ */
+.portal-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.portal-card:hover {
+  transform: translateY(-3px);
+  border-color: #10b981;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.09), 0 4px 12px rgba(16, 185, 129, 0.12);
+}
+.portal-card-tag {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  font-weight: 700;
+}
+.portal-card-action-btn {
+  background: #ffffff;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+.portal-card-action-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+.portal-card-action-btn-danger:hover {
+  background: #fee2e2 !important;
+  color: #ef4444 !important;
+  border-color: #fca5a5 !important;
+}
+.portal-card-open-btn {
+  background: #f8fafc;
+  color: #0f172a;
+  border: 1.5px solid #cbd5e1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  font-weight: 700;
+}
+.portal-card-open-btn:hover {
+  background: #10b981;
+  color: #ffffff;
+  border-color: #10b981;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+}
+
+/* ══════════════ TODO LIST STYLES (MATCHING USER REFERENCE) ══════════════ */
+.todo-layout-container {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 22px;
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .todo-layout-container {
+    grid-template-columns: 1fr;
+  }
+}
+.todo-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.todo-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.todo-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  justify-content: flex-end;
+}
+.todo-select-all-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  font-size: 13px;
+  color: var(--foreground);
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.todo-select-all-box:hover {
+  border-color: #cbd5e1;
+}
+.todo-order-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  transition: all 0.15s ease;
+}
+.todo-order-btn:hover {
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+.todo-search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+}
+.todo-search-input {
+  width: 100%;
+  padding: 8px 36px 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: var(--foreground);
+  font-size: 13px;
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  transition: all 0.2s;
+}
+.todo-search-input:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+.todo-search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+/* Sidebar filter card */
+.todo-sidebar-card {
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 18px;
+  padding: 14px 10px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.todo-filter-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.18s ease;
+  user-select: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+}
+.todo-filter-item:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+.todo-filter-item.active {
+  background: #ede9fe;
+  color: #4f46e5;
+  font-weight: 700;
+}
+.todo-filter-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.todo-badge-counter {
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 11.5px;
+  font-weight: 800;
+  background: #4f46e5;
+  color: #ffffff;
+  min-width: 22px;
+  text-align: center;
+}
+.todo-badge-counter.muted {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+/* Todo list items */
+.todo-item-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 18px;
+  margin-bottom: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  position: relative;
+}
+.todo-item-card:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  transform: translateY(-1px);
+}
+.todo-item-card.border-purple {
+  border-color: #8b5cf6 !important;
+}
+.todo-item-card.border-emerald {
+  border-color: #10b981 !important;
+}
+.todo-item-card.border-sky {
+  border-color: #0284c7 !important;
+}
+.todo-item-card.border-orange {
+  border-color: #f97316 !important;
+}
+
+.todo-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.todo-drag-handle {
+  color: #94a3b8;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  font-size: 16px;
+  letter-spacing: -1px;
+}
+.todo-checkbox {
+  width: 19px;
+  height: 19px;
+  border-radius: 5px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+.todo-checkbox.checked {
+  background: #4f46e5;
+  border-color: #4f46e5;
+}
+.todo-star-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+  font-size: 17px;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+.todo-star-btn.active {
+  color: #f59e0b;
+}
+.todo-star-btn:hover {
+  transform: scale(1.15);
+}
+.todo-item-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+.todo-item-title.done {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.todo-item-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.todo-category-badge {
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+.todo-cat-social { background: #ef4444; }
+.todo-cat-theme { background: #f59e0b; }
+.todo-cat-friends { background: #0284c7; }
+.todo-cat-freelance { background: #059669; }
+.todo-cat-coding { background: #7c3aed; }
+.todo-cat-operasional { background: #0ea5e9; }
+.todo-cat-default { background: #64748b; }
+
+.todo-avatar-group {
+  display: flex;
+  align-items: center;
+}
+.todo-avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-left: -7px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  user-select: none;
+}
+.todo-avatar:first-child {
+  margin-left: 0;
+}
+.todo-more-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 4px 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.todo-more-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+/* Dark mode glassy enhancements for Todo List */
+[data-theme="dark"] .todo-select-all-box,
+[data-theme="dark"] .todo-order-btn,
+[data-theme="dark"] .todo-search-input,
+[data-theme="dark"] .todo-sidebar-card,
+[data-theme="dark"] .todo-item-card {
+  background: rgba(10, 22, 40, 0.72) !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
+  color: #f1f5f9 !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+[data-theme="dark"] .todo-item-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 229, 255, 0.15) !important;
+}
+[data-theme="dark"] .todo-item-title {
+  color: #f8fafc !important;
+}
+[data-theme="dark"] .todo-item-title.done {
+  color: #64748b !important;
+}
+[data-theme="dark"] .todo-filter-item {
+  color: #94a3b8 !important;
+}
+[data-theme="dark"] .todo-filter-item:hover {
+  background: rgba(56, 189, 248, 0.1) !important;
+  color: #f8fafc !important;
+}
+[data-theme="dark"] .todo-filter-item.active {
+  background: rgba(99, 102, 241, 0.25) !important;
+  color: #818cf8 !important;
+}
+[data-theme="dark"] .todo-avatar {
+  border-color: #060b14 !important;
+}
+[data-theme="dark"] .todo-checkbox {
+  background: rgba(15, 29, 54, 0.8) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+}
+[data-theme="dark"] .todo-checkbox.checked {
+  background: #6366f1 !important;
+  border-color: #6366f1 !important;
+}
+
 </style>
 
 
@@ -4257,6 +4670,15 @@ button:hover,
       <span class="nav-text">Portal Terpadu</span>
     </button>
 
+    <!-- 9. Todo list -->
+    <button class="nav-item" onclick="showPage('todolist',this)" title="Todo list">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+        <path d="M9 11l3 3L22 4"/>
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+      <span class="nav-text">Todo list</span>
+    </button>
+
     <!-- DIVIDER -->
     <div class="sidebar-divider"></div>
 
@@ -5139,6 +5561,145 @@ Sebelumnya paket kakak sudah diantarkan oleh kurir kami namun gagal, tolong diba
         <!-- Populated by renderPortalPage() -->
       </div>
     </div><!-- /page-portal -->
+
+    <!-- ══ PAGE: TODO LIST (SESUAI REFERENSI UI) ══ -->
+    <div id="page-todolist" class="page">
+      <div class="page-header-card">
+        <div>
+          <div class="panel-title" style="font-size:18px;display:flex;align-items:center;gap:8px;">
+            <svg width="20" height="20" fill="none" stroke="#6366f1" stroke-width="2.2" viewBox="0 0 24 24">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+            <span>Todo List & Manajemen Tugas</span>
+          </div>
+          <div class="panel-sub" id="todoSubHeader">Kelola tugas tim, penugasan operasional, dan tindak lanjut harian</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button type="button" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:6px;background:#4f46e5;border-color:#4f46e5;" onclick="openTodoModal()">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>+ Tambah Tugas</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Todo Toolbar (Matching Screenshot Top Bar) -->
+      <div class="todo-toolbar">
+        <div class="todo-toolbar-left">
+          <!-- Master Select Box with Dropdown Options -->
+          <div style="position:relative;">
+            <button type="button" class="todo-select-all-box" onclick="toggleTodoSelectDropdown(event)" title="Pilihan Aksi Massal">
+              <div id="todoMasterCheck" class="todo-checkbox" style="width:16px;height:16px;"></div>
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div id="todoBulkDropdown" class="hidden" style="position:absolute;top:100%;left:0;margin-top:6px;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.12);padding:6px;z-index:100;min-width:180px;">
+              <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12.5px;padding:7px 12px;" onclick="toggleSelectAllTodos(true); toggleTodoSelectDropdown(event);">
+                <span>✓ Pilih Semua</span>
+              </button>
+              <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12.5px;padding:7px 12px;" onclick="toggleSelectAllTodos(false); toggleTodoSelectDropdown(event);">
+                <span>✕ Batal Pilih</span>
+              </button>
+              <div style="height:1px;background:var(--border);margin:4px 0;"></div>
+              <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12.5px;padding:7px 12px;color:#10b981;" onclick="handleBulkTodoAction('done'); toggleTodoSelectDropdown(event);">
+                <span>✅ Tandai Selesai</span>
+              </button>
+              <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12.5px;padding:7px 12px;color:#ef4444;" onclick="handleBulkTodoAction('delete'); toggleTodoSelectDropdown(event);">
+                <span>🗑️ Hapus Terpilih</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Order by dropdown -->
+          <div style="position:relative;">
+            <button type="button" class="todo-order-btn" onclick="toggleTodoOrderDropdown(event)">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              <span id="todoCurrentOrderLabel">Order by</span>
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div id="todoOrderDropdown" class="hidden" style="position:absolute;top:100%;left:0;margin-top:6px;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.12);padding:6px;z-index:100;min-width:170px;">
+              <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12.5px;padding:7px 12px;" onclick="setTodoOrder('default'); toggleTodoOrderDropdown(event);">Urutan Asli</button>
+              <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12.5px;padding:7px 12px;" onclick="setTodoOrder('newest'); toggleTodoOrderDropdown(event);">Terbaru</button>
+              <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12.5px;padding:7px 12px;" onclick="setTodoOrder('favorites'); toggleTodoOrderDropdown(event);">Favorit Teratas</button>
+              <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12.5px;padding:7px 12px;" onclick="setTodoOrder('category'); toggleTodoOrderDropdown(event);">Kategori</button>
+              <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12.5px;padding:7px 12px;" onclick="setTodoOrder('title'); toggleTodoOrderDropdown(event);">Nama (A-Z)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="todo-toolbar-right">
+          <!-- Search input -->
+          <div class="todo-search-wrapper">
+            <input type="text" id="todoSearchInput" class="todo-search-input" placeholder="Search todo list" oninput="handleTodoSearch(this.value)"/>
+            <svg class="todo-search-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Layout: 2 Columns (Cards Left, Navigation Widget Right) -->
+      <div class="todo-layout-container">
+        <!-- Kolom Kiri: Daftar Kartu Todo -->
+        <div id="todoCardsContainer">
+          <!-- Rendered by renderTodoListPage() -->
+        </div>
+
+        <!-- Kolom Kanan: Sidebar Kategori / Status (Sesuai Screenshot Referensi) -->
+        <div>
+          <div class="todo-sidebar-card">
+            <!-- All -->
+            <button type="button" class="todo-filter-item active" id="todoFilterBtn-all" onclick="setTodoFilter('all')">
+              <div class="todo-filter-item-left">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                <span>All</span>
+              </div>
+              <span class="todo-badge-counter" id="todoCountBadge-all">0</span>
+            </button>
+
+            <!-- My Task -->
+            <button type="button" class="todo-filter-item" id="todoFilterBtn-mytask" onclick="setTodoFilter('mytask')">
+              <div class="todo-filter-item-left">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <span>My Task</span>
+              </div>
+              <span class="todo-badge-counter muted" id="todoCountBadge-mytask" style="display:none;">0</span>
+            </button>
+
+            <!-- Favorites -->
+            <button type="button" class="todo-filter-item" id="todoFilterBtn-favorites" onclick="setTodoFilter('favorites')">
+              <div class="todo-filter-item-left">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span>Favorites</span>
+              </div>
+              <span class="todo-badge-counter muted" id="todoCountBadge-favorites" style="display:none;">0</span>
+            </button>
+
+            <!-- Done -->
+            <button type="button" class="todo-filter-item" id="todoFilterBtn-done" onclick="setTodoFilter('done')">
+              <div class="todo-filter-item-left">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <span>Done</span>
+              </div>
+              <span class="todo-badge-counter" id="todoCountBadge-done">0</span>
+            </button>
+
+            <!-- Deleted -->
+            <button type="button" class="todo-filter-item" id="todoFilterBtn-deleted" onclick="setTodoFilter('deleted')">
+              <div class="todo-filter-item-left">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span>Deleted</span>
+              </div>
+              <span class="todo-badge-counter muted" id="todoCountBadge-deleted" style="display:none;">0</span>
+            </button>
+          </div>
+
+          <!-- Extra action for Deleted tab -->
+          <div id="todoEmptyTrashContainer" style="display:none;margin-top:12px;text-align:center;">
+            <button type="button" class="btn btn-outline btn-sm" style="color:#ef4444;border-color:#fca5a5;width:100%;" onclick="handleEmptyTodoTrash()">
+              🗑️ Kosongkan Sampah
+            </button>
+          </div>
+        </div>
+      </div>
+    </div><!-- /page-todolist -->
 
     <!-- ══ PAGE: PENGATURAN DATA ══ -->
     <div id="page-pengaturan" class="page">
@@ -6659,6 +7220,83 @@ function getHtmlStatusPage() {
   </div>
 </div>
 
+<!-- ══════════════ MODAL TODO ITEM (TAMBAH / EDIT TUGAS) ══════════════ -->
+<div id="todoItemModal" class="modal-overlay hidden" onclick="if(event.target===this) closeTodoModal()">
+  <div class="modal-box" style="max-width:540px;border-radius:18px;overflow:hidden;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.15);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(99,102,241,0.12);display:flex;align-items:center;justify-content:center;color:#4f46e5;flex-shrink:0;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:800;color:var(--foreground);" id="todoModalTitle">Tambah Tugas Baru</div>
+          <div style="font-size:11.5px;color:var(--muted-foreground);">Kelola deskripsi tugas, kategori, dan penanggung jawab</div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost" onclick="closeTodoModal()" style="width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:18px;">&times;</button>
+    </div>
+    <form id="todoForm" onsubmit="handleSaveTodoItem(event)">
+      <input type="hidden" id="todoEditId" value="" />
+      <div style="display:flex;flex-direction:column;gap:16px;padding:22px 24px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--foreground);">Judul / Nama Tugas <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="todoTitleInput" placeholder="Contoh: Fix Responsiveness / Verifikasi SLA Kurir" required style="width:100%;font-weight:600;padding:11px 14px;border-radius:12px;border:1px solid var(--border);color:var(--foreground);font-size:13.5px;outline:none;transition:all .2s;"/>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--foreground);">Kategori <span style="color:#ef4444;">*</span></label>
+            <input type="text" id="todoCategoryInput" list="todoCategoryDataList" placeholder="Pilih / ketik kategori..." required style="width:100%;font-weight:600;padding:10px 14px;border-radius:12px;border:1px solid var(--border);color:var(--foreground);font-size:13px;outline:none;transition:all .2s;"/>
+            <datalist id="todoCategoryDataList">
+              <option value="Social"/>
+              <option value="Theme Support"/>
+              <option value="Friends"/>
+              <option value="Freelance"/>
+              <option value="Coding"/>
+              <option value="Operasional"/>
+              <option value="Logistik"/>
+            </datalist>
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--foreground);">Warna Border Aksen</label>
+            <select id="todoAccentBorderInput" style="width:100%;font-weight:600;padding:10px 14px;border-radius:12px;border:1px solid var(--border);color:var(--foreground);font-size:13px;outline:none;cursor:pointer;transition:all .2s;">
+              <option value="default">Standar (Abu-abu)</option>
+              <option value="purple">Ungu Violet (Pill Ungu)</option>
+              <option value="emerald">Hijau Emerald (Toska)</option>
+              <option value="sky">Biru Sky</option>
+              <option value="orange">Oranye Amber</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--foreground);">Penanggung Jawab / Assignee</label>
+          <input type="text" id="todoAssigneesInput" placeholder="Contoh: Pratama, Gani, Budi (pisahkan dengan koma)" style="width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--border);color:var(--foreground);font-size:13px;outline:none;transition:all .2s;"/>
+          <div style="font-size:11px;color:var(--muted-foreground);margin-top:4px;">Nama akan dikonversi menjadi inisial avatar bertumpuk seperti di referensi.</div>
+        </div>
+        <div style="display:flex;gap:20px;align-items:center;background:var(--accent);padding:12px 16px;border-radius:12px;border:1px solid var(--border);">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;cursor:pointer;user-select:none;">
+            <input type="checkbox" id="todoFavInput" style="width:16px;height:16px;accent-color:#f59e0b;cursor:pointer;"/>
+            <span>⭐ Tandai sebagai Favorit</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;cursor:pointer;user-select:none;">
+            <input type="checkbox" id="todoDoneInput" style="width:16px;height:16px;accent-color:#4f46e5;cursor:pointer;"/>
+            <span>✅ Status Selesai (Done)</span>
+          </label>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--border);background:var(--accent);">
+        <button type="button" id="btnDeleteCurrentTodo" class="btn btn-danger btn-sm" style="display:none;" onclick="handleDeleteCurrentTodo()">
+          Hapus Tugas
+        </button>
+        <div style="display:flex;gap:10px;margin-left:auto;">
+          <button type="button" class="btn btn-outline" onclick="closeTodoModal()">Batal</button>
+          <button type="submit" class="btn btn-primary" style="background:#4f46e5;border-color:#4f46e5;">Simpan Tugas</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
 <!-- ══════════════ MODAL HAPUS SISTEM PORTAL ══════════════ -->
 <div id="deletePortalModal" class="modal-overlay hidden" onclick="if(event.target===this) closeDeletePortalModal()">
   <div class="modal-box" style="max-width:400px;text-align:center;padding:28px 24px;border-radius:18px;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.15);">
@@ -7299,6 +7937,7 @@ function showPage(id, btn) {
       else if (id === 'blast') renderBlastPage();
       else if (id === 'notepad') loadTeamNotes();
       else if (id === 'portal') renderPortalPage();
+      else if (id === 'todolist') renderTodoListPage();
       else if (id === 'filemanager') renderFileManager();
       else if (id === 'pengaturan') renderSettingsPage();
     } catch(renderErr) {
@@ -7319,6 +7958,7 @@ function updateTopbarSearchPlaceholder(pageId) {
     'client': 'Cari nama client, telepon, alamat...',
     'notepad': 'Cari catatan tim, topik, atau penulis...',
     'portal': 'Cari nama sistem atau URL portal...',
+    'todolist': 'Cari tugas, kategori, atau penanggung jawab di Todo list...',
     'filemanager': 'Cari berkas di Cloud Drive (nama, uploader, tipe)...',
     'blast': 'Cari kontak WA...',
     'analisis': 'Cari data analitik...',
@@ -7351,6 +7991,8 @@ function handleGlobalSearch(val) {
     renderNotes();
   } else if (pageId === 'portal') {
     renderPortalPage();
+  } else if (pageId === 'todolist') {
+    renderTodoListPage();
   } else if (pageId === 'filemanager') {
     renderFileManager();
   }
@@ -15594,7 +16236,7 @@ function handleLoginSubmit(e) {
     // 3. Render target page cleanly
     try {
       const hashPage = window.location.hash ? window.location.hash.replace('#', '') : null;
-      const validPages = ['dashboard', 'daftar', 'outstanding', 'client', 'blast', 'notepad', 'portal', 'filemanager', 'pengaturan'];
+      const validPages = ['dashboard', 'daftar', 'outstanding', 'client', 'blast', 'notepad', 'portal', 'todolist', 'filemanager', 'pengaturan'];
       let targetPage = hashPage || SafeStorage.getItem('ekspedisi_active_page') || 'dashboard';
       if (!validPages.includes(targetPage)) targetPage = 'dashboard';
       showPage(targetPage);
@@ -15763,7 +16405,7 @@ function checkLoginSession() {
     }
 
     const hashPage = window.location.hash ? window.location.hash.replace('#', '') : null;
-    const validPages = ['dashboard', 'daftar', 'outstanding', 'client', 'blast', 'notepad', 'portal', 'filemanager', 'pengaturan'];
+    const validPages = ['dashboard', 'daftar', 'outstanding', 'client', 'blast', 'notepad', 'portal', 'todolist', 'filemanager', 'pengaturan'];
     let targetPage = hashPage || SafeStorage.getItem('ekspedisi_active_page') || 'dashboard';
     if (!validPages.includes(targetPage)) {
       targetPage = 'dashboard';
@@ -15907,6 +16549,684 @@ if (typeof getCloudSyncUrl === 'function' && getCloudSyncUrl()) {
     };
   } catch(e) {}
 })();
+
+
+
+// ══════════════════════════════════════════════════════════════
+// ══════════════ MODUL TODO LIST (SESUAI REFERENSI UI) ═════════
+// ══════════════════════════════════════════════════════════════
+const STORAGE_KEY_TODOS = 'expedilog_todos';
+let selectedTodoFilter = 'all'; // 'all', 'mytask', 'favorites', 'done', 'deleted'
+let currentTodoOrder = 'default'; // 'default', 'newest', 'favorites', 'category', 'title'
+let selectedTodoIds = new Set();
+let todoSearchQuery = '';
+
+// Seed data awal persis sesuai dengan screenshot referensi pengguna
+const INITIAL_TODO_SEED_DATA = [
+  {
+    id: 'td-101',
+    title: 'How To Protect Your Computer Very Useful...',
+    category: 'Social',
+    accentBorder: 'purple',
+    assignees: [
+      { name: 'Dewi', avatar: 'D', color: '#ec4899' },
+      { name: 'Budi', avatar: 'B', color: '#8b5cf6' }
+    ],
+    isDone: true,
+    isFav: false,
+    isDeleted: false,
+    createdAt: Date.now() - 1000 * 60 * 60 * 24 * 5
+  },
+  {
+    id: 'td-102',
+    title: 'How Hypnosis Can Help You',
+    category: 'Theme Support',
+    accentBorder: 'emerald',
+    assignees: [
+      { name: 'Agus', avatar: 'A', color: '#f59e0b' },
+      { name: 'Citra', avatar: 'C', color: '#10b981' }
+    ],
+    isDone: false,
+    isFav: true,
+    isDeleted: false,
+    createdAt: Date.now() - 1000 * 60 * 60 * 24 * 4
+  },
+  {
+    id: 'td-103',
+    title: 'Dealing With Technical Support 10...',
+    category: 'Friends',
+    accentBorder: 'emerald',
+    assignees: [
+      { name: 'Rudi', avatar: 'R', color: '#3b82f6' },
+      { name: 'Gani', avatar: 'G', color: '#06b6d4' }
+    ],
+    isDone: false,
+    isFav: false,
+    isDeleted: false,
+    createdAt: Date.now() - 1000 * 60 * 60 * 24 * 3
+  },
+  {
+    id: 'td-104',
+    title: 'Get The Boot A Birds Eye Look Into Mcse Boot Ca...',
+    category: 'Social',
+    accentBorder: 'purple',
+    assignees: [
+      { name: 'Gani', avatar: 'G', color: '#10b981' },
+      { name: 'Maya', avatar: 'M', color: '#6366f1' }
+    ],
+    isDone: true,
+    isFav: true,
+    isDeleted: false,
+    createdAt: Date.now() - 1000 * 60 * 60 * 24 * 2
+  },
+  {
+    id: 'td-105',
+    title: 'Buying Used Electronic Test Equipment.',
+    category: 'Freelance',
+    accentBorder: 'default',
+    assignees: [
+      { name: 'Rian', avatar: 'R', color: '#6366f1' },
+      { name: 'Fitri', avatar: 'F', color: '#06b6d4' }
+    ],
+    isDone: false,
+    isFav: true,
+    isDeleted: false,
+    createdAt: Date.now() - 1000 * 60 * 60 * 24
+  },
+  {
+    id: 'td-106',
+    title: 'Fix Responsiveness',
+    category: 'Theme Support',
+    accentBorder: 'emerald',
+    assignees: [
+      { name: 'Gani', avatar: 'G', color: '#f59e0b' },
+      { name: 'Pratama', avatar: 'P', color: '#0284c7' }
+    ],
+    isDone: false,
+    isFav: true,
+    isDeleted: false,
+    createdAt: Date.now() - 1000 * 60 * 60 * 12
+  },
+  {
+    id: 'td-107',
+    title: 'Hypnotherapy For Motivation Getting The Drive Back',
+    category: 'Coding',
+    accentBorder: 'default',
+    assignees: [
+      { name: 'Adi', avatar: 'A', color: '#1e293b' }
+    ],
+    isDone: false,
+    isFav: true,
+    isDeleted: false,
+    createdAt: Date.now() - 1000 * 60 * 60 * 8
+  },
+  {
+    id: 'td-108',
+    title: 'Are You Struggling In Life',
+    category: 'Theme Support',
+    accentBorder: 'default',
+    assignees: [
+      { name: 'Pratama', avatar: 'P', color: '#6366f1' }
+    ],
+    isDone: false,
+    isFav: false,
+    isDeleted: false,
+    createdAt: Date.now() - 1000 * 60 * 60 * 5
+  },
+  {
+    id: 'td-109',
+    title: 'Believing Is The Absence Of Doubt',
+    category: 'Freelance',
+    accentBorder: 'default',
+    assignees: [
+      { name: 'Tita', avatar: 'T', color: '#0f766e' },
+      { name: 'Nina', avatar: 'N', color: '#be185d' }
+    ],
+    isDone: false,
+    isFav: false,
+    isDeleted: false,
+    createdAt: Date.now() - 1000 * 60 * 60 * 2
+  },
+  {
+    id: 'td-110',
+    title: 'Success Steps For Your Personal Or Business Life',
+    category: 'Social',
+    accentBorder: 'default',
+    assignees: [
+      { name: 'Pratama', avatar: 'P', color: '#a855f7' }
+    ],
+    isDone: false,
+    isFav: true,
+    isDeleted: false,
+    createdAt: Date.now() - 1000 * 60 * 30
+  }
+];
+
+function getTodoList() {
+  try {
+    const raw = SafeStorage.getItem(STORAGE_KEY_TODOS);
+    if (!raw) {
+      SafeStorage.setItem(STORAGE_KEY_TODOS, JSON.stringify(INITIAL_TODO_SEED_DATA));
+      return INITIAL_TODO_SEED_DATA;
+    }
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : INITIAL_TODO_SEED_DATA;
+  } catch(e) {
+    return INITIAL_TODO_SEED_DATA;
+  }
+}
+
+function saveTodoList(todos) {
+  try {
+    SafeStorage.setItem(STORAGE_KEY_TODOS, JSON.stringify(todos));
+  } catch(e) {}
+}
+
+function getTodoCategoryClass(cat) {
+  if (!cat) return 'todo-cat-default';
+  const c = cat.toLowerCase();
+  if (c.includes('social')) return 'todo-cat-social';
+  if (c.includes('theme') || c.includes('support')) return 'todo-cat-theme';
+  if (c.includes('friend')) return 'todo-cat-friends';
+  if (c.includes('free') || c.includes('lance')) return 'todo-cat-freelance';
+  if (c.includes('code') || c.includes('coding') || c.includes('dev')) return 'todo-cat-coding';
+  if (c.includes('operasional') || c.includes('ops')) return 'todo-cat-operasional';
+  return 'todo-cat-default';
+}
+
+function parseAssigneesFromString(str) {
+  if (!str || !str.trim()) return [];
+  const colors = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#0284c7', '#8b5cf6', '#059669', '#ef4444'];
+  return str.split(',').map((s, idx) => {
+    const name = s.trim();
+    const avatar = name ? name.charAt(0).toUpperCase() : '?';
+    return {
+      name,
+      avatar,
+      color: colors[idx % colors.length]
+    };
+  }).filter(a => a.name);
+}
+
+function setTodoFilter(filter) {
+  selectedTodoFilter = filter;
+  ['all', 'mytask', 'favorites', 'done', 'deleted'].forEach(f => {
+    const btn = document.getElementById('todoFilterBtn-' + f);
+    if (btn) {
+      if (f === filter) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+  });
+
+  const trashContainer = document.getElementById('todoEmptyTrashContainer');
+  if (trashContainer) {
+    trashContainer.style.display = filter === 'deleted' ? 'block' : 'none';
+  }
+
+  renderTodoListPage();
+}
+
+function setTodoOrder(orderKey) {
+  currentTodoOrder = orderKey;
+  const labelEl = document.getElementById('todoCurrentOrderLabel');
+  if (labelEl) {
+    const labels = {
+      'default': 'Order by',
+      'newest': 'Order: Terbaru',
+      'favorites': 'Order: Favorit',
+      'category': 'Order: Kategori',
+      'title': 'Order: A - Z'
+    };
+    labelEl.textContent = labels[orderKey] || 'Order by';
+  }
+  renderTodoListPage();
+}
+
+function handleTodoSearch(val) {
+  todoSearchQuery = (val || '').toLowerCase().trim();
+  renderTodoListPage();
+}
+
+function toggleTodoSelectDropdown(e) {
+  if (e) e.stopPropagation();
+  const d = document.getElementById('todoBulkDropdown');
+  if (d) d.classList.toggle('hidden');
+}
+
+function toggleTodoOrderDropdown(e) {
+  if (e) e.stopPropagation();
+  const d = document.getElementById('todoOrderDropdown');
+  if (d) d.classList.toggle('hidden');
+}
+
+document.addEventListener('click', () => {
+  const b = document.getElementById('todoBulkDropdown');
+  if (b && !b.classList.contains('hidden')) b.classList.add('hidden');
+  const o = document.getElementById('todoOrderDropdown');
+  if (o && !o.classList.contains('hidden')) o.classList.add('hidden');
+});
+
+function toggleSelectAllTodos(forceVal) {
+  const todos = getTodoList();
+  const activeTodos = todos.filter(t => selectedTodoFilter === 'deleted' ? t.isDeleted : !t.isDeleted);
+  
+  if (typeof forceVal === 'boolean') {
+    if (forceVal) {
+      activeTodos.forEach(t => selectedTodoIds.add(t.id));
+    } else {
+      selectedTodoIds.clear();
+    }
+  } else {
+    if (selectedTodoIds.size >= activeTodos.length) {
+      selectedTodoIds.clear();
+    } else {
+      activeTodos.forEach(t => selectedTodoIds.add(t.id));
+    }
+  }
+  updateMasterCheckUI();
+  renderTodoListPage();
+}
+
+function toggleTodoSelect(id, e) {
+  if (e) e.stopPropagation();
+  if (selectedTodoIds.has(id)) {
+    selectedTodoIds.delete(id);
+  } else {
+    selectedTodoIds.add(id);
+  }
+  updateMasterCheckUI();
+  renderTodoListPage();
+}
+
+function updateMasterCheckUI() {
+  const master = document.getElementById('todoMasterCheck');
+  if (!master) return;
+  const todos = getTodoList();
+  const activeTodos = todos.filter(t => selectedTodoFilter === 'deleted' ? t.isDeleted : !t.isDeleted);
+  if (activeTodos.length > 0 && selectedTodoIds.size >= activeTodos.length) {
+    master.classList.add('checked');
+    master.innerHTML = '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>';
+  } else {
+    master.classList.remove('checked');
+    master.innerHTML = '';
+  }
+}
+
+function toggleTodoDone(id, e) {
+  if (e) e.stopPropagation();
+  const todos = getTodoList();
+  const item = todos.find(t => t.id === id);
+  if (!item) return;
+  item.isDone = !item.isDone;
+  saveTodoList(todos);
+  renderTodoListPage();
+  showToast(item.isDone ? '✅' : 'ℹ️', item.isDone ? 'Tugas ditandai selesai' : 'Status tugas dikembalikan ke aktif');
+}
+
+function toggleTodoFav(id, e) {
+  if (e) e.stopPropagation();
+  const todos = getTodoList();
+  const item = todos.find(t => t.id === id);
+  if (!item) return;
+  item.isFav = !item.isFav;
+  saveTodoList(todos);
+  renderTodoListPage();
+  showToast(item.isFav ? '⭐' : 'ℹ️', item.isFav ? 'Ditambahkan ke Favorit' : 'Dihapus dari Favorit');
+}
+
+function handleBulkTodoAction(action) {
+  if (!selectedTodoIds.size) {
+    alert('Pilih minimal satu tugas terlebih dahulu.');
+    return;
+  }
+  const todos = getTodoList();
+  let count = 0;
+  todos.forEach(t => {
+    if (selectedTodoIds.has(t.id)) {
+      if (action === 'done') {
+        t.isDone = true;
+        count++;
+      } else if (action === 'delete') {
+        t.isDeleted = true;
+        count++;
+      }
+    }
+  });
+  selectedTodoIds.clear();
+  saveTodoList(todos);
+  updateMasterCheckUI();
+  renderTodoListPage();
+  showToast('✅', `Berhasil memperbarui ${count} tugas terpilih.`);
+}
+
+function handleEmptyTodoTrash() {
+  if (!confirm('Apakah Anda yakin ingin mengosongkan seluruh tugas di kotak sampah secara permanen?')) return;
+  let todos = getTodoList();
+  todos = todos.filter(t => !t.isDeleted);
+  saveTodoList(todos);
+  selectedTodoIds.clear();
+  renderTodoListPage();
+  showToast('🗑️', 'Kotak sampah berhasil dikosongkan.');
+}
+
+function renderTodoListPage() {
+  const todos = getTodoList();
+
+  // Update counts
+  const totalActive = todos.filter(t => !t.isDeleted).length;
+  const totalFav = todos.filter(t => !t.isDeleted && t.isFav).length;
+  const totalDone = todos.filter(t => !t.isDeleted && t.isDone).length;
+  const totalDeleted = todos.filter(t => t.isDeleted).length;
+
+  const bAll = document.getElementById('todoCountBadge-all');
+  if (bAll) bAll.textContent = totalActive;
+
+  const bDone = document.getElementById('todoCountBadge-done');
+  if (bDone) bDone.textContent = totalDone;
+
+  const bFav = document.getElementById('todoCountBadge-favorites');
+  if (bFav) {
+    bFav.textContent = totalFav;
+    bFav.style.display = totalFav > 0 ? 'inline-block' : 'none';
+  }
+
+  const bDel = document.getElementById('todoCountBadge-deleted');
+  if (bDel) {
+    bDel.textContent = totalDeleted;
+    bDel.style.display = totalDeleted > 0 ? 'inline-block' : 'none';
+  }
+
+  const subHeader = document.getElementById('todoSubHeader');
+  if (subHeader) {
+    subHeader.textContent = `Menampilkan ${totalActive} tugas aktif (${totalDone} selesai, ${totalFav} favorit)`;
+  }
+
+  // Filter
+  let filtered = todos.filter(t => {
+    if (selectedTodoFilter === 'deleted') return t.isDeleted;
+    if (t.isDeleted) return false;
+
+    if (selectedTodoFilter === 'done') return t.isDone;
+    if (selectedTodoFilter === 'favorites') return t.isFav;
+    if (selectedTodoFilter === 'mytask') {
+      // My task: yang ditugaskan ke Pratama / Admin atau yang dibuat sendiri
+      const hasMyName = Array.isArray(t.assignees) && t.assignees.some(a => a.name.toLowerCase().includes('pratama') || a.name.toLowerCase().includes('admin'));
+      return hasMyName || t.isFav;
+    }
+    return true; // 'all'
+  });
+
+  // Search filter
+  if (todoSearchQuery) {
+    filtered = filtered.filter(t => {
+      const matchTitle = (t.title || '').toLowerCase().includes(todoSearchQuery);
+      const matchCat = (t.category || '').toLowerCase().includes(todoSearchQuery);
+      const matchAssign = Array.isArray(t.assignees) && t.assignees.some(a => a.name.toLowerCase().includes(todoSearchQuery));
+      return matchTitle || matchCat || matchAssign;
+    });
+  }
+
+  // Ordering
+  if (currentTodoOrder === 'newest') {
+    filtered.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  } else if (currentTodoOrder === 'favorites') {
+    filtered.sort((a, b) => (b.isFav ? 1 : 0) - (a.isFav ? 1 : 0));
+  } else if (currentTodoOrder === 'category') {
+    filtered.sort((a, b) => (a.category || '').localeCompare(b.category || ''));
+  } else if (currentTodoOrder === 'title') {
+    filtered.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+  }
+
+  const container = document.getElementById('todoCardsContainer');
+  if (!container) return;
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:50px 20px;background:var(--card);border:1.5px dashed var(--border);border-radius:18px;margin-bottom:20px;">
+        <div style="width:48px;height:48px;border-radius:14px;background:rgba(99,102,241,0.1);color:#4f46e5;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div style="font-size:15px;font-weight:700;color:var(--foreground);margin-bottom:4px;">Tidak Ada Tugas Ditemukan</div>
+        <div style="font-size:12.5px;color:var(--muted-foreground);margin-bottom:16px;">
+          ${selectedTodoFilter === 'deleted' ? 'Kotak sampah kosong.' : 'Belum ada tugas yang cocok dengan filter atau kata kunci saat ini.'}
+        </div>
+        ${selectedTodoFilter !== 'deleted' ? '<button type="button" class="btn btn-primary btn-sm" onclick="openTodoModal()">+ Buat Tugas Baru</button>' : ''}
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(t => {
+    const isSelected = selectedTodoIds.has(t.id);
+    const borderCls = t.accentBorder ? ('border-' + t.accentBorder) : '';
+    const catCls = getTodoCategoryClass(t.category);
+
+    const assigneesHtml = (Array.isArray(t.assignees) && t.assignees.length > 0)
+      ? `<div class="todo-avatar-group">
+          ${t.assignees.slice(0, 3).map(a => `
+            <div class="todo-avatar" style="background:${a.color || '#4f46e5'};" title="${a.name}">
+              ${a.avatar || a.name.charAt(0).toUpperCase()}
+            </div>
+          `).join('')}
+         </div>`
+      : '';
+
+    return `
+      <div class="todo-item-card ${borderCls}" id="todo-card-${t.id}">
+        <div class="todo-item-left">
+          <!-- Drag Handle -->
+          <div class="todo-drag-handle" title="Drag to reorder">
+            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg>
+          </div>
+
+          <!-- Checkbox -->
+          <div class="todo-checkbox ${t.isDone ? 'checked' : ''}" onclick="toggleTodoDone('${t.id}', event)" title="${t.isDone ? 'Tandai belum selesai' : 'Tandai selesai'}">
+            ${t.isDone ? '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>' : ''}
+          </div>
+
+          <!-- Favorite Star -->
+          <button type="button" class="todo-star-btn ${t.isFav ? 'active' : ''}" onclick="toggleTodoFav('${t.id}', event)" title="${t.isFav ? 'Hapus favorit' : 'Jadikan favorit'}">
+            ${t.isFav ? '★' : '☆'}
+          </button>
+
+          <!-- Title -->
+          <div class="todo-item-title ${t.isDone ? 'done' : ''}" onclick="openTodoModal('${t.id}')" title="${t.title}">
+            ${t.title}
+          </div>
+        </div>
+
+        <div class="todo-item-right">
+          <!-- Category Pill -->
+          <span class="todo-category-badge ${catCls}">${t.category || 'General'}</span>
+
+          <!-- Assignees Avatars -->
+          ${assigneesHtml}
+
+          <!-- Three dots action menu -->
+          <div style="position:relative;">
+            <button type="button" class="todo-more-btn" onclick="openTodoItemActions('${t.id}', event)" title="Menu aksi">
+              <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+            </button>
+            <div id="todoActionMenu-${t.id}" class="hidden" style="position:absolute;right:0;top:100%;margin-top:4px;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.12);padding:6px;z-index:90;min-width:160px;">
+              ${t.isDeleted ? `
+                <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12px;padding:7px 10px;" onclick="handleRestoreTodoItem('${t.id}', event)">
+                  <span>♻️ Pulihkan Tugas</span>
+                </button>
+                <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12px;padding:7px 10px;color:#ef4444;" onclick="handlePermanentDeleteTodo('${t.id}', event)">
+                  <span>✕ Hapus Permanen</span>
+                </button>
+              ` : `
+                <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12px;padding:7px 10px;" onclick="openTodoModal('${t.id}', event)">
+                  <span>✏️ Edit Tugas</span>
+                </button>
+                <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12px;padding:7px 10px;" onclick="toggleTodoDone('${t.id}', event)">
+                  <span>${t.isDone ? '↩️ Batal Selesai' : '✅ Tandai Selesai'}</span>
+                </button>
+                <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12px;padding:7px 10px;" onclick="toggleTodoFav('${t.id}', event)">
+                  <span>${t.isFav ? '☆ Hapus Favorit' : '★ Jadikan Favorit'}</span>
+                </button>
+                <div style="height:1px;background:var(--border);margin:4px 0;"></div>
+                <button type="button" class="btn btn-ghost" style="width:100%;justify-content:flex-start;font-size:12px;padding:7px 10px;color:#ef4444;" onclick="handleDeleteTodoItem('${t.id}', event)">
+                  <span>🗑️ Hapus Tugas</span>
+                </button>
+              `}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openTodoItemActions(id, e) {
+  if (e) e.stopPropagation();
+  // Close any open menus
+  document.querySelectorAll('[id^="todoActionMenu-"]').forEach(el => {
+    if (el.id !== 'todoActionMenu-' + id) el.classList.add('hidden');
+  });
+  const menu = document.getElementById('todoActionMenu-' + id);
+  if (menu) menu.classList.toggle('hidden');
+}
+
+function openTodoModal(id = null, e = null) {
+  if (e) e.stopPropagation();
+  const modal = document.getElementById('todoItemModal');
+  const titleEl = document.getElementById('todoModalTitle');
+  const editId = document.getElementById('todoEditId');
+  const inpTitle = document.getElementById('todoTitleInput');
+  const inpCat = document.getElementById('todoCategoryInput');
+  const inpBorder = document.getElementById('todoAccentBorderInput');
+  const inpAssign = document.getElementById('todoAssigneesInput');
+  const inpFav = document.getElementById('todoFavInput');
+  const inpDone = document.getElementById('todoDoneInput');
+  const btnDel = document.getElementById('btnDeleteCurrentTodo');
+
+  if (!modal) return;
+
+  if (id) {
+    const todos = getTodoList();
+    const item = todos.find(t => t.id === id);
+    if (item) {
+      if (titleEl) titleEl.textContent = 'Edit Tugas';
+      if (editId) editId.value = item.id;
+      if (inpTitle) inpTitle.value = item.title || '';
+      if (inpCat) inpCat.value = item.category || 'Operasional';
+      if (inpBorder) inpBorder.value = item.accentBorder || 'default';
+      if (inpAssign) inpAssign.value = Array.isArray(item.assignees) ? item.assignees.map(a => a.name).join(', ') : '';
+      if (inpFav) inpFav.checked = Boolean(item.isFav);
+      if (inpDone) inpDone.checked = Boolean(item.isDone);
+      if (btnDel) btnDel.style.display = 'inline-flex';
+    }
+  } else {
+    if (titleEl) titleEl.textContent = 'Tambah Tugas Baru';
+    if (editId) editId.value = '';
+    if (inpTitle) inpTitle.value = '';
+    if (inpCat) inpCat.value = 'Operasional';
+    if (inpBorder) inpBorder.value = 'default';
+    if (inpAssign) inpAssign.value = 'Pratama';
+    if (inpFav) inpFav.checked = false;
+    if (inpDone) inpDone.checked = false;
+    if (btnDel) btnDel.style.display = 'none';
+  }
+
+  modal.classList.remove('hidden');
+  setTimeout(() => { if (inpTitle) inpTitle.focus(); }, 60);
+}
+
+function closeTodoModal() {
+  const modal = document.getElementById('todoItemModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function handleSaveTodoItem(e) {
+  if (e) e.preventDefault();
+  const editId = (document.getElementById('todoEditId')?.value || '').trim();
+  const title = (document.getElementById('todoTitleInput')?.value || '').trim();
+  const category = (document.getElementById('todoCategoryInput')?.value || '').trim() || 'General';
+  const accentBorder = document.getElementById('todoAccentBorderInput')?.value || 'default';
+  const assigneesStr = document.getElementById('todoAssigneesInput')?.value || '';
+  const isFav = Boolean(document.getElementById('todoFavInput')?.checked);
+  const isDone = Boolean(document.getElementById('todoDoneInput')?.checked);
+
+  if (!title) {
+    alert('Judul tugas wajib diisi!');
+    return;
+  }
+
+  const assignees = parseAssigneesFromString(assigneesStr);
+  const todos = getTodoList();
+
+  if (editId) {
+    const idx = todos.findIndex(t => t.id === editId);
+    if (idx !== -1) {
+      todos[idx].title = title;
+      todos[idx].category = category;
+      todos[idx].accentBorder = accentBorder;
+      todos[idx].assignees = assignees;
+      todos[idx].isFav = isFav;
+      todos[idx].isDone = isDone;
+    }
+  } else {
+    const newItem = {
+      id: 'td-' + Date.now(),
+      title,
+      category,
+      accentBorder,
+      assignees,
+      isFav,
+      isDone,
+      isDeleted: false,
+      createdAt: Date.now()
+    };
+    todos.unshift(newItem);
+  }
+
+  saveTodoList(todos);
+  closeTodoModal();
+  renderTodoListPage();
+  showToast('💾', editId ? 'Tugas berhasil diperbarui!' : 'Tugas baru berhasil ditambahkan!');
+}
+
+function handleDeleteCurrentTodo() {
+  const editId = (document.getElementById('todoEditId')?.value || '').trim();
+  if (!editId) return;
+  handleDeleteTodoItem(editId);
+  closeTodoModal();
+}
+
+function handleDeleteTodoItem(id, e) {
+  if (e) e.stopPropagation();
+  const todos = getTodoList();
+  const item = todos.find(t => t.id === id);
+  if (!item) return;
+  item.isDeleted = true;
+  saveTodoList(todos);
+  renderTodoListPage();
+  showToast('🗑️', 'Tugas dipindahkan ke kotak sampah.');
+}
+
+function handleRestoreTodoItem(id, e) {
+  if (e) e.stopPropagation();
+  const todos = getTodoList();
+  const item = todos.find(t => t.id === id);
+  if (!item) return;
+  item.isDeleted = false;
+  saveTodoList(todos);
+  renderTodoListPage();
+  showToast('♻️', 'Tugas berhasil dipulihkan.');
+}
+
+function handlePermanentDeleteTodo(id, e) {
+  if (e) e.stopPropagation();
+  if (!confirm('Hapus tugas ini secara permanen?')) return;
+  let todos = getTodoList();
+  todos = todos.filter(t => t.id !== id);
+  saveTodoList(todos);
+  selectedTodoIds.delete(id);
+  renderTodoListPage();
+  showToast('✕', 'Tugas dihapus secara permanen.');
+}
+
 </script>
 
 </body>
