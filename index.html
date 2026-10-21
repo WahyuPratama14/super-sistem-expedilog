@@ -771,6 +771,21 @@ body:not(.logged-in-user) #main {
   border-color: #6366f1 !important;
 }
 
+
+/* Highlight baris SLA EV >= 10 dan DRS Ke < 3 (Orange) */
+.row-sla-orange td {
+  background: #fff7ed !important;
+}
+.row-sla-orange:hover td {
+  background: #ffedd5 !important;
+}
+[data-theme="dark"] .row-sla-orange td {
+  background: rgba(249, 115, 22, 0.18) !important;
+}
+[data-theme="dark"] .row-sla-orange:hover td {
+  background: rgba(249, 115, 22, 0.28) !important;
+}
+
 </style>
 
 
@@ -4819,17 +4834,18 @@ button:hover,
           <span id="sAktifTrend" style="display:none;"></span>
         </div>
 
-        <!-- 4. Terkirim (Emerald + Trend Arrow Up) -->
-        <div class="stat-card-ref">
-          <div class="stat-circle-icon circle-emerald">
+        <!-- 4. Terkirim (Emerald - Menampilkan Jumlah AWB & Persentase seperti Card OS) -->
+        <div class="stat-card-ref" id="cardTerkirim">
+          <div class="stat-circle-icon circle-emerald" id="cardTerkirimIcon">
             <svg width="20" height="20" fill="none" stroke="#10b981" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
           </div>
-          <div class="stat-value-ref" id="sTerkirim">0%</div>
+          <div class="stat-value-ref" id="sTerkirim">0</div>
           <div class="stat-label-ref">Terkirim</div>
-          <div class="stat-trend-bottom stat-trend-up">
-            <span class="trend-arrow">▲</span>
-            <span id="sTerkirimTrend">0%</span>
+          <div class="stat-trend-bottom" id="sTerkirimTrendWrap" style="margin-bottom:24px;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;">
+            <span id="sTerkirimTrendPct" style="background:#ecfdf5;color:#059669;padding:2px 8px;border-radius:6px;border:1px solid #a7f3d0;font-size:12px;">0%</span>
+            <span id="sTerkirimSubText" style="font-size:11px;color:#94a3b8;font-weight:500;">sukses terkirim</span>
           </div>
+          <span id="sTerkirimTrend" style="display:none;">0%</span>
         </div>
       </div>
 
@@ -4999,6 +5015,17 @@ button:hover,
         <button type="button" class="btn btn-ghost btn-sm" id="btnResetAllFilters" onclick="resetAllModernFilters()" style="display:none;color:#ef4444;" title="Reset semua filter">
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           <span>Reset Filter</span>
+        </button>
+
+        <!-- Tombol Fitur Cari Masal (Multi-AWB Bulk Search) -->
+        <button type="button" class="btn btn-outline btn-sm" id="btnBulkSearchDaftar" onclick="openBulkSearchModal()" title="Cari banyak No AWB sekaligus" style="display:inline-flex;align-items:center;gap:6px;font-weight:700;padding:6px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--foreground);">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          <span>Cari Masal</span>
+          <span id="bulkSearchActiveBadge" style="display:none;padding:2px 7px;border-radius:99px;font-size:11px;font-weight:800;background:#3b82f6;color:#ffffff;">0</span>
+        </button>
+        <button type="button" class="btn btn-ghost btn-sm" id="btnResetBulkSearch" onclick="resetBulkSearch()" style="display:none;color:#ef4444;font-weight:600;" title="Hapus pencarian masal">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <span>Reset Cari Masal</span>
         </button>
 
         <!-- Top Right Batch Actions for Daftar Data Resi -->
@@ -7420,6 +7447,128 @@ function getHtmlStatusPage() {
   </div>
 </div>
 
+
+<!-- ══════════════ MODAL UBAH STATUS CEPAT (AKSI EDIT DATA TUNGGAL) ══════════════ -->
+<div id="singleStatusModal" class="modal-overlay hidden" onclick="if(event.target===this) closeSingleStatusModal()">
+  <div class="modal-box" style="max-width:480px;border-radius:18px;overflow:visible;box-shadow:0 20px 50px rgba(0,0,0,.25);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border);border-top-left-radius:18px;border-top-right-radius:18px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="batch-header-icon" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:800;color:var(--foreground);">Ubah Status Paket</div>
+          <div style="font-size:11.5px;color:var(--muted-foreground);" id="singleStatusModalSub">Perbarui status resi dan riwayat pelacakan</div>
+        </div>
+      </div>
+      <button type="button" onclick="closeSingleStatusModal()" class="btn btn-ghost" style="width:32px;height:32px;border-radius:8px;padding:0;display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;" aria-label="Tutup">&times;</button>
+    </div>
+    <form onsubmit="handleSingleStatusSubmit(event)">
+      <input type="hidden" id="singleStatusResiId" value=""/>
+      <div style="padding:22px 24px;display:flex;flex-direction:column;gap:16px;">
+        <!-- Info Paket Ringkas -->
+        <div class="batch-status-info-box" style="border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="batch-info-icon" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            </div>
+            <div>
+              <div style="font-size:13.5px;font-weight:800;color:var(--foreground);" id="singleStatusAwbText">-</div>
+              <div style="font-size:12px;color:var(--muted-foreground);margin-top:2px;" id="singleStatusClientText">Client: -</div>
+            </div>
+          </div>
+          <div id="singleStatusCurrentBadge"></div>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--foreground);">Pilih Status Baru <span style="color:#ef4444;">*</span></label>
+          <select id="singleTargetStatus" class="modern-select-trigger" required style="width:100%;font-weight:600;padding:11px 36px 11px 14px;border-radius:12px;appearance:none;-webkit-appearance:none;-moz-appearance:none;font-size:13.5px;outline:none;cursor:pointer;transition:all .2s;">
+            <option value="Delivered">Delivered (Paket Berhasil Terkirim)</option>
+            <option value="Delivery Return">Delivery Return (Retur ke Pengirim)</option>
+            <option value="Dalam Pengiriman">Dalam Pengiriman (Proses Antar)</option>
+            <option value="Masa Hold (H-1)">Masa Hold (H-1)</option>
+            <option value="Masa Hold (H-2)">Masa Hold (H-2)</option>
+            <option value="Masa Hold (H-3)">Masa Hold (H-3)</option>
+            <option value="Ditolak">Ditolak (Penerima Menolak Paket)</option>
+            <option value="Gagal Terkirim">Gagal Terkirim (Kendala Alamat/Penerima)</option>
+            <option value="Bermasalah">Bermasalah (Ada Kendala Operasional)</option>
+            <option value="Tiba di Hub">Tiba di Hub</option>
+            <option value="Dikirim">Dikirim</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--foreground);">Catatan Perubahan (Opsional)</label>
+          <input type="text" id="singleStatusNote" placeholder="Contoh: Paket diantarkan ulang / konfirmasi customer" style="width:100%;padding:10px 14px;border-radius:12px;font-size:13px;outline:none;transition:border-color .2s;"/>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:4px;">
+          <span style="font-size:11.5px;color:var(--muted-foreground);">Perlu mengedit data lengkap?</span>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="openFullEditFromSingleStatus()" style="font-size:11.5px;color:#3b82f6;font-weight:700;padding:4px 8px;">
+            Buka Form Lengkap &rarr;
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer-bar" style="display:flex;justify-content:flex-end;gap:10px;padding:16px 24px;border-top:1px solid var(--border);border-bottom-left-radius:18px;border-bottom-right-radius:18px;">
+        <button type="button" class="btn btn-ghost" onclick="closeSingleStatusModal()" style="padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;">Batal</button>
+        <button type="submit" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Terapkan Status</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ══════════════ MODAL CARI MASAL (MULTI-AWB SEARCH) ══════════════ -->
+<div id="bulkSearchModal" class="modal-overlay hidden" onclick="if(event.target===this) closeBulkSearchModal()">
+  <div class="modal-box" style="max-width:540px;border-radius:18px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.25);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(59,130,246,0.12);color:#3b82f6;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:800;color:var(--foreground);">Pencarian Masal No AWB</div>
+          <div style="font-size:11.5px;color:var(--muted-foreground);">Cari dan tampilkan banyak nomor resi sekaligus di tabel</div>
+        </div>
+      </div>
+      <button type="button" onclick="closeBulkSearchModal()" class="btn btn-ghost" style="width:32px;height:32px;border-radius:8px;padding:0;display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;" aria-label="Tutup">&times;</button>
+    </div>
+    <div style="padding:22px 24px;display:flex;flex-direction:column;gap:14px;">
+      <div style="font-size:12.5px;color:var(--muted-foreground);line-height:1.5;">
+        Masukkan atau tempel daftar nomor AWB. Dapat dipisahkan dengan <b>Baris Baru (Enter)</b>, <b>Koma (,)</b>, atau <b>Spasi</b>:
+      </div>
+      <div style="position:relative;">
+        <textarea id="bulkSearchTextarea" rows="7" placeholder="Contoh:&#10;SAP-1002345&#10;SAP-1002346&#10;SAP-1002347" oninput="updateBulkSearchDetectedCount()" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--foreground);font-family:monospace;font-size:13px;line-height:1.5;outline:none;resize:vertical;"></textarea>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <div style="font-size:12px;font-weight:700;color:#3b82f6;" id="bulkSearchDetectedCount">
+          0 No AWB terdeteksi
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button type="button" class="btn btn-ghost btn-sm" onclick="pasteClipboardToBulkSearch()" style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+            <span>Tempel Clipboard</span>
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('bulkSearchTextarea').value=''; updateBulkSearchDetectedCount();" style="font-size:12px;color:#ef4444;font-weight:600;">
+            Kosongkan
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer-bar" style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-top:1px solid var(--border);">
+      <button type="button" class="btn btn-ghost" onclick="closeBulkSearchModal()" style="padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;">Batal</button>
+      <div style="display:flex;gap:10px;">
+        <button type="button" id="btnApplyBulkSearch" class="btn btn-primary" onclick="applyBulkSearch()" style="display:inline-flex;align-items:center;gap:6px;padding:9px 22px;border-radius:10px;font-size:13px;font-weight:700;background:#3b82f6;border-color:#3b82f6;">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <span id="btnApplyBulkSearchLabel">Terapkan Pencarian Masal</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════ MODAL UBAH STATUS MASAL ══════════════ -->
 <div id="batchStatusModal" class="modal-overlay hidden" onclick="if(event.target===this) closeBatchStatusModal()">
   <div class="modal-box" style="max-width:480px;border-radius:18px;overflow:visible;box-shadow:0 20px 50px rgba(0,0,0,.25);">
@@ -8948,8 +9097,22 @@ function renderOutstanding() {
       const cellAlertEv = isEvAlert ? ' class="cell-sla-alert"' : '';
       const slaRtnHtml = isRtnAlert ? `<span class="badge-sla-block-red">${r.slaRtn}</span>` : badgeSlaRtn(r.slaRtn);
       const slaEvHtml = isEvAlert ? `<span class="badge-sla-block-red">${r.slaEv || '-'}</span>` : badgeSlaEv(r.slaEv);
+
+      // Kriteria Poin 3: SLA EV >= 10 namun DRS Ke < 3 -> buat baris berwarna orange
+      const numEv = typeof getSlaEvValue === 'function' ? getSlaEvValue(r.slaEv) : (parseFloat(String(r.slaEv).replace(/[^\d.]/g, '')) || 0);
+      const drsNum = parseInt(r.drsKe || 1, 10) || 1;
+      const isOrangeRow = numEv >= 10 && drsNum < 3;
+
+      let rowClass = isOrangeRow ? 'row-sla-orange' : '';
+      let rowStyle = '';
+      if (isChecked) {
+        rowStyle = 'background:rgba(16,185,129,0.12);';
+      } else if (isOrangeRow) {
+        rowStyle = 'background:#fff7ed;border-left:4px solid #f97316;';
+      }
+
       return `
-        <tr style="${isChecked ? 'background:rgba(16,185,129,0.06);' : ''}">
+        <tr class="${rowClass}" style="${rowStyle}">
           <td class="col-check no-select">
             <input type="checkbox" class="table-check" ${isChecked ? 'checked' : ''} onchange="toggleSelectRowOutstanding('${r.id}', this.checked)"/>
           </td>
@@ -8979,7 +9142,7 @@ function renderOutstanding() {
           </td>
           <td class="no-select" style="text-align:center;">
             <div style="display:flex;gap:6px;justify-content:center;">
-              <button onclick="openModal('${r.id}')" class="btn-action-icon" title="Edit Resi">
+              <button onclick="openSingleStatusModal('${r.id}')" class="btn-action-icon" title="Ubah Status Paket">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
               </button>
               <button onclick="openDeleteModal('${r.id}')" class="btn-action-icon danger" title="Hapus Resi">
@@ -11902,13 +12065,30 @@ function updateStats() {
     }
   }
 
-  // 4. Terkirim (Card 4)
+  // 4. Terkirim (Card 4 - Menampilkan Jumlah AWB Terkirim & Persentase dari Total)
   const suksesPct = total > 0 ? Math.round((terkirim / total) * 100) : 0;
   const sTerkirim = document.getElementById('sTerkirim');
-  rollNumber(sTerkirim, suksesPct, true);
+  rollNumber(sTerkirim, terkirim, false);
 
   const sTerkirimTrend = document.getElementById('sTerkirimTrend');
   if (sTerkirimTrend) sTerkirimTrend.textContent = `${suksesPct}%`;
+
+  const sTerkirimTrendPct = document.getElementById('sTerkirimTrendPct');
+  const sTerkirimSubText = document.getElementById('sTerkirimSubText');
+  const cardTerkirim = document.getElementById('cardTerkirim');
+
+  if (sTerkirimTrendPct) {
+    sTerkirimTrendPct.textContent = `${suksesPct}%`;
+    sTerkirimTrendPct.style.background = '#ecfdf5';
+    sTerkirimTrendPct.style.color = '#059669';
+    sTerkirimTrendPct.style.borderColor = '#a7f3d0';
+  }
+  if (sTerkirimSubText) {
+    sTerkirimSubText.textContent = `sukses terkirim (${terkirim}/${total} AWB)`;
+  }
+  if (cardTerkirim) {
+    cardTerkirim.style.borderColor = suksesPct >= 80 ? '#a7f3d0' : '#e2e8f0';
+  }
 }
 
 // ─── CARD 3: DISTRIBUSI STATUS ────────────────────────────────
@@ -14765,6 +14945,14 @@ function renderTable() {
     // Sembunyikan data yang sudah ditakeout (status delivery return)
     if (typeof isTakenOutReturn === 'function' && isTakenOutReturn(r)) return false;
 
+    // Filter Pencarian Masal (Multi-AWB Bulk Search)
+    if (Array.isArray(window.bulkSearchKeywords) && window.bulkSearchKeywords.length > 0) {
+      const awbLow = (r.nomorResi || '').toLowerCase();
+      const idLow = String(r.id || '').toLowerCase();
+      const matchBulk = window.bulkSearchKeywords.some(kw => awbLow === kw || awbLow.includes(kw) || idLow === kw);
+      if (!matchBulk) return false;
+    }
+
     const mq = !q || r.nomorResi.toLowerCase().includes(q) || (r.kurir && r.kurir.toLowerCase().includes(q)) || ((r.pengirim?.nama || r.namaClient || '').toLowerCase().includes(q)) || (r.penerima?.nama && r.penerima.nama.toLowerCase().includes(q)) || (r.barang?.deskripsi && r.barang.deskripsi.toLowerCase().includes(q));
 
     // Modern Popover Status Filter
@@ -14815,7 +15003,13 @@ function renderTable() {
   if (pageDaftar > totalPages) pageDaftar = totalPages;
 
   const countEl = document.getElementById('tableCount');
-  if (countEl) countEl.textContent = `${totalItems} resi ditemukan`;
+  if (countEl) {
+    if (Array.isArray(window.bulkSearchKeywords) && window.bulkSearchKeywords.length > 0) {
+      countEl.textContent = `${totalItems} resi cocok (Pencarian Masal: ${window.bulkSearchKeywords.length} AWB dicari)`;
+    } else {
+      countEl.textContent = `${totalItems} resi ditemukan`;
+    }
+  }
 
   const start = (pageDaftar - 1) * PAGE_SIZE;
   const paged = filtered.slice(start, start + PAGE_SIZE);
@@ -14833,8 +15027,21 @@ function renderTable() {
       const cellAlertEv = isEvAlert ? ' class="cell-sla-alert"' : '';
       const slaRtnHtml = isRtnAlert ? `<span class="badge-sla-block-red">${r.slaRtn}</span>` : badgeSlaRtn(r.slaRtn);
       const slaEvHtml = isEvAlert ? `<span class="badge-sla-block-red">${r.slaEv || '-'}</span>` : badgeSlaEv(r.slaEv);
+
+      const numEv = typeof getSlaEvValue === 'function' ? getSlaEvValue(r.slaEv) : (parseFloat(String(r.slaEv).replace(/[^\d.]/g, '')) || 0);
+      const drsNum = parseInt(r.drsKe || 1, 10) || 1;
+      const isOrangeRow = numEv >= 10 && drsNum < 3;
+
+      let rowClass = isOrangeRow ? 'row-sla-orange' : '';
+      let rowStyle = '';
+      if (isChecked) {
+        rowStyle = 'background:rgba(16,185,129,0.12);';
+      } else if (isOrangeRow) {
+        rowStyle = 'background:#fff7ed;border-left:4px solid #f97316;';
+      }
+
       return `
-        <tr style="${isChecked ? 'background:rgba(16,185,129,0.06);' : ''}">
+        <tr class="${rowClass}" style="${rowStyle}">
           <td class="col-check no-select">
             <input type="checkbox" class="table-check" ${isChecked ? 'checked' : ''} onchange="toggleSelectRowDaftar('${r.id}', this.checked)"/>
           </td>
@@ -14864,7 +15071,7 @@ function renderTable() {
           </td>
           <td class="no-select" style="text-align:center;">
             <div style="display:flex;gap:6px;justify-content:center;">
-              <button onclick="openModal('${r.id}')" class="btn-action-icon" title="Edit Resi">
+              <button onclick="openSingleStatusModal('${r.id}')" class="btn-action-icon" title="Ubah Status Paket">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
               </button>
               <button onclick="openDeleteModal('${r.id}')" class="btn-action-icon danger" title="Hapus Resi">
@@ -17422,6 +17629,220 @@ function handlePermanentDeleteTodo(id, e) {
       showToast('✕', 'Tugas dihapus secara permanen.');
     }
   });
+}
+
+
+
+
+// ══════════════════════════════════════════════════════════════
+// ─── LOGIKA UBAH STATUS CEPAT (AKSI EDIT DATA TUNGGAL) ────────
+// ══════════════════════════════════════════════════════════════
+function openSingleStatusModal(resiId) {
+  const item = data.find(r => r.id === resiId);
+  if (!item) {
+    if (typeof showCustomWarning === 'function') {
+      showCustomWarning('Data resi tidak ditemukan.', 'Peringatan');
+    } else {
+      showToast('⚠️', 'Data resi tidak ditemukan');
+    }
+    return;
+  }
+
+  const modal = document.getElementById('singleStatusModal');
+  const resiIdInp = document.getElementById('singleStatusResiId');
+  const awbText = document.getElementById('singleStatusAwbText');
+  const clientText = document.getElementById('singleStatusClientText');
+  const currentBadge = document.getElementById('singleStatusCurrentBadge');
+  const targetSelect = document.getElementById('singleTargetStatus');
+  const noteInp = document.getElementById('singleStatusNote');
+
+  if (resiIdInp) resiIdInp.value = item.id;
+  if (awbText) awbText.textContent = item.nomorResi || item.id;
+  if (clientText) {
+    const clientName = (item.pengirim && item.pengirim.nama) || item.namaClient || '-';
+    const recName = (item.penerima && item.penerima.nama) || '-';
+    clientText.textContent = `Client: ${clientName} | Penerima: ${recName}`;
+  }
+  if (currentBadge) {
+    currentBadge.innerHTML = typeof badge === 'function' ? badge(item.status) : item.status;
+  }
+  if (targetSelect) {
+    targetSelect.value = item.status || 'Delivered';
+    if (targetSelect._syncModern) targetSelect._syncModern();
+  }
+  if (noteInp) noteInp.value = '';
+
+  initAllModernSelects();
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeSingleStatusModal() {
+  const modal = document.getElementById('singleStatusModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function openFullEditFromSingleStatus() {
+  const id = document.getElementById('singleStatusResiId')?.value;
+  closeSingleStatusModal();
+  if (id && typeof openModal === 'function') {
+    openModal(id);
+  }
+}
+
+function handleSingleStatusSubmit(e) {
+  if (e) e.preventDefault();
+  const resiId = document.getElementById('singleStatusResiId')?.value;
+  if (!resiId) return;
+
+  const item = data.find(r => r.id === resiId);
+  if (!item) return;
+
+  const targetStatus = document.getElementById('singleTargetStatus')?.value || 'Delivered';
+  const note = document.getElementById('singleStatusNote')?.value.trim();
+  const now = Date.now();
+
+  const oldStatus = item.status;
+  item.status = targetStatus;
+  if (!item.riwayat) item.riwayat = [];
+  item.riwayat.push({
+    waktu: now,
+    status: targetStatus,
+    keterangan: note || `Status diubah dari ${oldStatus} menjadi ${targetStatus} oleh Admin`
+  });
+
+  saveData();
+  closeSingleStatusModal();
+  refreshDashboard();
+  renderTable();
+  renderOutstanding();
+  renderClientPage();
+
+  showToast('✅', `Status AWB ${item.nomorResi} berhasil diubah ke ${targetStatus}`);
+}
+
+// ══════════════════════════════════════════════════════════════
+// ─── LOGIKA PENCARIAN MASAL (MULTI-AWB BULK SEARCH) ───────────
+// ══════════════════════════════════════════════════════════════
+window.bulkSearchKeywords = [];
+
+function openBulkSearchModal() {
+  const modal = document.getElementById('bulkSearchModal');
+  const textarea = document.getElementById('bulkSearchTextarea');
+  if (modal) {
+    if (textarea && Array.isArray(window.bulkSearchKeywords) && window.bulkSearchKeywords.length > 0) {
+      textarea.value = window.bulkSearchKeywords.join('\n');
+    }
+    updateBulkSearchDetectedCount();
+    modal.classList.remove('hidden');
+    setTimeout(() => { if (textarea) textarea.focus(); }, 60);
+  }
+}
+
+function closeBulkSearchModal() {
+  const modal = document.getElementById('bulkSearchModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function parseBulkSearchText(raw) {
+  if (!raw || !raw.trim()) return [];
+  // Split by newline, comma, semicolon, space, tab
+  const tokens = raw.split(/[\r\n,\s;]+/).map(s => s.trim().toLowerCase()).filter(Boolean);
+  // Unique set
+  return Array.from(new Set(tokens));
+}
+
+function updateBulkSearchDetectedCount() {
+  const textarea = document.getElementById('bulkSearchTextarea');
+  const text = textarea ? textarea.value : '';
+  const tokens = parseBulkSearchText(text);
+  const counterEl = document.getElementById('bulkSearchDetectedCount');
+  const btnLabel = document.getElementById('btnApplyBulkSearchLabel');
+
+  if (counterEl) {
+    counterEl.textContent = `${tokens.length} No AWB terdeteksi`;
+    counterEl.style.color = tokens.length > 0 ? '#3b82f6' : 'var(--muted-foreground)';
+  }
+  if (btnLabel) {
+    btnLabel.textContent = tokens.length > 0 ? `Cari Data (${tokens.length} AWB)` : 'Terapkan Pencarian Masal';
+  }
+}
+
+async function pasteClipboardToBulkSearch() {
+  try {
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      const clipText = await navigator.clipboard.readText();
+      const textarea = document.getElementById('bulkSearchTextarea');
+      if (textarea && clipText) {
+        textarea.value = (textarea.value ? textarea.value.trim() + '\n' : '') + clipText.trim();
+        updateBulkSearchDetectedCount();
+        showToast('📋', 'Berhasil menempelkan daftar AWB dari clipboard');
+      }
+    } else {
+      showToast('⚠️', 'Akses clipboard tidak didukung pada browser ini');
+    }
+  } catch(err) {
+    showToast('⚠️', 'Gagal membaca clipboard: ' + (err.message || 'Izin ditolak'));
+  }
+}
+
+function applyBulkSearch() {
+  const textarea = document.getElementById('bulkSearchTextarea');
+  const raw = textarea ? textarea.value : '';
+  const tokens = parseBulkSearchText(raw);
+
+  if (tokens.length === 0) {
+    resetBulkSearch();
+    closeBulkSearchModal();
+    return;
+  }
+
+  window.bulkSearchKeywords = tokens;
+
+  // Update UI tombol cari masal
+  const badgeEl = document.getElementById('bulkSearchActiveBadge');
+  const btnBulk = document.getElementById('btnBulkSearchDaftar');
+  const btnReset = document.getElementById('btnResetBulkSearch');
+
+  if (badgeEl) {
+    badgeEl.textContent = tokens.length;
+    badgeEl.style.display = 'inline-block';
+  }
+  if (btnBulk) {
+    btnBulk.style.borderColor = '#3b82f6';
+    btnBulk.style.background = 'rgba(59,130,246,0.08)';
+    btnBulk.style.color = '#3b82f6';
+  }
+  if (btnReset) {
+    btnReset.style.display = 'inline-flex';
+  }
+
+  pageDaftar = 1;
+  closeBulkSearchModal();
+  renderTable();
+
+  showToast('🔍', `Menampilkan hasil pencarian untuk ${tokens.length} nomor AWB`);
+}
+
+function resetBulkSearch() {
+  window.bulkSearchKeywords = [];
+  const textarea = document.getElementById('bulkSearchTextarea');
+  if (textarea) textarea.value = '';
+
+  const badgeEl = document.getElementById('bulkSearchActiveBadge');
+  const btnBulk = document.getElementById('btnBulkSearchDaftar');
+  const btnReset = document.getElementById('btnResetBulkSearch');
+
+  if (badgeEl) badgeEl.style.display = 'none';
+  if (btnBulk) {
+    btnBulk.style.borderColor = 'var(--border)';
+    btnBulk.style.background = 'var(--card)';
+    btnBulk.style.color = 'var(--foreground)';
+  }
+  if (btnReset) btnReset.style.display = 'none';
+
+  pageDaftar = 1;
+  renderTable();
+  showToast('ℹ️', 'Pencarian masal direset');
 }
 
 </script>
